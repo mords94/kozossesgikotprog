@@ -1,0 +1,61 @@
+version: '2'
+
+services:
+
+  szte-php-fpm:
+    build: ./php-fpm
+    container_name: szte-php-fpm
+    volumes:
+      - ./code:/code
+    links:
+      - szte-postgres:db
+    depends_on:
+      - szte-postgres
+    networks:
+       - szte-network
+      
+  szte-phppgadmin-php-fpm:
+    build: ./php-fpm
+    container_name: szte-phppgadmin-php-fpm
+    volumes:
+      - ./phppgadmin:/phppgadmin
+    links:
+      - szte-postgres:db
+    depends_on:
+      - szte-postgres
+    networks:
+       - szte-network
+      
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 8000:80
+      - 8001:81
+    links:
+      - szte-php-fpm
+    volumes:
+      - ./nginx/sites:/etc/nginx/sites
+      - ./code:/code
+      - ./phppgadmin:/phppgadmin
+    depends_on:
+      - szte-php-fpm
+      - szte-phppgadmin-php-fpm
+    networks:
+       - szte-network
+
+  szte-postgres:
+    build: ./postgres
+    container_name: szte-postgres
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=szte
+      - POSTGRES_USER=szte
+      - POSTGRES_PASSWORD=titok
+    networks:
+       - szte-network
+      
+networks:
+   szte-network:
+        driver: bridge
