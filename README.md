@@ -1,0 +1,1 @@
+# szte-docker-php-postgres
