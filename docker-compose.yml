@@ -30,7 +30,7 @@ services:
     build: ./nginx
     container_name: nginx
     ports:
-      - 8000:80
+      - 8123:80
       - 8001:81
     links:
       - szte-php-fpm
