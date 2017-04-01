@@ -35,6 +35,20 @@ class Controller extends BaseController
         return view("formpelda");
     }
 
+    function comment(Request $request)
+    {
+        $id = $request->get(0);
+
+
+
+        return view('kommentek',
+            [
+                "komment" => $this->model->kommentleker($id),
+                "id" => $id,
+            ]
+        );
+    }
+
     /**
      * ACTION: /mentes
      * VERB: POST

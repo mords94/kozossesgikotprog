@@ -48,6 +48,18 @@ class Model extends BaseModel
         return $tableList;
     }
 
+    public function kommentleker($id)
+    {
+        $array = [
+            '1' => 'elso',
+            '2' => 'masodik komment',
+        ];
+
+
+        return $array[$id];
+
+    }
+
     public function insertStock($symbol, $company) {
         // prepare statement for insert
         $sql = 'INSERT INTO stocks(symbol,company) VALUES(:symbol,:company)';
