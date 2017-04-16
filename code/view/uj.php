@@ -1,1 +1,0 @@
-<h1>Újoldal izé vamarwa</h1>

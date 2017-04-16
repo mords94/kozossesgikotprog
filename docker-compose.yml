@@ -53,6 +53,8 @@ services:
       - POSTGRES_DB=szte
       - POSTGRES_USER=szte
       - POSTGRES_PASSWORD=titok
+    ports:
+      - 5432:5432
     networks:
        - szte-network
       

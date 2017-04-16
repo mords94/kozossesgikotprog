@@ -9,6 +9,10 @@ class Request
 
     protected $file;
 
+    public static function make() {
+        return new self($_GET, $_POST);
+    }
+
     public function __construct($get = [], $post = [], $file = [])
     {
         $this->get = $get;
@@ -28,6 +32,15 @@ class Request
         return $this->post[$key];
     }
 
+    public function posts($array) {
+        $posts = [];
+        foreach($array as $key) {
+            $posts[] = $this->post($key);
+        }
+
+        return $posts;
+    }
+
     public function file($key = null)
     {
         if(is_null($key)) return $this->file;
@@ -37,6 +50,10 @@ class Request
     public function all()
     {
         return array_merge($this->post, $this->get);
+    }
+
+    public function has($key) {
+        return isset($this->all()[$key]);
     }
 
 }

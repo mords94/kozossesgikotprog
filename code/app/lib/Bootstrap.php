@@ -17,6 +17,8 @@ class Bootstrap
 
     private $parameters = [];
 
+    private $controller;
+
     public static function getInstance()
     {
         if(is_null(self::$instance)) {
@@ -24,6 +26,10 @@ class Bootstrap
         }
 
         return self::$instance;
+    }
+
+    public function getController() {
+        return $this->controller;
     }
 
     public function __construct()
@@ -64,11 +70,11 @@ class Bootstrap
 
     private function loadPage()
     {
-        $controller = new Controller();
+        $this->controller = new Controller();
         $method = $this->url;
 
-        if(method_exists($controller, $method)) {
-            $view = $controller->{$method}($this->createRequest());
+        if(method_exists($this->controller, $method)) {
+            $view = $this->controller->{$method}($this->createRequest());
 
             if(is_string($view)) echo $view;
             elseif($view instanceof View) {
@@ -77,7 +83,7 @@ class Bootstrap
                 extract(ViewBag::get()->all());
             }
         } else {
-            throw new NoMethodException($controller, $method);
+            throw new NoMethodException($this->controller, $method);
         }
     }
 

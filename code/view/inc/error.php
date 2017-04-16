@@ -12,6 +12,7 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.css">
     <style>
         body {
             padding-top: 50px;
