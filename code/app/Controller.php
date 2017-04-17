@@ -58,9 +58,7 @@ class Controller extends BaseController
 
         Auth::getInstance()->register($user);
 
-        return view("home", [
-            'login_message' => 'Sikeres bejelentkezés!!',
-        ]);
+        redirect('/friends');
     }
 
     /**

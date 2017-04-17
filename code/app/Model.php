@@ -32,7 +32,7 @@ class Model extends BaseModel
    public function getFriends($userid)
    {
        return $this->database->selectCustom(
-           "SELECT DISTINCT id
+           "SELECT DISTINCT id,email,firstname,lastname
             FROM user_friend
               JOIN users 
               ON users.id = user_friend.friend_id 
