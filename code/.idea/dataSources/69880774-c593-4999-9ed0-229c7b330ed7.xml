@@ -9,7 +9,7 @@
     </database>
     <schema id="3" parent="2" name="public">
       <ObjectId>2200</ObjectId>
-      <IntrospectionTimestamp>2017-04-15.23:13:30.911</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2017-04-16.02:21:42.759</IntrospectionTimestamp>
       <IntrospectionStateNumber>569</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
@@ -249,17 +249,12 @@ value_on</ColNames>
       <DataType>integer|0</DataType>
       <StateNumber>551</StateNumber>
     </column>
-    <index id="48" parent="16" name="users_id_uindex">
-      <ObjectId>16419</ObjectId>
-      <ColNames>id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="49" parent="16" name="users_email_uindex">
+    <index id="48" parent="16" name="users_email_uindex">
       <ObjectId>16420</ObjectId>
       <ColNames>email</ColNames>
       <Unique>1</Unique>
     </index>
-    <foreign-key id="50" parent="16" name="users__photo_fk">
+    <foreign-key id="49" parent="16" name="users__photo_fk">
       <ObjectId>16431</ObjectId>
       <ColNames>photo_id</ColNames>
       <RefTableName>photo</RefTableName>

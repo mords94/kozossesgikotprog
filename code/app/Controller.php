@@ -27,7 +27,63 @@ class Controller extends BaseController
     {
         Session::destroy();
 
-        return "Logged out";
+        return view("home", [
+            'login_message' => 'Sikeres kijelentkezés',
+        ]);
+    }
+
+
+    public function register(Request $request)
+    {
+
+        if(strlen($request->post('password')) < 5 || strlen($request->post('password')) > 20) {
+            return view("home", [
+                'login_message' => 'Jelszó hossza fos! :(',
+            ]);
+        }
+
+
+        if ($request->post('password') != $request->post('password_again')) {
+            return view("home", [
+                'login_message' => 'Nem egyezik a 2 jelszó. :(',
+            ]);
+        }
+
+        $user = [
+            'firstname' => $request->post('firstname'),
+            'lastname'  => $request->post('email'),
+            'password'  => md5($request->post('password')),
+            'gender'    => $request->post('gender'),
+            'birthdate' => $request->post('birthdate'),
+            'email'     => $request->post('email'),
+        ];
+
+        foreach($user as $attr) {
+            if(empty($attr)) {
+                return view("home", [
+                    'login_message' => 'Üresen maradt egy kötelező mező. :(',
+                ]);
+            }
+        }
+
+
+        $email = $this->model->getUserByEmail($user['email']);
+
+        if (count($email) > 1) {
+            return view("home", [
+                'login_message' => 'Ezzel az e-mail címmel már regisztráltak. :(',
+            ]);
+        }
+
+        if ($this->model->register($user)) {
+            return view("home", [
+                'login_message' => 'Sikeres regisztráció.',
+            ]);
+        } else {
+            return view("home", [
+                'login_message' => 'Sikertelen regisztráció :(',
+            ]);
+        }
     }
 
     /**

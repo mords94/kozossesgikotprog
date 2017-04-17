@@ -58,7 +58,7 @@ class Driver extends PDO
     {
         ksort($data);
 
-        $fieldNames = "$this-delimiter" . implode("$this->delimiter, $this->delimiter", array_keys($data)) . "$this->delimiter";
+        $fieldNames = "$this->delimiter" . implode("$this->delimiter, $this->delimiter", array_keys($data)) . "$this->delimiter";
         $fieldValues = ":" . implode(", :", array_keys($data)) . "";
 
         $sql = "INSERT INTO $table ($fieldNames) VALUES ($fieldValues)";
