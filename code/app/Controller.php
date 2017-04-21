@@ -28,7 +28,7 @@ class Controller extends BaseController
         Session::destroy();
 
         return view("home", [
-            'login_message' => 'Sikeres kijelentkezés',
+            'login_message' => 'Sikeres kijelentkezés!',
         ]);
     }
 
@@ -38,14 +38,14 @@ class Controller extends BaseController
 
         if(strlen($request->post('password')) < 5 || strlen($request->post('password')) > 20) {
             return view("home", [
-                'login_message' => 'Jelszó hossza fos! :(',
+                'login_message' => 'A jelszó hossza nem megfelelő!',
             ]);
         }
 
 
         if ($request->post('password') != $request->post('password_again')) {
             return view("home", [
-                'login_message' => 'Nem egyezik a 2 jelszó. :(',
+                'login_message' => 'Nem egyezik a két jelszó!',
             ]);
         }
 
@@ -61,7 +61,7 @@ class Controller extends BaseController
         foreach($user as $attr) {
             if(empty($attr)) {
                 return view("home", [
-                    'login_message' => 'Üresen maradt egy kötelező mező. :(',
+                    'login_message' => 'Üresen maradt legalább egy kötelező mező!',
                 ]);
             }
         }
@@ -71,17 +71,17 @@ class Controller extends BaseController
 
         if (count($email) > 1) {
             return view("home", [
-                'login_message' => 'Ezzel az e-mail címmel már regisztráltak. :(',
+                'login_message' => 'Ezzel az e-mail címmel már regisztráltak!',
             ]);
         }
 
         if ($this->model->register($user)) {
             return view("home", [
-                'login_message' => 'Sikeres regisztráció.',
+                'login_message' => 'Sikeres regisztráció!',
             ]);
         } else {
             return view("home", [
-                'login_message' => 'Sikertelen regisztráció :(',
+                'login_message' => 'A regisztráció sikertelen volt!',
             ]);
         }
     }
@@ -102,13 +102,13 @@ class Controller extends BaseController
 
         if (!$user) {
             return view("home", [
-                'login_message' => 'Nincs ezzel az e-mail címmel felhasználó :(',
+                'login_message' => 'Ezzel a címmel nem találtam felhasználót!',
             ]);
         }
 
         if ($user['password'] != $password) {
             return view("home", [
-                'login_message' => 'Hibás jelszó. :(',
+                'login_message' => 'A jelszó hibás!',
             ]);
         }
 
@@ -131,7 +131,7 @@ class Controller extends BaseController
             $userid = Auth::user()['id'];
 
             if ($userid == $friendid) {
-                redirect('/friends', ['message' => 'Magadat nem jelölheted meg.']);
+                redirect('/friends', ['message' => 'Magadat nem jelölheted meg...']);
             }
 
             // check if relationship exists between the users
@@ -145,7 +145,7 @@ class Controller extends BaseController
                 if ($this->model->addFriend($userid, $friendid)) {
                     redirect('/friends', ['message' => 'Sikeresen barátnak jelölted-']);
                 } else {
-                    redirect('/friends', ['message' => 'Sikertelen jelölés. Adatbázis hiba.']);
+                    redirect('/friends', ['message' => 'Sikertelen jelölés! Adatbázis hiba!']);
                 }
             } else {
                 redirect('/friends', ['message' => 'Már barátok vagytok...']);

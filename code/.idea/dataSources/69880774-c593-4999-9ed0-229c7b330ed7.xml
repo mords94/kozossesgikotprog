@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="szte@localhost">
-  <database-model serializer="dbm" rdbms="POSTGRES" format-version="4.0">
+  <database-model serializer="dbm" rdbms="POSTGRES" format-version="4.1">
     <root id="1"/>
     <database id="2" parent="1" name="szte">
       <ObjectId>16384</ObjectId>
@@ -9,8 +9,8 @@
     </database>
     <schema id="3" parent="2" name="public">
       <ObjectId>2200</ObjectId>
-      <IntrospectionTimestamp>2017-04-16.02:21:42.759</IntrospectionTimestamp>
-      <IntrospectionStateNumber>569</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2017-04-21.12:42:46.140</IntrospectionTimestamp>
+      <IntrospectionStateNumber>590</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -29,236 +29,505 @@
     <schema id="8" parent="2" name="information_schema">
       <ObjectId>12116</ObjectId>
     </schema>
-    <sequence id="9" parent="3" name="photo_id_seq">
-      <ObjectId>16421</ObjectId>
-      <StateNumber>558</StateNumber>
+    <sequence id="9" parent="3" name="public.workplace_id_seq">
+      <ObjectId>16461</ObjectId>
+      <StateNumber>567</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
+      <BelongsToColumn>1</BelongsToColumn>
     </sequence>
-    <sequence id="10" parent="3" name="stocks_id_seq">
-      <ObjectId>16436</ObjectId>
+    <sequence id="10" parent="3" name="public.clubs_id_seq">
+      <ObjectId>16421</ObjectId>
       <StateNumber>561</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
+      <BelongsToColumn>1</BelongsToColumn>
     </sequence>
-    <sequence id="11" parent="3" name="users_id_seq">
-      <ObjectId>16409</ObjectId>
-      <StateNumber>551</StateNumber>
+    <sequence id="11" parent="3" name="public.comment_id_seq">
+      <ObjectId>16439</ObjectId>
+      <StateNumber>564</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
+      <BelongsToColumn>1</BelongsToColumn>
     </sequence>
-    <table id="12" parent="3" name="photo">
+    <sequence id="12" parent="3" name="public.photo_id_seq">
+      <ObjectId>16406</ObjectId>
+      <StateNumber>559</StateNumber>
+      <SequenceIdentity>1</SequenceIdentity>
+      <BelongsToColumn>1</BelongsToColumn>
+    </sequence>
+    <sequence id="13" parent="3" name="public.school_id_seq">
+      <ObjectId>16453</ObjectId>
+      <StateNumber>566</StateNumber>
+      <SequenceIdentity>1</SequenceIdentity>
+      <BelongsToColumn>1</BelongsToColumn>
+    </sequence>
+    <sequence id="14" parent="3" name="public.users_id_seq">
+      <ObjectId>16401</ObjectId>
+      <StateNumber>555</StateNumber>
+      <SequenceIdentity>1</SequenceIdentity>
+      <BelongsToColumn>1</BelongsToColumn>
+    </sequence>
+    <table id="15" parent="3" name="public.club_member">
+      <ObjectId>16429</ObjectId>
+      <StateNumber>590</StateNumber>
+    </table>
+    <table id="16" parent="3" name="public.clubs">
       <ObjectId>16423</ObjectId>
+      <StateNumber>590</StateNumber>
+    </table>
+    <table id="17" parent="3" name="public.comment">
+      <ObjectId>16441</ObjectId>
+      <StateNumber>582</StateNumber>
+    </table>
+    <table id="18" parent="3" name="public.photo">
+      <ObjectId>16408</ObjectId>
+      <StateNumber>582</StateNumber>
+    </table>
+    <table id="19" parent="3" name="public.school">
+      <ObjectId>16455</ObjectId>
+      <StateNumber>573</StateNumber>
+    </table>
+    <table id="20" parent="3" name="public.user_friend">
+      <ObjectId>16417</ObjectId>
       <StateNumber>560</StateNumber>
     </table>
-    <table id="13" parent="3" name="stock_valuations">
+    <table id="21" parent="3" name="public.user_school">
       <ObjectId>16448</ObjectId>
-      <StateNumber>562</StateNumber>
+      <StateNumber>574</StateNumber>
     </table>
-    <table id="14" parent="3" name="stocks">
-      <ObjectId>16438</ObjectId>
-      <StateNumber>562</StateNumber>
+    <table id="22" parent="3" name="public.user_work">
+      <ObjectId>16469</ObjectId>
+      <StateNumber>578</StateNumber>
     </table>
-    <table id="15" parent="3" name="user_friend">
-      <ObjectId>16459</ObjectId>
-      <StateNumber>569</StateNumber>
+    <table id="23" parent="3" name="public.users">
+      <ObjectId>16394</ObjectId>
+      <StateNumber>588</StateNumber>
     </table>
-    <table id="16" parent="3" name="users">
-      <ObjectId>16411</ObjectId>
-      <Comment>Felhasznalok</Comment>
-      <StateNumber>560</StateNumber>
+    <table id="24" parent="3" name="public.workplace">
+      <ObjectId>16463</ObjectId>
+      <StateNumber>578</StateNumber>
     </table>
-    <column id="17" parent="12" name="id">
+    <table id="25" parent="3" name="public_message">
+      <ObjectId>16433</ObjectId>
+      <StateNumber>586</StateNumber>
+    </table>
+    <column id="26" parent="15" name="since">
       <Position>1</Position>
-      <DataType>integer|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>558</StateNumber>
-      <DefaultExpression>nextval(&apos;photo_id_seq&apos;::regclass)</DefaultExpression>
-    </column>
-    <column id="18" parent="12" name="title">
-      <Position>2</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>558</StateNumber>
-    </column>
-    <column id="19" parent="12" name="src">
-      <Position>3</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>558</StateNumber>
-    </column>
-    <index id="20" parent="12" name="photo_id_uindex">
-      <ObjectId>16430</ObjectId>
-      <ColNames>id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <column id="21" parent="13" name="stock_id">
-      <Position>1</Position>
-      <DataType>integer|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>562</StateNumber>
-    </column>
-    <column id="22" parent="13" name="value_on">
-      <Position>2</Position>
       <DataType>date|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>562</StateNumber>
+      <DefaultExpression>now()</DefaultExpression>
     </column>
-    <column id="23" parent="13" name="price">
-      <Position>3</Position>
-      <DataType>numeric(8,2)|0</DataType>
+    <column id="27" parent="15" name="user_id">
+      <Position>2</Position>
+      <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>562</StateNumber>
-      <DefaultExpression>0</DefaultExpression>
+      <StateNumber>587</StateNumber>
     </column>
-    <index id="24" parent="13" name="stock_valuations_pkey">
-      <ObjectId>16452</ObjectId>
-      <ColNames>stock_id
-value_on</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <key id="25" parent="13" name="stock_valuations_pkey">
-      <ObjectId>16453</ObjectId>
-      <ColNames>stock_id
-value_on</ColNames>
-      <UnderlyingIndexName>stock_valuations_pkey</UnderlyingIndexName>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="26" parent="13" name="stock_valuations_stock_id_fkey">
-      <ObjectId>16454</ObjectId>
-      <ColNames>stock_id</ColNames>
-      <RefTableName>stocks</RefTableName>
-      <RefKeyName>stocks_pkey</RefKeyName>
+    <column id="28" parent="15" name="club_id">
+      <Position>3</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>589</StateNumber>
+    </column>
+    <foreign-key id="29" parent="15" name="public.user_id">
+      <ObjectId>16519</ObjectId>
+      <ColNames>user_id</ColNames>
+      <RefTableName>public.users</RefTableName>
+      <RefKeyName>public.users_id_pk</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="27" parent="14" name="id">
+    <foreign-key id="30" parent="15" name="public.club_id">
+      <ObjectId>16524</ObjectId>
+      <ColNames>club_id</ColNames>
+      <RefTableName>public.clubs</RefTableName>
+      <RefKeyName>public.clubs_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="31" parent="16" name="id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>561</StateNumber>
-      <DefaultExpression>nextval(&apos;stocks_id_seq&apos;::regclass)</DefaultExpression>
+      <SequenceName>public.clubs_id_seq</SequenceName>
+      <DefaultExpression>nextval(&apos;&quot;public.clubs_id_seq&quot;&apos;::regclass)</DefaultExpression>
     </column>
-    <column id="28" parent="14" name="symbol">
+    <column id="32" parent="16" name="name">
       <Position>2</Position>
-      <DataType>varchar(10)|0</DataType>
+      <DataType>char|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>561</StateNumber>
     </column>
-    <column id="29" parent="14" name="company">
-      <Position>3</Position>
-      <DataType>varchar(255)|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>561</StateNumber>
-    </column>
-    <index id="30" parent="14" name="stocks_pkey">
-      <ObjectId>16442</ObjectId>
+    <index id="33" parent="16" name="public.clubs_pkey">
+      <ObjectId>16427</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="31" parent="14" name="stocks_symbol_key">
-      <ObjectId>16444</ObjectId>
-      <ColNames>symbol</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <index id="32" parent="14" name="stocks_company_key">
-      <ObjectId>16446</ObjectId>
-      <ColNames>company</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <key id="33" parent="14" name="stocks_pkey">
-      <ObjectId>16443</ObjectId>
+    <key id="34" parent="16" name="public.clubs_pkey">
+      <ObjectId>16428</ObjectId>
       <ColNames>id</ColNames>
-      <UnderlyingIndexName>stocks_pkey</UnderlyingIndexName>
+      <UnderlyingIndexName>public.clubs_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <key id="34" parent="14" name="stocks_symbol_key">
-      <ObjectId>16445</ObjectId>
-      <ColNames>symbol</ColNames>
-      <UnderlyingIndexName>stocks_symbol_key</UnderlyingIndexName>
-    </key>
-    <key id="35" parent="14" name="stocks_company_key">
-      <ObjectId>16447</ObjectId>
-      <ColNames>company</ColNames>
-      <UnderlyingIndexName>stocks_company_key</UnderlyingIndexName>
-    </key>
-    <column id="36" parent="15" name="user_id">
+    <column id="35" parent="17" name="id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>565</StateNumber>
+      <StateNumber>564</StateNumber>
+      <SequenceName>public.comment_id_seq</SequenceName>
+      <DefaultExpression>nextval(&apos;&quot;public.comment_id_seq&quot;&apos;::regclass)</DefaultExpression>
     </column>
-    <column id="37" parent="15" name="friend_id">
+    <column id="36" parent="17" name="description">
       <Position>2</Position>
+      <DataType>char|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>564</StateNumber>
+    </column>
+    <column id="37" parent="17" name="wrote_at">
+      <Position>3</Position>
+      <DataType>date|0</DataType>
+      <StateNumber>564</StateNumber>
+      <DefaultExpression>now()</DefaultExpression>
+    </column>
+    <column id="38" parent="17" name="photo_id">
+      <Position>4</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>579</StateNumber>
+    </column>
+    <column id="39" parent="17" name="user_id">
+      <Position>5</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>580</StateNumber>
+    </column>
+    <index id="40" parent="17" name="public.comment_pkey">
+      <ObjectId>16446</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="41" parent="17" name="public.comment_pkey">
+      <ObjectId>16447</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>public.comment_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="42" parent="17" name="public.photo_id">
+      <ObjectId>16504</ObjectId>
+      <ColNames>photo_id</ColNames>
+      <RefTableName>public.photo</RefTableName>
+      <RefKeyName>public.photo_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="43" parent="17" name="public.user_id">
+      <ObjectId>16499</ObjectId>
+      <ColNames>user_id</ColNames>
+      <RefTableName>public.users</RefTableName>
+      <RefKeyName>public.users_id_pk</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="44" parent="18" name="id">
+      <Position>1</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>559</StateNumber>
+      <SequenceName>public.photo_id_seq</SequenceName>
+      <DefaultExpression>nextval(&apos;&quot;public.photo_id_seq&quot;&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="45" parent="18" name="title">
+      <Position>2</Position>
+      <DataType>text|0</DataType>
+      <StateNumber>559</StateNumber>
+    </column>
+    <column id="46" parent="18" name="src">
+      <Position>3</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>559</StateNumber>
+    </column>
+    <index id="47" parent="18" name="public.photo_pkey">
+      <ObjectId>16415</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="48" parent="18" name="public.photo_pkey">
+      <ObjectId>16416</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>public.photo_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="49" parent="19" name="id">
+      <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>566</StateNumber>
+      <SequenceName>public.school_id_seq</SequenceName>
+      <DefaultExpression>nextval(&apos;&quot;public.school_id_seq&quot;&apos;::regclass)</DefaultExpression>
     </column>
-    <column id="38" parent="15" name="status">
-      <Position>3</Position>
-      <DataType>integer|0</DataType>
-      <StateNumber>569</StateNumber>
-      <DefaultExpression>0</DefaultExpression>
+    <column id="50" parent="19" name="name">
+      <Position>2</Position>
+      <DataType>char|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>566</StateNumber>
     </column>
-    <column id="39" parent="16" name="id">
+    <index id="51" parent="19" name="public.school_pkey">
+      <ObjectId>16459</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="52" parent="19" name="public.school_pkey">
+      <ObjectId>16460</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>public.school_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="53" parent="20" name="user_id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>551</StateNumber>
-      <DefaultExpression>nextval(&apos;users_id_seq&apos;::regclass)</DefaultExpression>
+      <StateNumber>560</StateNumber>
     </column>
-    <column id="40" parent="16" name="email">
+    <column id="54" parent="20" name="friend_id">
       <Position>2</Position>
-      <DataType>varchar(255)|0</DataType>
+      <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>551</StateNumber>
+      <StateNumber>560</StateNumber>
     </column>
-    <column id="41" parent="16" name="firstname">
+    <column id="55" parent="20" name="status">
       <Position>3</Position>
-      <DataType>varchar(255)|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>551</StateNumber>
+      <DataType>integer|0</DataType>
+      <StateNumber>560</StateNumber>
+      <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="42" parent="16" name="lastname">
+    <column id="56" parent="21" name="from">
+      <Position>1</Position>
+      <DataType>date|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>565</StateNumber>
+      <DefaultExpression>now()</DefaultExpression>
+    </column>
+    <column id="57" parent="21" name="to">
+      <Position>2</Position>
+      <DataType>date|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>565</StateNumber>
+      <DefaultExpression>now()</DefaultExpression>
+    </column>
+    <column id="58" parent="21" name="school_id">
+      <Position>3</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>569</StateNumber>
+    </column>
+    <column id="59" parent="21" name="user_id">
       <Position>4</Position>
-      <DataType>varchar(255)|0</DataType>
+      <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>551</StateNumber>
+      <StateNumber>570</StateNumber>
     </column>
-    <column id="43" parent="16" name="password">
+    <foreign-key id="60" parent="21" name="public.school_id">
+      <ObjectId>16479</ObjectId>
+      <ColNames>school_id</ColNames>
+      <RefTableName>public.school</RefTableName>
+      <RefKeyName>public.school_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="61" parent="21" name="public.user_id">
+      <ObjectId>16484</ObjectId>
+      <ColNames>user_id</ColNames>
+      <RefTableName>public.users</RefTableName>
+      <RefKeyName>public.users_id_pk</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="62" parent="22" name="from">
+      <Position>1</Position>
+      <DataType>date|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>568</StateNumber>
+      <DefaultExpression>now()</DefaultExpression>
+    </column>
+    <column id="63" parent="22" name="to">
+      <Position>2</Position>
+      <DataType>date|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>568</StateNumber>
+      <DefaultExpression>now()</DefaultExpression>
+    </column>
+    <column id="64" parent="22" name="user_id">
+      <Position>3</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>575</StateNumber>
+    </column>
+    <column id="65" parent="22" name="workplace_id">
+      <Position>4</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>576</StateNumber>
+    </column>
+    <foreign-key id="66" parent="22" name="public.user_id">
+      <ObjectId>16489</ObjectId>
+      <ColNames>user_id</ColNames>
+      <RefTableName>public.users</RefTableName>
+      <RefKeyName>public.users_id_pk</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="67" parent="22" name="public.workplace_id">
+      <ObjectId>16494</ObjectId>
+      <ColNames>workplace_id</ColNames>
+      <RefTableName>public.workplace</RefTableName>
+      <RefKeyName>public.workplace_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="68" parent="23" name="id">
+      <Position>1</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>556</StateNumber>
+      <SequenceName>public.users_id_seq</SequenceName>
+      <DefaultExpression>nextval(&apos;&quot;public.users_id_seq&quot;&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="69" parent="23" name="email">
+      <Position>2</Position>
+      <DataType>char|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>550</StateNumber>
+    </column>
+    <column id="70" parent="23" name="firstname">
+      <Position>3</Position>
+      <DataType>char|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>550</StateNumber>
+    </column>
+    <column id="71" parent="23" name="lastname">
+      <Position>4</Position>
+      <DataType>char|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>550</StateNumber>
+    </column>
+    <column id="72" parent="23" name="password">
       <Position>5</Position>
-      <DataType>varchar(255)|0</DataType>
+      <DataType>char|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>551</StateNumber>
+      <StateNumber>550</StateNumber>
     </column>
-    <column id="44" parent="16" name="gender">
+    <column id="73" parent="23" name="gender">
       <Position>6</Position>
       <DataType>smallint|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>551</StateNumber>
+      <StateNumber>550</StateNumber>
     </column>
-    <column id="45" parent="16" name="registered_at">
+    <column id="74" parent="23" name="registered_at">
       <Position>7</Position>
       <DataType>timestamp|0</DataType>
-      <StateNumber>551</StateNumber>
+      <StateNumber>550</StateNumber>
       <DefaultExpression>now()</DefaultExpression>
     </column>
-    <column id="46" parent="16" name="birthdate">
+    <column id="75" parent="23" name="birthdate">
       <Position>8</Position>
       <DataType>date|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>551</StateNumber>
+      <StateNumber>550</StateNumber>
     </column>
-    <column id="47" parent="16" name="photo_id">
+    <column id="76" parent="23" name="photo_id">
       <Position>9</Position>
       <DataType>integer|0</DataType>
-      <StateNumber>551</StateNumber>
+      <StateNumber>550</StateNumber>
     </column>
-    <index id="48" parent="16" name="users_email_uindex">
-      <ObjectId>16420</ObjectId>
-      <ColNames>email</ColNames>
+    <index id="77" parent="23" name="public.users_id_pk">
+      <ObjectId>16404</ObjectId>
+      <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <foreign-key id="49" parent="16" name="users__photo_fk">
-      <ObjectId>16431</ObjectId>
-      <ColNames>photo_id</ColNames>
-      <RefTableName>photo</RefTableName>
-      <RefKeyName>photo_id_uindex</RefKeyName>
+    <key id="78" parent="23" name="public.users_id_pk">
+      <ObjectId>16405</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>public.users_id_pk</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="79" parent="24" name="id">
+      <Position>1</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>567</StateNumber>
+      <SequenceName>public.workplace_id_seq</SequenceName>
+      <DefaultExpression>nextval(&apos;&quot;public.workplace_id_seq&quot;&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="80" parent="24" name="name">
+      <Position>2</Position>
+      <DataType>char|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>567</StateNumber>
+    </column>
+    <index id="81" parent="24" name="public.workplace_pkey">
+      <ObjectId>16467</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="82" parent="24" name="public.workplace_pkey">
+      <ObjectId>16468</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>public.workplace_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="83" parent="25" name="id">
+      <Position>1</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>563</StateNumber>
+    </column>
+    <column id="84" parent="25" name="status">
+      <Position>2</Position>
+      <DataType>boolean|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>563</StateNumber>
+    </column>
+    <column id="85" parent="25" name="body">
+      <Position>3</Position>
+      <DataType>char|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>563</StateNumber>
+    </column>
+    <column id="86" parent="25" name="wrote_at">
+      <Position>4</Position>
+      <DataType>date|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>563</StateNumber>
+      <DefaultExpression>now()</DefaultExpression>
+    </column>
+    <column id="87" parent="25" name="from_user_id">
+      <Position>5</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>583</StateNumber>
+    </column>
+    <column id="88" parent="25" name="to_user_id">
+      <Position>6</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>585</StateNumber>
+    </column>
+    <index id="89" parent="25" name="public_message_pkey">
+      <ObjectId>16437</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="90" parent="25" name="public_message_pkey">
+      <ObjectId>16438</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>public_message_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="91" parent="25" name="public.from_user_id">
+      <ObjectId>16509</ObjectId>
+      <ColNames>from_user_id</ColNames>
+      <RefTableName>public.users</RefTableName>
+      <RefKeyName>public.users_id_pk</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="92" parent="25" name="public.to_user_id">
+      <ObjectId>16514</ObjectId>
+      <ColNames>to_user_id</ColNames>
+      <RefTableName>public.users</RefTableName>
+      <RefKeyName>public.users_id_pk</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
   </database-model>

@@ -46,6 +46,4 @@ class Model extends BaseModel
             AND users.id != $userid;"
         );
     }
-
-
 }
