@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae83eef5-7e92-4aba-90c0-930d21675fad" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dump.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/69880774-c593-4999-9ed0-229c7b330ed7/_metadata_/metadata" afterPath="$PROJECT_DIR$/.idea/dataSources/69880774-c593-4999-9ed0-229c7b330ed7/_metadata_/metadata" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/69880774-c593-4999-9ed0-229c7b330ed7/_metadata_/metadata.values.at" afterPath="$PROJECT_DIR$/.idea/dataSources/69880774-c593-4999-9ed0-229c7b330ed7/_metadata_/metadata.values.at" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources/69880774-c593-4999-9ed0-229c7b330ed7.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/69880774-c593-4999-9ed0-229c7b330ed7.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dump.sql" afterPath="$PROJECT_DIR$/dump.sql" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -100,8 +99,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="szte.public.public.club_member" pinned="false" current-in-tab="false">
-        <entry file="dbDummy://dbtable:/7bc2464c/69880774-c593-4999-9ed0-229c7b330ed7/szte.public.public&amp;dot;club_member">
+      <file leaf-file-name="dump.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dump.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1445">
+              <caret line="85" column="2" lean-forward="false" selection-start-line="85" selection-start-column="2" selection-end-line="85" selection-end-column="2" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="szte.public.club_member" pinned="false" current-in-tab="false">
+        <entry file="dbDummy://dbtable:/7bc2464c/69880774-c593-4999-9ed0-229c7b330ed7/szte.public.club_member">
           <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
             <state>
               <filtering enabled="true" />
@@ -118,11 +127,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dump.sql" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/dump.sql">
+      <file leaf-file-name="szte.public.users" pinned="false" current-in-tab="false">
+        <entry file="dbDummy://dbtable:/7bc2464c/69880774-c593-4999-9ed0-229c7b330ed7/szte.public.users">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1197">
-              <caret line="133" column="1" lean-forward="false" selection-start-line="133" selection-start-column="1" selection-end-line="133" selection-end-column="1" />
+            <state relative-caret-position="0">
+              <caret line="0" column="5" lean-forward="true" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -159,36 +183,6 @@
                 <marker date="1492762249901" expanded="true" signature="981:1138" ph="..." />
                 <marker date="1492762249901" expanded="true" signature="1043:1106" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="szte.public.public.users" pinned="false" current-in-tab="false">
-        <entry file="dbDummy://dbtable:/7bc2464c/69880774-c593-4999-9ed0-229c7b330ed7/szte.public.public&amp;dot;users">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="szte.public.public.workplace" pinned="false" current-in-tab="false">
-        <entry file="dbDummy://dbtable:/7bc2464c/69880774-c593-4999-9ed0-229c7b330ed7/szte.public.public&amp;dot;workplace">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -284,6 +278,7 @@
         <option value="$PROJECT_DIR$/app/Model.php" />
         <option value="$PROJECT_DIR$/app/Controller.php" />
         <option value="$PROJECT_DIR$/dump.sql" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -493,15 +488,15 @@
       <workItem from="1492783100796" duration="175000" />
       <workItem from="1492783330245" duration="79000" />
       <workItem from="1492783476883" duration="217000" />
-      <workItem from="1492783722783" duration="353000" />
+      <workItem from="1492783722783" duration="882000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45531000" />
+    <option name="totallyTimeSpent" value="46060000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="-94" width="1936" height="1056" extended-state="6" />
+    <frame x="-1928" y="-94" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2203125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -536,15 +531,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/lib/ViewBag.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="31" column="4" lean-forward="false" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/ca0a1931/69880774-c593-4999-9ed0-229c7b330ed7/szte.public.stocks" />
-    <entry file="file://$PROJECT_DIR$/view/uj.php" />
     <entry file="file://$PROJECT_DIR$/view/mentes.php" />
     <entry file="file://$PROJECT_DIR$/assets/css/bootstrap.css">
       <provider selected="true" editor-type-id="text-editor">
@@ -917,10 +903,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="dbDummy://dbtable:/7bc2464c/69880774-c593-4999-9ed0-229c7b330ed7/szte.public.club_member">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+          <column-attributes>
+            <column name="ctid" enabled="false" />
+          </column-attributes>
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dump.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1197">
-          <caret line="133" column="1" lean-forward="false" selection-start-line="133" selection-start-column="1" selection-end-line="133" selection-end-column="1" />
+        <state relative-caret-position="1445">
+          <caret line="85" column="2" lean-forward="false" selection-start-line="85" selection-start-column="2" selection-end-line="85" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/7bc2464c/69880774-c593-4999-9ed0-229c7b330ed7/szte.public.users">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="5" lean-forward="true" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
           <folding />
         </state>
       </provider>

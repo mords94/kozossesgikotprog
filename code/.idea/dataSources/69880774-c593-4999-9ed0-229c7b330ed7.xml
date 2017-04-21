@@ -9,8 +9,8 @@
     </database>
     <schema id="3" parent="2" name="public">
       <ObjectId>2200</ObjectId>
-      <IntrospectionTimestamp>2017-04-21.16:12:48.429</IntrospectionTimestamp>
-      <IntrospectionStateNumber>607</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2017-04-21.16:20:41.400</IntrospectionTimestamp>
+      <IntrospectionStateNumber>613</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -71,11 +71,11 @@
     </table>
     <table id="16" parent="3" name="clubs">
       <ObjectId>16423</ObjectId>
-      <StateNumber>599</StateNumber>
+      <StateNumber>608</StateNumber>
     </table>
     <table id="17" parent="3" name="comment">
       <ObjectId>16441</ObjectId>
-      <StateNumber>600</StateNumber>
+      <StateNumber>609</StateNumber>
     </table>
     <table id="18" parent="3" name="photo">
       <ObjectId>16408</ObjectId>
@@ -83,11 +83,11 @@
     </table>
     <table id="19" parent="3" name="public_message">
       <ObjectId>16433</ObjectId>
-      <StateNumber>586</StateNumber>
+      <StateNumber>610</StateNumber>
     </table>
     <table id="20" parent="3" name="school">
       <ObjectId>16455</ObjectId>
-      <StateNumber>602</StateNumber>
+      <StateNumber>611</StateNumber>
     </table>
     <table id="21" parent="3" name="user_friend">
       <ObjectId>16417</ObjectId>
@@ -107,7 +107,7 @@
     </table>
     <table id="25" parent="3" name="workplace">
       <ObjectId>16463</ObjectId>
-      <StateNumber>607</StateNumber>
+      <StateNumber>612</StateNumber>
     </table>
     <column id="26" parent="15" name="since">
       <Position>1</Position>
@@ -152,9 +152,9 @@
     </column>
     <column id="32" parent="16" name="name">
       <Position>2</Position>
-      <DataType>char|0</DataType>
+      <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>561</StateNumber>
+      <StateNumber>608</StateNumber>
     </column>
     <index id="33" parent="16" name="public.clubs_pkey">
       <ObjectId>16427</ObjectId>
@@ -177,9 +177,9 @@
     </column>
     <column id="36" parent="17" name="description">
       <Position>2</Position>
-      <DataType>char|0</DataType>
+      <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>564</StateNumber>
+      <StateNumber>609</StateNumber>
     </column>
     <column id="37" parent="17" name="wrote_at">
       <Position>3</Position>
@@ -268,9 +268,9 @@
     </column>
     <column id="51" parent="19" name="body">
       <Position>3</Position>
-      <DataType>char|0</DataType>
+      <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>563</StateNumber>
+      <StateNumber>610</StateNumber>
     </column>
     <column id="52" parent="19" name="wrote_at">
       <Position>4</Position>
@@ -326,9 +326,9 @@
     </column>
     <column id="60" parent="20" name="name">
       <Position>2</Position>
-      <DataType>char|0</DataType>
+      <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>566</StateNumber>
+      <StateNumber>611</StateNumber>
     </column>
     <index id="61" parent="20" name="public.school_pkey">
       <ObjectId>16459</ObjectId>
@@ -467,9 +467,9 @@
     </column>
     <column id="82" parent="24" name="password">
       <Position>5</Position>
-      <DataType>varchar(30)|0</DataType>
+      <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>596</StateNumber>
+      <StateNumber>613</StateNumber>
     </column>
     <column id="83" parent="24" name="gender">
       <Position>6</Position>
@@ -515,9 +515,9 @@
     </column>
     <column id="90" parent="25" name="name">
       <Position>2</Position>
-      <DataType>char|0</DataType>
+      <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>567</StateNumber>
+      <StateNumber>612</StateNumber>
     </column>
     <index id="91" parent="25" name="public.workplace_pkey">
       <ObjectId>16467</ObjectId>

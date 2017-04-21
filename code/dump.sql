@@ -1,134 +1,86 @@
-create table users
+CREATE TABLE club_member
 (
-	id serial not null
-		constraint "public.users_id_pk"
-			primary key,
-	email varchar(30) not null,
-	firstname varchar(30) not null,
-	lastname varchar(30) not null,
-	password varchar(30) not null,
-	gender smallint not null,
-	registered_at timestamp default now(),
-	birthdate date not null,
-	photo_id integer
-)
-;
-
-create table photo
+    since DATE DEFAULT now() NOT NULL,
+    user_id INTEGER NOT NULL,
+    club_id INTEGER NOT NULL,
+    CONSTRAINT "public.user_id" FOREIGN KEY (user_id) REFERENCES users (id),
+    CONSTRAINT "public.club_id" FOREIGN KEY (club_id) REFERENCES clubs (id)
+);
+CREATE TABLE clubs
 (
-	id serial not null
-		constraint "public.photo_pkey"
-			primary key,
-	title text,
-	src text not null
-)
-;
-
-create table user_friend
+    id INTEGER DEFAULT nextval('"public.clubs_id_seq"'::regclass) PRIMARY KEY NOT NULL,
+    name VARCHAR(30) NOT NULL
+);
+CREATE TABLE comment
 (
-	user_id integer not null,
-	friend_id integer not null,
-	status integer default 0
-)
-;
-
-create table clubs
+    id INTEGER DEFAULT nextval('"public.comment_id_seq"'::regclass) PRIMARY KEY NOT NULL,
+    description VARCHAR(30) NOT NULL,
+    wrote_at DATE DEFAULT now(),
+    photo_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    CONSTRAINT "public.photo_id" FOREIGN KEY (photo_id) REFERENCES photo (id),
+    CONSTRAINT "public.user_id" FOREIGN KEY (user_id) REFERENCES users (id)
+);
+CREATE TABLE photo
 (
-	id serial not null
-		constraint "public.clubs_pkey"
-			primary key,
-	name char not null
-)
-;
-
-create table club_member
+    id INTEGER DEFAULT nextval('"public.photo_id_seq"'::regclass) PRIMARY KEY NOT NULL,
+    title TEXT,
+    src TEXT NOT NULL
+);
+CREATE TABLE public_message
 (
-	since date default now() not null,
-	user_id integer not null
-		constraint public.user_id
-			references users,
-	club_id integer not null
-		constraint public.club_id
-			references clubs
-)
-;
-
-create table public_message
+    id INTEGER PRIMARY KEY NOT NULL,
+    status BOOLEAN NOT NULL,
+    body VARCHAR(30) NOT NULL,
+    wrote_at DATE DEFAULT now() NOT NULL,
+    from_user_id INTEGER NOT NULL,
+    to_user_id INTEGER NOT NULL,
+    CONSTRAINT "public.from_user_id" FOREIGN KEY (from_user_id) REFERENCES users (id),
+    CONSTRAINT "public.to_user_id" FOREIGN KEY (to_user_id) REFERENCES users (id)
+);
+CREATE TABLE school
 (
-	id integer not null
-		constraint public_message_pkey
-			primary key,
-	status boolean not null,
-	body char not null,
-	wrote_at date default now() not null,
-	from_user_id integer not null
-		constraint public.from_user_id
-			references users,
-	to_user_id integer not null
-		constraint public.to_user_id
-			references users
-)
-;
-
-create table comment
+    id INTEGER DEFAULT nextval('"public.school_id_seq"'::regclass) PRIMARY KEY NOT NULL,
+    name VARCHAR(30) NOT NULL
+);
+CREATE TABLE user_friend
 (
-	id serial not null
-		constraint "public.comment_pkey"
-			primary key,
-	description char not null,
-	wrote_at date default now(),
-	photo_id integer not null
-		constraint public.photo_id
-			references photo,
-	user_id integer not null
-		constraint public.user_id
-			references users
-)
-;
-
-create table user_school
+    user_id INTEGER NOT NULL,
+    friend_id INTEGER NOT NULL,
+    status INTEGER DEFAULT 0
+);
+CREATE TABLE user_school
 (
-	"from" date default now() not null,
-	"to" date default now() not null,
-	school_id integer not null,
-	user_id integer not null
-		constraint public.user_id
-			references users
-)
-;
-
-create table school
+    "from" DATE DEFAULT now() NOT NULL,
+    "to" DATE DEFAULT now() NOT NULL,
+    school_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    CONSTRAINT "public.school_id" FOREIGN KEY (school_id) REFERENCES school (id),
+    CONSTRAINT "public.user_id" FOREIGN KEY (user_id) REFERENCES users (id)
+);
+CREATE TABLE user_work
 (
-	id serial not null
-		constraint "public.school_pkey"
-			primary key,
-	name char not null
-)
-;
-
-alter table user_school
-	add constraint public.school_id
-		foreign key (school_id) references school
-;
-
-create table workplace
+    "from" DATE DEFAULT now() NOT NULL,
+    "to" DATE DEFAULT now() NOT NULL,
+    user_id INTEGER NOT NULL,
+    workplace_id INTEGER NOT NULL,
+    CONSTRAINT "public.user_id" FOREIGN KEY (user_id) REFERENCES users (id),
+    CONSTRAINT "public.workplace_id" FOREIGN KEY (workplace_id) REFERENCES workplace (id)
+);
+CREATE TABLE users
 (
-	id serial not null
-		constraint "public.workplace_pkey"
-			primary key,
-	name char not null
-)
-;
-
-create table user_work
+    id INTEGER DEFAULT nextval('"public.users_id_seq"'::regclass) PRIMARY KEY NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
+    password VARCHAR(32) NOT NULL,
+    gender SMALLINT NOT NULL,
+    registered_at TIMESTAMP DEFAULT now(),
+    birthdate DATE NOT NULL,
+    photo_id INTEGER
+);
+CREATE TABLE workplace
 (
-	"from" date default now() not null,
-	"to" date default now() not null,
-	user_id integer not null
-		constraint public.user_id
-			references users,
-	workplace_id integer not null
-		constraint public.workplace_id
-			references workplace
-)
-;
+    id INTEGER DEFAULT nextval('"public.workplace_id_seq"'::regclass) PRIMARY KEY NOT NULL,
+    name VARCHAR(30) NOT NULL
+);
