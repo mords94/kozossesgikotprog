@@ -46,4 +46,21 @@ class Model extends BaseModel
             AND users.id != $userid;"
         );
     }
+
+    public function getAllSchools() {
+        return $this->database->selectFrom('school');
+    }
+
+    public function saveSchool($name)
+    {
+        return $this->database->insert('school', ['name' => $name]);
+    }
+
+    public function deleteSchool($id) {
+        return $this->database->delete('school', "id = $id");
+    }
+
+    public function getSchoolByName($name) {
+        return $this->database->selectFromWhere('school', "name = '$name'");
+    }
 }

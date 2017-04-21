@@ -1,5 +1,5 @@
 <?php
-
+const SAFE_DELETE = false;
 /**
  * Description of Database
  *

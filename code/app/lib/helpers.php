@@ -56,7 +56,7 @@ function session($key, $value = null)
     return Session::getInstance()->get($key);
 }
 
-function redirect($to, $with)
+function redirect($to, $with = [])
 {
     if(count($with) > 0) {
         $to.='?'.array_keys($with)[0].'='.array_values($with)[0];

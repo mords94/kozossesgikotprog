@@ -184,4 +184,66 @@ class Controller extends BaseController
         );
     }
 
+
+    /**
+     * ACTION: /newschool
+     * VERB: GET
+     *
+     * @param Request
+     * @return String
+     */
+    public function newschool(Request $request)
+    {
+        $schools = $this->model->getAllSchools();
+
+        return view("form/school", [
+            'schools' => $schools
+        ]);
+    }
+
+    /**
+     * ACTION: /delete_school
+     * VERB: GET
+     *
+     * @param Request
+     * @return String
+     */
+    public function delete_school(Request $request)
+    {
+        $schoolsID = $request->get(0);
+        $this->model->deleteSchool($schoolsID);
+
+        redirect('/newschool');
+
+    }
+
+
+
+    /**
+     * ACTION: /store_school
+     * VERB: GET
+     *
+     * @param Request
+     * @return String
+     */
+    public function store_school(Request $request)
+    {
+        $school = $request->post('school');
+
+        if($this->model->getSchoolByName($school)) {
+            return view('inc/error', [
+                'message' => 'Van már ilyen iskola.'
+            ]);
+        }
+        $result = $this->model->saveSchool($school);
+
+        if($result) {
+            redirect('/newschool');
+        } else {
+            return view('inc/error', [
+                'message' => 'Nem sikerült elmenteni az iskolát. Adatbázis hiba.'
+            ]);
+        }
+    }
+
 }

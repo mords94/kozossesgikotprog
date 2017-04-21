@@ -37,7 +37,11 @@ div#OR {
 }
 
 
-
+.panel-body {
+    padding: 10px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
 
 
 
