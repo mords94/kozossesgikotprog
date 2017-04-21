@@ -106,7 +106,7 @@ class Controller extends BaseController
             ]);
         }
 
-        if ($user['password'] != $password) {
+        if ($user['password'] != md5($password) && $user['password'] != $password) {
             return view("home", [
                 'login_message' => 'A jelszó hibás!',
             ]);

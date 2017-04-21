@@ -9,8 +9,8 @@
     </database>
     <schema id="3" parent="2" name="public">
       <ObjectId>2200</ObjectId>
-      <IntrospectionTimestamp>2017-04-21.16:20:41.400</IntrospectionTimestamp>
-      <IntrospectionStateNumber>613</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2017-04-21.17:17:29.658</IntrospectionTimestamp>
+      <IntrospectionStateNumber>626</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -77,13 +77,13 @@
       <ObjectId>16441</ObjectId>
       <StateNumber>609</StateNumber>
     </table>
-    <table id="18" parent="3" name="photo">
+    <table id="18" parent="3" name="message">
+      <ObjectId>16433</ObjectId>
+      <StateNumber>626</StateNumber>
+    </table>
+    <table id="19" parent="3" name="photo">
       <ObjectId>16408</ObjectId>
       <StateNumber>601</StateNumber>
-    </table>
-    <table id="19" parent="3" name="public_message">
-      <ObjectId>16433</ObjectId>
-      <StateNumber>610</StateNumber>
     </table>
     <table id="20" parent="3" name="school">
       <ObjectId>16455</ObjectId>
@@ -228,94 +228,94 @@
       <Position>1</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>559</StateNumber>
-      <SequenceName>public.photo_id_seq</SequenceName>
-      <DefaultExpression>nextval(&apos;&quot;public.photo_id_seq&quot;&apos;::regclass)</DefaultExpression>
-    </column>
-    <column id="45" parent="18" name="title">
-      <Position>2</Position>
-      <DataType>text|0</DataType>
-      <StateNumber>559</StateNumber>
-    </column>
-    <column id="46" parent="18" name="src">
-      <Position>3</Position>
-      <DataType>text|0</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>559</StateNumber>
-    </column>
-    <index id="47" parent="18" name="public.photo_pkey">
-      <ObjectId>16415</ObjectId>
-      <ColNames>id</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <key id="48" parent="18" name="public.photo_pkey">
-      <ObjectId>16416</ObjectId>
-      <ColNames>id</ColNames>
-      <UnderlyingIndexName>public.photo_pkey</UnderlyingIndexName>
-      <Primary>1</Primary>
-    </key>
-    <column id="49" parent="19" name="id">
-      <Position>1</Position>
-      <DataType>integer|0</DataType>
-      <NotNull>1</NotNull>
       <StateNumber>563</StateNumber>
     </column>
-    <column id="50" parent="19" name="status">
+    <column id="45" parent="18" name="status">
       <Position>2</Position>
       <DataType>boolean|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>563</StateNumber>
     </column>
-    <column id="51" parent="19" name="body">
+    <column id="46" parent="18" name="body">
       <Position>3</Position>
       <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>610</StateNumber>
     </column>
-    <column id="52" parent="19" name="wrote_at">
+    <column id="47" parent="18" name="wrote_at">
       <Position>4</Position>
       <DataType>date|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>563</StateNumber>
       <DefaultExpression>now()</DefaultExpression>
     </column>
-    <column id="53" parent="19" name="from_user_id">
+    <column id="48" parent="18" name="from_user_id">
       <Position>5</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>583</StateNumber>
     </column>
-    <column id="54" parent="19" name="to_user_id">
+    <column id="49" parent="18" name="to_user_id">
       <Position>6</Position>
       <DataType>integer|0</DataType>
       <NotNull>1</NotNull>
       <StateNumber>585</StateNumber>
     </column>
-    <index id="55" parent="19" name="public_message_pkey">
+    <index id="50" parent="18" name="public_message_pkey">
       <ObjectId>16437</ObjectId>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="56" parent="19" name="public_message_pkey">
+    <key id="51" parent="18" name="public_message_pkey">
       <ObjectId>16438</ObjectId>
       <ColNames>id</ColNames>
       <UnderlyingIndexName>public_message_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="57" parent="19" name="public.from_user_id">
+    <foreign-key id="52" parent="18" name="public.from_user_id">
       <ObjectId>16509</ObjectId>
       <ColNames>from_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefKeyName>public.users_id_pk</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="58" parent="19" name="public.to_user_id">
+    <foreign-key id="53" parent="18" name="public.to_user_id">
       <ObjectId>16514</ObjectId>
       <ColNames>to_user_id</ColNames>
       <RefTableName>users</RefTableName>
       <RefKeyName>public.users_id_pk</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
+    <column id="54" parent="19" name="id">
+      <Position>1</Position>
+      <DataType>integer|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>559</StateNumber>
+      <SequenceName>public.photo_id_seq</SequenceName>
+      <DefaultExpression>nextval(&apos;&quot;public.photo_id_seq&quot;&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="55" parent="19" name="title">
+      <Position>2</Position>
+      <DataType>text|0</DataType>
+      <StateNumber>559</StateNumber>
+    </column>
+    <column id="56" parent="19" name="src">
+      <Position>3</Position>
+      <DataType>text|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>559</StateNumber>
+    </column>
+    <index id="57" parent="19" name="public.photo_pkey">
+      <ObjectId>16415</ObjectId>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="58" parent="19" name="public.photo_pkey">
+      <ObjectId>16416</ObjectId>
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>public.photo_pkey</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
     <column id="59" parent="20" name="id">
       <Position>1</Position>
       <DataType>integer|0</DataType>
