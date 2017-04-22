@@ -12,5 +12,11 @@
       <resolve-scope>szte:public,szte</resolve-scope>
       <unqualified-resolve-schemas>szte:public,szte</unqualified-resolve-schemas>
     </data-source>
+    <data-source name="postgres@localhost" uuid="ebceefe9-971a-48b1-ac38-e007bd64640e">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
+      <secret-storage>master_key</secret-storage>
+      <first-sync>true</first-sync>
+      <user-name>szte</user-name>
+    </data-source>
   </component>
 </project>

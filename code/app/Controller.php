@@ -183,7 +183,64 @@ class Controller extends BaseController
             ]
         );
     }
+    /**
+     * ACTION: /newclub
+     * VERB: GET
+     *
+     * @param Request
+     * @return String
+     */
+    public function newclub(Request $request)
+    {
+        $clubs = $this->model->getAllClubs();
 
+        return view("form/clubs", [
+            'schools' => $clubs
+        ]);
+    }
+
+    /**
+     * ACTION: /delete_club
+     * VERB: GET
+     *
+     * @param Request
+     * @return String
+     */
+    public function delete_club(Request $request)
+    {
+        $clubsID = $request->get(0);
+        $this->model->deleteClub($clubsID);
+
+        redirect('/newclub');
+
+    }
+
+    /**
+     * ACTION: /store_club
+     * VERB: GET
+     *
+     * @param Request
+     * @return String
+     */
+    public function store_club(Request $request)
+    {
+        $club = $request->post('club');
+
+        if($this->model->getClubsByName($club)) {
+            return view('inc/error', [
+                'message' => 'Van már ilyen nevű klub.'
+            ]);
+        }
+        $result = $this->model->saveClub($club);
+
+        if($result) {
+            redirect('/newclub');
+        } else {
+            return view('inc/error', [
+                'message' => 'Nem sikerült elmenteni a klubot. Adatbázis hiba.'
+            ]);
+        }
+    }
 
     /**
      * ACTION: /newschool
@@ -217,8 +274,6 @@ class Controller extends BaseController
 
     }
 
-
-
     /**
      * ACTION: /store_school
      * VERB: GET
@@ -243,6 +298,88 @@ class Controller extends BaseController
             return view('inc/error', [
                 'message' => 'Nem sikerült elmenteni az iskolát. Adatbázis hiba.'
             ]);
+        }
+    }
+
+
+    public function newworkplace(Request $request)
+    {
+        $workplaces = $this->model->getAllWorkplaces();
+
+        return view("form/workplace", [
+            'workplaces' => $workplaces
+        ]);
+    }
+
+    /**
+     * ACTION: /store_workplace
+     * VERB: GET
+     *
+     * @param Request
+     * @return String
+     */
+    public function store_workplace(Request $request)
+    {
+        $workplace = $request->post('workplace');
+
+        if($this->model->getWorkplaceByName($workplace)) {
+            return view('inc/error', [
+                'message' => 'Van már ilyen munkahely.'
+            ]);
+        }
+        $result = $this->model->saveWorkplace($workplace);
+
+        if($result) {
+            redirect('/newworkplace');
+        } else {
+            return view('inc/error', [
+                'message' => 'Nem sikerült elmenteni a munkahelyet. Adatbázis hiba.'
+            ]);
+        }
+    }
+
+    public function delete_workplace(Request $request)
+    {
+        $workplacesID = $request->get(0);
+        $this->model-> deleteWorkplace($workplacesID);
+
+        redirect('/newworkplace');
+
+    }
+
+    /*ACTION: /addClubMember
+     * VERB: POST
+     *
+     * @param Request
+     * @return View
+     */
+    public function addClubMember(Request $request)
+    {
+        if ($request->has('club')) {
+            $memberid = $request->post('club');
+            $clubid=0;                                  //ide kellene a lekérdezett klub id-je
+            $userid = Auth::user()['id'];
+
+            if ($userid == $memberid) {
+                redirect('/club_member', ['message' => 'Már tagja vagy ennek a klubnak']);
+            }
+
+            // check if relationship exists between the user and the club
+            $relationship = $this->database()->selectFromWhere(
+                'club_member',
+                "(user_id = $userid AND club_id = $clubid)"
+            );
+
+            // if not exists insert one
+            if (count($relationship) == 0) {
+                if ($this->model->addMemberToClub($userid,$clubid)) {
+                    redirect('/club_member', ['message' => 'Sikeresen csatlakoztál a klubhoz!']);
+                } else {
+                    redirect('/club_member', ['message' => 'Sikertelen csatlakozás! Adatbázis hiba!']);
+                }
+            } else {
+                redirect('/club_member', ['message' => 'Már tagja vagy a klubnak...']);
+            }
         }
     }
 
