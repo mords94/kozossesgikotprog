@@ -185,7 +185,7 @@ class Model extends BaseModel
     }
 
     /*Collect the query workplace's members in an array *
-     * @param $schoolid int
+     * @param $workplaceid int
      * @return array
      */
 
@@ -202,5 +202,65 @@ class Model extends BaseModel
     public function addUserToWorkplace($workplace, $user)
     {
         return $this->database->insert('user_workplace', ['workplace_id' => $workplace, 'user_id' => $user]);
+    }
+
+    /* Count the amount of users in the query's club
+    * @param $clubid int
+    * @return int
+    */
+
+    public function countClubMembers($clubid)
+    {
+        return $this->database->selectCustom(
+            "SELECT COUNT(*)
+            FROM club_member
+            WHERE club_id = $clubid;"
+        );
+    }
+
+    /* List the users with the same birthdate as given
+    * @param $date DATE
+    * @return array
+    */
+
+    public function listBirthday($date)
+    {
+        return $this->database->selectCustom(
+            "SELECT DISTINCT firstname, lastname, birthdate
+            FROM users
+            WHERE datepart(m,users.birthdate) = $date;"
+        );
+    }
+
+    /* Recommend users based on the workplace
+    * @param $workplace INT
+    * @return array
+    */
+
+    public function recommendFriendBasedOnWorkplace($workplace)
+    {
+        return $this->database->selectCustom(
+            "SELECT users.firstname
+            FROM users
+            JOIN user_work ON user_work.user_id = users.id
+            JOIN user_work ON user_work.workplace_id = workplace_id
+            WHERE workplace_id = $workplace;"
+        );
+    }
+
+    /* Recommend users based on the school
+    * @param $school INT
+    * @return array
+    */
+
+    public function recommendFriendBasedOnSchool($school)
+    {
+        return $this->database->selectCustom(
+            "SELECT users.firstname
+            FROM users
+            JOIN user_school ON user_school.user_id = users.id
+            JOIN user_school ON user_school.school_id = school_id
+            WHERE school_id= $school;"
+        );
     }
 }

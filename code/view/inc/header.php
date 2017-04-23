@@ -47,7 +47,7 @@
         <?php if(auth()): ?>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a data-toggle="modal" data-target="#myModal">Bejelentkezés / Regisztáció</a></li>
+                <li><a data-toggle="modal" data-target="#myModal">Bejelentkezés / Regisztráció</a></li>
             </ul>
         </div><!--/.navbar-collapse -->
         <?php else: ?>

@@ -30,8 +30,9 @@ class Controller extends BaseController
         return view("home", [
             'login_message' => 'Sikeres kijelentkezés!',
         ]);
-    }
 
+        redirect('/home');
+    }
 
     public function register(Request $request)
     {
@@ -114,7 +115,49 @@ class Controller extends BaseController
 
         Auth::getInstance()->register($user);
 
-        redirect('/friends');
+        redirect('/home');
+    }
+
+    /**
+     * ACTION: /ownprofile
+     * VERB: GET
+     *
+     * @param Request
+     * @return View
+     */
+    public function ownProfile(Request $request)
+    {
+        return view('profile');
+    }
+
+    /**
+     * ACTION: /friends
+     * ACTION: /friends/{user}
+     * VERB: POST
+     *
+     * @param Request
+     * @return View
+     */
+    public function friends(Request $request)
+    {
+        $message = '';
+
+        if ($request->has('message')) {
+            $message = $request->get('message');
+        }
+
+        $user = $request->has(0) ? $request->get(0) : Auth::user()['id'];
+
+
+        $friends = $this->model->getFriends($user);
+
+        return view(
+            'friends',
+            [
+                'friends' => $friends,
+                'message' => $message,
+            ]
+        );
     }
 
     /**
@@ -161,28 +204,11 @@ class Controller extends BaseController
      * @param Request
      * @return View
      */
-
-    public function friends(Request $request)
+    public function findfriends(Request $request)
     {
-        $message = '';
-
-        if ($request->has('message')) {
-            $message = $request->get('message');
-        }
-
-        $user = $request->has(0) ? $request->get(0) : Auth::user()['id'];
-
-
-        $friends = $this->model->getFriends($user);
-
-        return view(
-            'friends',
-            [
-                'friends' => $friends,
-                'message' => $message,
-            ]
-        );
+       // elég ha kilistázza az összes felhasználót aki az oldalon regisztrált
     }
+
     /**
      * ACTION: /newclub
      * VERB: GET
@@ -301,7 +327,6 @@ class Controller extends BaseController
         }
     }
 
-
     public function newworkplace(Request $request)
     {
         $workplaces = $this->model->getAllWorkplaces();
@@ -375,6 +400,70 @@ class Controller extends BaseController
                 }
             } else {
                 redirect('/club_member', ['message' => 'Már tagja vagy a klubnak...']);
+            }
+        }
+    }
+
+    /*ACTION: /addSchoolMember
+     * VERB: POST
+     *
+     * @param Request
+     * @return View
+     */
+    public function addSchoolMember(Request $request)
+    {
+        if ($request->has('school')) {
+            $schoolid = $request->post('school');
+            $userid = Auth::user()['id']; //logged in user
+
+
+            // check if relationship exists between the user and the club
+            $relationship = $this->model->getDatabase()->selectFromWhere(
+                'user_school',
+                "(user_id = $userid AND school_id = $schoolid)"
+            );
+
+            // if not exists insert one
+            if (count($relationship) == 0) {
+                if ($this->model->addUserToSchool($schoolid,$userid)) {
+                    redirect('/user_school', ['message' => 'Sikeresen felvetted az iskolát!']);
+                } else {
+                    redirect('/user_school', ['message' => 'Sikertelen felvétel! Adatbázis hiba!']);
+                }
+            } else {
+                redirect('/user_school', ['message' => 'Már felvetted az iskolát...']);
+            }
+        }
+    }
+
+    /*ACTION: /addWorkplaceMember
+     * VERB: POST
+     *
+     * @param Request
+     * @return View
+     */
+    public function addWorkplaceMember(Request $request)
+    {
+        if ($request->has('workplace')) {
+            $workplaceid = $request->post('workplace');
+            $userid = Auth::user()['id']; //logged in user
+
+
+            // check if relationship exists between the user and the club
+            $relationship = $this->model->getDatabase()->selectFromWhere(
+                'user_workplace',
+                "(user_id = $userid AND workplace_id = $workplaceid)"
+            );
+
+            // if not exists insert one
+            if (count($relationship) == 0) {
+                if ($this->model->addUserToWorkplace($workplaceid,$userid)) {
+                    redirect('/user_workplace', ['message' => 'Sikeresen felvetted a munkahelyet!']);
+                } else {
+                    redirect('/user_workplace', ['message' => 'Sikertelen felvétel! Adatbázis hiba!']);
+                }
+            } else {
+                redirect('/user_workplace', ['message' => 'Már felvetted a munkahelyet...']);
             }
         }
     }
