@@ -42,7 +42,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Social network</a>
+            <a class="navbar-brand" href="/">Közösségi háló</a>
         </div>
         <?php if(auth()): ?>
         <div id="navbar" class="navbar-collapse collapse">

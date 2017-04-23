@@ -17,13 +17,22 @@
     <!-- Example row of columns -->
     <div class="row">
         <div class="col-md-4">
-            <a href="/friends"><h2><i class="glyphicon glyphicon-user"></i> Barátaim</h2></a>
+            <a href="/friends"><h3><i class="glyphicon glyphicon-user"></i> Barátaim</h3></a>
         </div>
         <div class="col-md-4">
-            <a href="/findfriends"><h2><i class="glyphicon glyphicon-search"></i> Kit ismerhetek?</h2></a>
+            <a href="/findfriends"><h3><i class="glyphicon glyphicon-search"></i> Kit ismerhetek?</h3></a>
         </div>
         <div class="col-md-4">
-            <a href="/photo"><h2><i class="glyphicon glyphicon-picture"></i> Profilképem</h2></a>
+            <a href="/photo"><h3><i class="glyphicon glyphicon-picture"></i> Profilképem</h3></a>
+        </div>
+        <div class="col-md-4">
+            <a href="/newschool"><h3><i class="glyphicon glyphicon-book"></i> Iskoláim</h3></a>
+        </div>
+        <div class="col-md-4">
+            <a href="/newworkplace"><h3><i class="glyphicon glyphicon-briefcase"></i> Munkahelyeim</h3></a>
+        </div>
+        <div class="col-md-4">
+            <a href="/newclub"><h3><i class="glyphicon glyphicon-list"></i> Klubjaim</h3></a>
         </div>
     </div>
 

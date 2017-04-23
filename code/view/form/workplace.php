@@ -2,15 +2,15 @@
     <div class="row">
         <div class="panel panel-primary">
             <div class="panel-header">
-                <h3>Iskolák</h3>
+                <h3>Munkahelyek</h3>
             </div>
 
             <div class="panel-body">
                 <ul>
                     <h5>
-                    <?php foreach ($schools as $school): ?>
-                        <li>#<?= $school['id'] ?>: <?= $school['name'] ?>
-                            <a href="/delete_school/<?= $school['id'] ?>">
+                    <?php foreach ($workplaces as $workplace): ?>
+                        <li>#<?= $workplace['id'] ?>: <?= $workplace['name'] ?> -
+                            <a href="/delete_workplace/<?= $workplace['id'] ?>">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </a>
                         </li>
@@ -19,9 +19,9 @@
                 </ul>
 
 
-                <form role="form" action="/store_school" method="POST" class="form-horizontal">
+                <form role="form" action="/store_workplace" method="POST" class="form-horizontal">
                     <div class="form-group-lg">
-                        <input type="text" class="form-control-static" name="school" placeholder="Iskola neve" required/>
+                        <input type="text" class="form-control-static" name="workplace" placeholder="Munkahely neve" required/>
                     </div>
 
                     <br>

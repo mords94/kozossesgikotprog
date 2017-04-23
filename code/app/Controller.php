@@ -195,7 +195,7 @@ class Controller extends BaseController
         $clubs = $this->model->getAllClubs();
 
         return view("form/clubs", [
-            'schools' => $clubs
+            'clubs' => $clubs
         ]);
     }
 
@@ -356,16 +356,12 @@ class Controller extends BaseController
     public function addClubMember(Request $request)
     {
         if ($request->has('club')) {
-            $memberid = $request->post('club');
-            $clubid=0;                                  //ide kellene a lekérdezett klub id-je
-            $userid = Auth::user()['id'];
+            $clubid = $request->post('club');
+            $userid = Auth::user()['id']; //logged in user
 
-            if ($userid == $memberid) {
-                redirect('/club_member', ['message' => 'Már tagja vagy ennek a klubnak']);
-            }
 
             // check if relationship exists between the user and the club
-            $relationship = $this->database()->selectFromWhere(
+            $relationship = $this->model->getDatabase()->selectFromWhere(
                 'club_member',
                 "(user_id = $userid AND club_id = $clubid)"
             );

@@ -38,8 +38,8 @@ class Model extends BaseModel
     {
         return $this->database->selectCustom(
             "SELECT DISTINCT id,email,firstname,lastname
-            FROM user_friend
-              JOIN users 
+            FROM users
+              JOIN user_friend 
               ON users.id = user_friend.friend_id 
               OR users.id = user_friend.user_id
             WHERE (user_friend.user_id = $userid OR user_friend.friend_id = $userid) 

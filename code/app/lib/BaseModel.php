@@ -14,7 +14,7 @@ class BaseModel
 
     public function __construct()
     {
-        $this->database = new Driver("pgsql", "db", "szte", "szte", "titok");
+        $this->database = new Driver("pgsql", "localhost", "szte", "szte", "titok");
         $this->database->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
