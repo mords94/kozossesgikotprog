@@ -14,35 +14,20 @@ services:
     networks:
        - szte-network
       
-  szte-phppgadmin-php-fpm:
-    build: ./php-fpm
-    container_name: szte-phppgadmin-php-fpm
-    volumes:
-      - ./phppgadmin:/phppgadmin
-    links:
-      - szte-postgres:db
-    depends_on:
-      - szte-postgres
-    networks:
-       - szte-network
-      
   nginx:
     build: ./nginx
     container_name: nginx
     ports:
       - 8123:80
-      - 8001:81
     links:
       - szte-php-fpm
     volumes:
       - ./nginx/sites:/etc/nginx/sites
       - ./code:/code
-      - ./phppgadmin:/phppgadmin
     depends_on:
       - szte-php-fpm
-      - szte-phppgadmin-php-fpm
     networks:
-       - szte-network
+      - szte-network
 
   szte-postgres:
     build: ./postgres
