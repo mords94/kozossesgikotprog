@@ -204,9 +204,15 @@ class Controller extends BaseController
      * @param Request
      * @return View
      */
-    public function findfriends(Request $request)
+    public function findfriends(Request $request)    //csak egy próbálkozás munkahely alapján barátok kilistázására
     {
-       // elég ha kilistázza az összes felhasználót aki az oldalon regisztrált
+      $friendsworkplace=$request->post('workplace');
+
+      $result=$this->model->recommendFriendBasedOnWorkplace($friendsworkplace);
+
+      return redirect("/friends", [
+           'friends' => $result
+       ]);
     }
 
     /**
