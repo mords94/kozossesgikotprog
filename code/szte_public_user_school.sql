@@ -1,0 +1,13 @@
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 3, 1);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 4, 1);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 5, 1);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 6, 1);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 1, 2);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 2, 2);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 3, 2);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 1, 3);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 2, 3);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 3, 3);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 4, 3);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 5, 3);
+INSERT INTO public.user_school ("from", "to", school_id, user_id) VALUES ('2017-04-24', '2017-04-24', 6, 3);
