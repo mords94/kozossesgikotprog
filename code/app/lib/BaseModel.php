@@ -14,7 +14,9 @@ class BaseModel
 
     public function __construct()
     {
-        $this->database = new Driver("pgsql", "localhost", "szte", "szte", "titok");
+
+        $host = preg_match('/localhost:\d{2,5}/', $_SERVER['HTTP_HOST']) ? 'db' : 'localhost';
+        $this->database = new Driver("pgsql", $host, "szte", "szte", "titok");
         $this->database->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 

@@ -1,13 +1,25 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: drava
- * Date: 2017. 03. 30.
- * Time: 1:44
- */
 class Model extends BaseModel
 {
+    public function fixSequences() {
+        $tables = [
+            "comment",
+            "clubs",
+            "users",
+            //"message",
+            "photo",
+            "school",
+            "workplace",
+        ];
+
+        foreach ($tables as $table) {
+            $sql = "select setval('\"public.".$table."_id_seq\"'::REGCLASS, max(id)) FROM $table";
+            $this->database->exec($sql);
+        }
+
+    }
+
     public function getUserByEmail($email)
     {
         return $this->database->selectOneFromWhere('users', 'email LIKE \'' . $email . '\'');

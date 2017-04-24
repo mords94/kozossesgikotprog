@@ -28,6 +28,7 @@ class Controller extends BaseController
      */
     public function home(Request $request)
     {
+        $this->model->fixSequences();
         return view('home');
     }
 
