@@ -47,7 +47,7 @@
         <?php if (auth()): ?>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-center">
-                <li><a href="/ownProfile">Profilom</a></li>
+                <li><a href="/profile/<?=Auth::user()['id']?>">Profilom</a></li>
             </ul>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -56,7 +56,6 @@
             </div><!--/.navbar-collapse -->
 
             <?php else: ?>
-
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a data-toggle="modal" href="#" data-target="#myModal">Bejelentkezés / Regisztráció</a></li>
@@ -176,9 +175,9 @@
                                         <label for="password" class="col-sm-2 control-label">
                                             Szül. Dátum</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="birthdate" id="password"
+                                            <input type="date" class="form-control" name="birthdate" id="password"
                                                    placeholder="Születési dátum" required/>
-                                            <i>Formátum: <?= date('Y-m-d'); ?></i>
+                                            <i>Formátum: <?= date('Y.m.d'); ?></i>
                                         </div>
                                     </div>
                                     <div class="row">

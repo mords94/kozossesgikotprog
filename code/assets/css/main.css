@@ -43,6 +43,28 @@ div#OR {
     -webkit-box-sizing: border-box;
 }
 
+#Profil label {
+    font-size:14px;
+    font-weight: bold;
+}
+
+.profilkep {
+    display:block;
+    width:auto;
+    height: 200px;
+}
+
+
+.profilkep_friends {
+    display:block;
+    width:auto;
+    height: 200px;
+    margin:auto;
+}
+
+.friend_container {
+    border: 1px solid lightgray;
+}
 
 
 

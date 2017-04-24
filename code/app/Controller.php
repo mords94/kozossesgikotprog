@@ -63,7 +63,7 @@ class Controller extends BaseController
 
         $user = [
             'firstname' => $request->post('firstname'),
-            'lastname'  => $request->post('email'),
+            'lastname'  => $request->post('lastname'),
             'password'  => md5($request->post('password')),
             'gender'    => $request->post('gender'),
             'birthdate' => $request->post('birthdate'),
@@ -156,7 +156,96 @@ class Controller extends BaseController
             $allSchool[$index]['selected'] = $selected;
         }
 
-        return view('form/profile', ['user' => $user, "schools" => $allSchool]);
+        $message = $request->has('message') ? $request->get('message') : '';
+
+        return view('form/profile',
+            [
+                'user' => $user,
+                "schools" => $allSchool,
+                'message' => $message
+            ]
+        );
+    }
+
+    /**
+     * ACTION: /profile/{user}
+     * VERB: GET
+     *
+     * @param Request
+     * @return View
+     */
+    public function profile(Request $request)
+    {
+        secure();
+
+        $user = $this->model->user($request->get(0));
+        $allSchool = $this->model->getAllSchools();
+        $schools = $this->model->getSchools($user['id']);
+
+        foreach ($allSchool as $index=>$school) {
+
+            $selected = false;
+            foreach($schools as $userschool) {
+                if($userschool['id'] == $school['id']) {
+                    $selected = true;
+                }
+            }
+
+            $allSchool[$index]['selected'] = $selected;
+        }
+
+        $message = $request->has('message') ? $request->get('message') : '';
+
+        return view('profile',
+            [
+                'user' => $user,
+                "schools" => $allSchool,
+                'message' => $message
+            ]
+        );
+    }
+
+
+    /**
+     * ACTION: /update_profile
+     * VERB: POST
+     *
+     * @param Request
+     * @return View
+     */
+    public function update_profile(Request $request)
+    {
+        secure();
+        $userid = Auth::user()['id'];
+        $data = [
+            'firstname' => $request->post('firstname'),
+            'lastname'  => $request->post('lastname'),
+            'gender'    => $request->post('gender'),
+        ];
+
+        if(!preg_match('/^\d{1,2}\-\d{1,2}\-\d{4}$/'))
+
+        $schools = $request->post('schools');
+
+        if(!$this->model->updateUser($userid, $data)) {
+            return view('inc/error', [
+                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználót.'
+            ]);
+        }
+
+
+
+        if(!$this->model->updateUserSchool($userid, $schools)) {
+            return view('inc/error', [
+                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó iskoláit.'
+            ]);
+        }
+
+        redirect('/ownprofile',
+            [
+                'message' => 'Sikerült elmenteni.'
+             ]
+        );
     }
 
     /**
@@ -241,13 +330,45 @@ class Controller extends BaseController
     {
         secure();
 
-        $friendsworkplace=$request->post('workplace');
+        $userid = Auth::user()['id'];
 
-      $result=$this->model->recommendFriendBasedOnWorkplace($friendsworkplace);
+        $schools = $this->model->getSchools($userid);
 
-      return redirect("/friends", [
-           'friends' => $result
-       ]);
+        $workplaces = $this->model->getWorkplaces($userid);
+
+        $friends = $this->model->getFriends($userid);
+        $friendIds = [];
+        foreach($friends as $friend) {
+            $friendIds[] = $friend['id'];
+        }
+        $schoolIds = [];
+        foreach($schools as $school) {
+            $schoolIds[] =  $school['id'];
+        }
+
+        $workIds = [];
+        foreach($workplaces as $work) {
+            $workIds[] = $work['id'];
+        }
+
+        $byschool = [];
+
+        $bywork = [];
+
+
+        if(!empty($workIds) and !empty($schoolIds) and !empty($friendIds)) {
+
+        $byschool = $this->model->recommendFriendBasedOnSchool($userid, $friendIds, $schoolIds);
+
+        $bywork = $this->model->recommendFriendBasedOnWorkplace($userid, $friendIds, $workIds);
+        }
+
+        return view('recommend',
+            [
+                'bywork' => $bywork,
+                'byschool' => $byschool,
+            ]
+        );
     }
 
     /**

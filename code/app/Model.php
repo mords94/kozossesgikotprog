@@ -18,6 +18,20 @@ class Model extends BaseModel
         return $this->database->selectOneFromWhere('users', "id = $id");
     }
 
+    public function updateUserSchool($userid, $schools) {
+        $this->database->delete('user_school', 'user_id = ' . $userid);
+        foreach($schools as $school) {
+            $this->database->insert('user_school', ['user_id' => $userid, 'school_id' => $school]);
+        }
+
+        return true;
+
+    }
+
+    public function updateUser($userid, $data) {
+        return $this->database->update('users', $data, 'id = ' . $userid);
+    }
+
     public function register($user)
     {
         return $this->database->insert('users', $user);
@@ -178,7 +192,7 @@ class Model extends BaseModel
         return $this->database->selectCustom(
             "SELECT workplace.*
             FROM workplace
-              JOIN user_workplace
+              JOIN user_work
               ON workplace.id = user_work.workplace_id
             AND user_work.user_id = $userid;"
         );
@@ -232,19 +246,23 @@ class Model extends BaseModel
         );
     }
 
-    /* Recommend users based on the workplace
-    * @param $workplace INT
-    * @return array
-    */
+    /* Recommend users based on the school
+  * @param $school INT
+  * @return array
+  */
 
-    public function recommendFriendBasedOnWorkplace($workplace)
+    public function recommendFriendBasedOnWorkplace($me, array $friends, array $workplaces)
     {
+        $friends = implode(',', $friends);
+
+        $workplaces = implode(',', $workplaces);
         return $this->database->selectCustom(
-            "SELECT users.firstname
-            FROM users
-            JOIN user_work ON user_work.user_id = users.id
-            JOIN user_work ON user_work.workplace_id = workplace_id
-            WHERE workplace_id = $workplace;"
+            "
+                    SELECT DISTINCT  users.*
+                    FROM users
+                      JOIN user_work ON user_work.user_id = users.id
+                    WHERE workplace_id IN ($workplaces) AND users.id != $me AND users.id NOT IN ($friends);
+                    "
         );
     }
 
@@ -253,14 +271,17 @@ class Model extends BaseModel
     * @return array
     */
 
-    public function recommendFriendBasedOnSchool($school)
+    public function recommendFriendBasedOnSchool($me, array $friends, array $schools)
     {
+        $schools = implode(',', $schools);
+        $friends = implode(',', $friends);
         return $this->database->selectCustom(
-            "SELECT users.firstname
-            FROM users
-            JOIN user_school ON user_school.user_id = users.id
-            JOIN user_school ON user_school.school_id = school_id
-            WHERE school_id= $school;"
+            "
+                    SELECT DISTINCT  users.*
+                    FROM users
+                      JOIN user_school ON user_school.user_id = users.id
+                    WHERE school_id IN ($schools) AND users.id != $me AND users.id NOT IN ($friends);
+                    "
         );
     }
 
