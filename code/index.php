@@ -17,14 +17,22 @@ require_once 'app/lib/NoMethodException.php';
 require_once 'app/lib/Request.php';
 require_once 'app/lib/Bootstrap.php';
 
+
 Session::getInstance()->start();
 
 try {
     Bootstrap::getInstance()->init();
+    dump(Bootstrap::getInstance()->getController()->model->getDatabase()->getLastSql());
+
 } catch (NoMethodException $e) {
     error_page('Nincs ilyen metodus a controllerben. <br> <ul><h2>Elerheto metodusok: <h2><li>'. implode($e->listMethods(), '</li><li>'). '</li></ul>');
 } catch (PDOException $e) {
-    error_page('HIBA VAN AZ SQL PARANCSBAN:<br>'.$e->getMessage().'<br><br><br><pre>'.$e->getTraceAsString().'</pre>');
+    error_page('HIBA VAN AZ SQL PARANCSBAN:<br><pre>'
+        .Bootstrap::getInstance()->getController()->model->getDatabase()->getLastSql()
+        .'</pre><br>'.$e->getMessage()
+        .'<br><br><br><pre>'
+        .$e->getTraceAsString()
+        .'</pre>');
 } catch (Exception $e) {
     error_page($e->getMessage());
 }

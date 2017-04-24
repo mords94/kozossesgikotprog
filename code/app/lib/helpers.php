@@ -33,15 +33,7 @@ function error_page($message)
     ))->inc(false);
 }
 
-function model()
-{
-    return Bootstrap::getInstance()->getController()->getModel();
-}
 
-function database()
-{
-    return model()->getDatabase();
-}
 
 function auth() {
     return !Auth::getInstance()->guard();

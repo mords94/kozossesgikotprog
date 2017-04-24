@@ -29,7 +29,13 @@ class Controller extends BaseController
     public function home(Request $request)
     {
         $this->model->fixSequences();
-        return view('home');
+        $data = [];
+        if(auth()) {
+            $friendRequests = $this->model->getFriendRequests(Auth::user()['id']);
+            $data['friendRequests'] = $friendRequests;
+        }
+
+        return view('home', $data);
     }
 
     /**
@@ -197,11 +203,31 @@ class Controller extends BaseController
 
         $message = $request->has('message') ? $request->get('message') : '';
 
+        $myFriends = $this->model->getFriends(Auth::user()['id']);
+        $known = false;
+        foreach ($myFriends as $friend) {
+            if($friend['id'] == $user['id']) {
+                $known = true;
+                break;
+            }
+        }
+
+        $requestSent = false;
+        $friendRequests = $this->model->getFriendRequests($user['id']);
+        foreach ($friendRequests as $friend) {
+            if($friend['id'] == Auth::user()['id']) {
+                $requestSent = true;
+                break;
+            }
+        }
+
         return view('profile',
             [
                 'user' => $user,
                 "schools" => $allSchool,
-                'message' => $message
+                'message' => $message,
+                'known'   => $known,
+                'requestSent' => $requestSent,
             ]
         );
     }
@@ -224,7 +250,6 @@ class Controller extends BaseController
             'gender'    => $request->post('gender'),
         ];
 
-        if(!preg_match('/^\d{1,2}\-\d{1,2}\-\d{4}$/'))
 
         $schools = $request->post('schools');
 
@@ -286,7 +311,7 @@ class Controller extends BaseController
      * VERB: POST
      *
      * @param Request
-     * @return View
+     * @return string|View|void
      */
     public function addFriend(Request $request)
     {
@@ -297,26 +322,56 @@ class Controller extends BaseController
             $userid = Auth::user()['id'];
 
             if ($userid == $friendid) {
-                redirect('/friends', ['message' => 'Magadat nem jelölheted meg...']);
+                return view('inc/error', [
+                    'message' => 'Magadat nem jelölheted meg...'
+                ])->inc(false);
             }
 
             // check if relationship exists between the users
-            $relationship = $this->database()->selectFromWhere(
+            $relationship = $this->model->getDatabase()->selectFromWhere(
                 'user_friend',
                 "(user_id = $userid AND friend_id = $friendid) OR (user_id = $friendid AND friend_id = $userid)"
-            );
+            ,'');
 
             // if not exists insert one
             if (count($relationship) == 0) {
-                if ($this->model->addFriend($userid, $friendid)) {
-                    redirect('/friends', ['message' => 'Sikeresen barátnak jelölted-']);
+                if (!$this->model->sendFriendRequest($userid, $friendid)) {
+                    return view('inc/error', [
+                        'message' => 'Sikertelen jelölés! Adatbázis hiba!'
+                    ])->inc(false);
                 } else {
-                    redirect('/friends', ['message' => 'Sikertelen jelölés! Adatbázis hiba!']);
+                    redirect('/profile/'.$friendid);
+                    return;
                 }
             } else {
-                redirect('/friends', ['message' => 'Már barátok vagytok...']);
+                return view('inc/error', [
+                    'message' => 'Már barátok vagytok/Már barátnak jelölted.'
+                ])->inc(false);
             }
         }
+    }
+
+    /**
+     * ACTION: /deleteFriend
+     * VERB: POST
+     *
+     * @param Request
+     * @return string
+     */
+    public function deleteFriend(Request $request) {
+        if(!$request->has('friend')) return "HTTP 422: BAD REQUEST. Hiba nincs friend posztolva.";
+        $this->model->removeFriendRelation(Auth::user()['id'], $request->post('friend'));
+
+        redirect('/profile/'.$request->post('friend'));
+    }
+
+    public function approve(Request $request) {
+        secure();
+        if($request->has('friend')) {
+            $this->model->approveFriendRequest(Auth::user()['id'], $request->post('friend'));
+        }
+
+        redirect('/home');
     }
 
     /**
@@ -357,11 +412,11 @@ class Controller extends BaseController
         $bywork = [];
 
 
-        if(!empty($workIds) and !empty($schoolIds) and !empty($friendIds)) {
-
-        $byschool = $this->model->recommendFriendBasedOnSchool($userid, $friendIds, $schoolIds);
-
-        $bywork = $this->model->recommendFriendBasedOnWorkplace($userid, $friendIds, $workIds);
+        if(!empty($schoolIds)) {
+            $byschool = $this->model->recommendFriendBasedOnSchool($userid, $friendIds, $schoolIds);
+        }
+        if(!empty($workIds)) {
+            $bywork = $this->model->recommendFriendBasedOnWorkplace($userid, $friendIds, $workIds);
         }
 
         return view('recommend',

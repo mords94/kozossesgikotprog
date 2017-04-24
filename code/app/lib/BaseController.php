@@ -2,7 +2,7 @@
 
 class BaseController
 {
-    protected $model;
+    public $model;
 
     public function __construct()
     {

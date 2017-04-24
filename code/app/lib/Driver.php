@@ -5,16 +5,18 @@ class Driver extends PDO
 {
     private $delimiter = '';
 
+    private $lastSql = '';
+
     function __construct($DB_TYPE, $DB_HOST, $DB_NAME, $DB_USER, $DB_PASS)
     {
 
-        $s = array("pgsql:dbname=szte;host=db", 'szte', 'titok');
+        $s = ["pgsql:dbname=szte;host=db", 'szte', 'titok'];
         $this->dbname = $DB_NAME;
 
-        $connectionString = array(
+        $connectionString = [
             "mysql" => $DB_TYPE . ":host=" . $DB_HOST . ";dbname=" . $DB_NAME,
             "pgsql" => "$DB_TYPE:dbname=$DB_NAME;host=$DB_HOST",
-        );
+        ];
         parent::__construct($connectionString[$DB_TYPE], $DB_USER, $DB_PASS);
         $this->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -27,21 +29,21 @@ class Driver extends PDO
         }
     }
 
+    public function getLastSql() {
+        return $this->lastSql;
+    }
+
     private function convertEncoding()
     {
         $tables = $this->selectCustom("SHOW TABLES");
-        try {
-            foreach ($tables as $table) {
-                $table = $table['Tables_in_' . $this->dbname];
-                $sql = "ALTER TABLE $table CHARACTER SET
+        foreach ($tables as $table) {
+            $table = $table['Tables_in_' . $this->dbname];
+            $this->lastSql = $sql = "ALTER TABLE $table CHARACTER SET
                     utf8 COLLATE utf8_general_ci;";
-                $sqlother = "ALTER TABLE $table
+            $sqlother = "ALTER TABLE $table
                     CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;";
-                $this->prepare($sql)->execute();
-                $this->prepare($sqlother)->execute();
-            }
-        } catch (Exception $e) {
-            echo $e->getMessage();
+            $this->prepare($sql)->execute();
+            $this->prepare($sqlother)->execute();
         }
     }
 
@@ -57,20 +59,16 @@ class Driver extends PDO
         $fieldNames = "$this->delimiter" . implode("$this->delimiter, $this->delimiter", array_keys($data)) . "$this->delimiter";
         $fieldValues = ":" . implode(", :", array_keys($data)) . "";
 
-        $sql = "INSERT INTO $table ($fieldNames) VALUES ($fieldValues)";
-        try {
-            $sth = $this->prepare($sql);
-            if ($debug) {
-                $this->_printerr($sth->queryString);
-            }
-            foreach ($data as $key => $value) {
-                $sth->bindValue(":$key", $value);
-            }
-            return $sth->execute();
-        } catch (PDOException $e) {
-            $this->_printerr($e->getMessage());
-            return false;
+        $this->lastSql = $sql = "INSERT INTO $table ($fieldNames) VALUES ($fieldValues)";
+        $sth = $this->prepare($sql);
+        if ($debug) {
+            $this->_printerr($sth->queryString);
         }
+        foreach ($data as $key => $value) {
+            $sth->bindValue(":$key", $value);
+        }
+
+        return $sth->execute();
 
 
     }
@@ -83,33 +81,30 @@ class Driver extends PDO
     public function update($table, $data, $where, $debug = false)
     {
         ksort($data);
-        $fieldDetails = NULL;
+        $fieldDetails = null;
         foreach ($data as $key => $value) {
             $fieldDetails .= "$this->delimiter$key$this->delimiter = :$key,";
         }
 
         $fieldDetails = rtrim($fieldDetails, ',');
-        $sql = "UPDATE $table SET $fieldDetails WHERE $where";
+        $this->lastSql = $sql = "UPDATE $table SET $fieldDetails WHERE $where";
         if ($debug) echo $sql;
-        try {
-            $sth = $this->prepare($sql);
+        $sth = $this->prepare($sql);
 
-            foreach ($data as $key => $value) {
-                $sth->bindValue(":$key", $value);
-            }
-            return $sth->execute();
-        } catch (PDOException $e) {
-            $this->_printerr($e->getMessage());
-            return false;
+        foreach ($data as $key => $value) {
+            $sth->bindValue(":$key", $value);
         }
+
+        return $sth->execute();
     }
 
     public function colExists($table, $col)
     {
-        $sql = "SELECT * FROM information_schema.COLUMNS
+        $this->lastSql = $sql = "SELECT * FROM information_schema.COLUMNS
                 WHERE TABLE_NAME = '$table' AND COLUMN_NAME = '$col';";
         $sth = $this->prepare($sql);
         $sth->execute();
+
         return $sth->rowCount() > 0 ? true : false;
     }
 
@@ -117,18 +112,14 @@ class Driver extends PDO
     {
         if ($safe) {
             if ($this->colExists($table, "deleted")) {
-                return $this->update($table, array("deleted" => 1), $where, $debug);
+                return $this->update($table, ["deleted" => 1], $where, $debug);
             } else return false;
         } else {
-            $sql = "DELETE FROM $table WHERE $where";
+            $this->lastSql = $sql = "DELETE FROM $table WHERE $where";
             if ($debug) echo $sql;
-            try {
-                $sth = $this->prepare($sql);
-                return $sth->execute();
-            } catch (PDOException $e) {
-                $this->_printerr($e->getMessage());
-                die();
-            }
+            $sth = $this->prepare($sql);
+
+            return $sth->execute();
         }
 
     }
@@ -158,7 +149,7 @@ class Driver extends PDO
     public function selectFrom($table, $order = "", $debug = false)
     {
         $order = isset($order) && $order != "" ? "ORDER BY " . $order : "";
-        $sql = "SELECT * FROM $this->delimiter" . $table . "$this->delimiter" . $order . ";";
+        $this->lastSql = $sql = "SELECT * FROM $this->delimiter" . $table . "$this->delimiter" . $order . ";";
         $sth = $this->prepare($sql);
         if ($debug) echo $sql;
         $sth->execute();
@@ -181,27 +172,23 @@ class Driver extends PDO
     {
         $order = isset($order) && $order != "" ? "ORDER BY " . $order : "";
 
-        if(is_array($where)) {
+        if (is_array($where)) {
             $conditions = $where;
             $where = [];
-            foreach ($conditions as $cell=>$value) {
+            foreach ($conditions as $cell => $value) {
                 $where[] = "$cell = '$value'";
             }
 
             $where = implode(" AND ", $where);
         }
 
-        $sql = "SELECT * FROM $table WHERE $where $order";
+        $this->lastSql = $sql = "SELECT * FROM $table WHERE $where $order";
         if ($debug) echo $sql;
 
-        try {
-            $sth = $this->prepare($sql);
-            $sth->execute();
-            $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            $this->_printerr($e->getMessage());
-            die();
-        }
+        $sth = $this->prepare($sql);
+        $sth->execute();
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
@@ -209,58 +196,48 @@ class Driver extends PDO
     {
         $result = null;
         $order = isset($order) && $order != "" ? "ORDER BY " . $order : "";
-        $sql = "SELECT * FROM $table WHERE $where $order";
+        $this->lastSql = $sql = "SELECT * FROM $table WHERE $where $order";
         if ($debug) echo $sql;
-        try {
-            $sth = $this->prepare($sql);
-            $sth->execute();
-            $result = $sth->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $this->_printerr($e->getMessage());
-        }
+        $sth = $this->prepare($sql);
+        $sth->execute();
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
     public function numRows($table, $debug = false)
     {
         $result = null;
-        $sql = "SELECT COUNT(*) AS 'count' FROM $table";
+        $this->lastSql = $sql = "SELECT COUNT(*) AS 'count' FROM $table";
         if ($debug) echo $sql;
-        try {
-            $sth = $this->prepare($sql);
-            $sth->execute();
-            $result = $sth->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $this->_printerr($e->getMessage());
-        }
+        $sth = $this->prepare($sql);
+        $sth->execute();
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+
         return $result['count'];
     }
 
     public function selectCustom($sql, $debug = false)
     {
         if ($debug) echo $sql;
-        try {
-            $sth = $this->prepare($sql);
+        $this->lastSql = $sql;
+        $sth = $this->prepare($sql);
 
-            $sth->execute();
-            $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $this->_printerr($e->getMessage());
-        }
+        $sth->execute();
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
     public function selectOneCustom($sql, $debug = false)
     {
         if ($debug) echo $sql;
-        try {
-            $sth = $this->prepare($sql);
+        $this->lastSql = $sql;
+        $sth = $this->prepare($sql);
 
-            $sth->execute();
-            $result = $sth->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $this->_printerr($e->getMessage());
-        }
+        $sth->execute();
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+
         return $result;
     }
 

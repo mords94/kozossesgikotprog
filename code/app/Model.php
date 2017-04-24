@@ -2,7 +2,8 @@
 
 class Model extends BaseModel
 {
-    public function fixSequences() {
+    public function fixSequences()
+    {
         $tables = [
             "comment",
             "clubs",
@@ -14,7 +15,7 @@ class Model extends BaseModel
         ];
 
         foreach ($tables as $table) {
-            $sql = "select setval('\"public.".$table."_id_seq\"'::REGCLASS, max(id)) FROM $table";
+            $sql = "select setval('\"public." . $table . "_id_seq\"'::REGCLASS, max(id)) FROM $table";
             $this->database->exec($sql);
         }
 
@@ -30,9 +31,10 @@ class Model extends BaseModel
         return $this->database->selectOneFromWhere('users', "id = $id");
     }
 
-    public function updateUserSchool($userid, $schools) {
+    public function updateUserSchool($userid, $schools)
+    {
         $this->database->delete('user_school', 'user_id = ' . $userid);
-        foreach($schools as $school) {
+        foreach ($schools as $school) {
             $this->database->insert('user_school', ['user_id' => $userid, 'school_id' => $school]);
         }
 
@@ -40,7 +42,8 @@ class Model extends BaseModel
 
     }
 
-    public function updateUser($userid, $data) {
+    public function updateUser($userid, $data)
+    {
         return $this->database->update('users', $data, 'id = ' . $userid);
     }
 
@@ -50,16 +53,33 @@ class Model extends BaseModel
     }
 
 
-    public function addFriend($userid, $friendid)
+    public function sendFriendRequest($userid, $friendid)
     {
         return $this->database->insert('user_friend', ['user_id' => $userid, 'friend_id' => $friendid]);
     }
 
-    /**
-     * Query user's friend ids with the id of $userid
-     * @param $userid int
-     * @return array
-     */
+    public function approveFriendRequest($userid, $friendid) {
+        return $this->database->update(
+            'user_friend',
+            [
+                'status' => STATUS_APPROVED
+            ],
+            'user_id = '.$friendid.' AND friend_id = '.$userid. ' AND status = '.STATUS_WAITING
+            );
+    }
+
+    public function getFriendRequests($userid) {
+        return $this->database->selectCustom(
+            "SELECT DISTINCT id,email,firstname,lastname
+            FROM users
+              JOIN user_friend 
+              ON users.id = user_friend.friend_id 
+              OR users.id = user_friend.user_id
+            WHERE (user_friend.friend_id = $userid) 
+            AND users.id != $userid AND user_friend.status =".STATUS_WAITING.";"
+        );
+    }
+
     public function getFriends($userid)
     {
         return $this->database->selectCustom(
@@ -69,11 +89,20 @@ class Model extends BaseModel
               ON users.id = user_friend.friend_id 
               OR users.id = user_friend.user_id
             WHERE (user_friend.user_id = $userid OR user_friend.friend_id = $userid) 
-            AND users.id != $userid;"
+            AND users.id != $userid AND user_friend.status =".STATUS_APPROVED.";"
         );
     }
 
-    public function getAllClubs() {
+    public function removeFriendRelation($userid, $friendid) {
+        $this->database->delete(
+            'user_friend',
+            "((user_friend.user_id = $userid AND user_friend.friend_id = $friendid) 
+            OR 
+            (user_friend.user_id = $friendid AND user_friend.friend_id = $userid))");
+    }
+
+    public function getAllClubs()
+    {
         return $this->database->selectFrom('clubs');
     }
 
@@ -82,11 +111,13 @@ class Model extends BaseModel
         return $this->database->insert('clubs', ['name' => $name]);
     }
 
-    public function deleteClub($id) {
+    public function deleteClub($id)
+    {
         return $this->database->delete('clubs', "id = $id");
     }
 
-    public function getClubsByName($name) {
+    public function getClubsByName($name)
+    {
         return $this->database->selectFromWhere('clubs', "name = '$name'");
     }
 
@@ -125,7 +156,8 @@ class Model extends BaseModel
         return $this->database->insert('club_member', ['club_id' => $club, 'user_id' => $user]);
     }
 
-    public function getAllSchools() {
+    public function getAllSchools()
+    {
         return $this->database->selectFrom('school');
     }
 
@@ -134,11 +166,13 @@ class Model extends BaseModel
         return $this->database->insert('school', ['name' => $name]);
     }
 
-    public function deleteSchool($id) {
+    public function deleteSchool($id)
+    {
         return $this->database->delete('school', "id = $id");
     }
 
-    public function getSchoolByName($name) {
+    public function getSchoolByName($name)
+    {
         return $this->database->selectFromWhere('school', "name = '$name'");
     }
 
@@ -178,7 +212,8 @@ class Model extends BaseModel
         return $this->database->insert('user_school', ['school_id' => $school, 'user_id' => $user]);
     }
 
-    public function getAllWorkplaces() {
+    public function getAllWorkplaces()
+    {
         return $this->database->selectFrom('workplace');
     }
 
@@ -187,18 +222,20 @@ class Model extends BaseModel
         return $this->database->insert('workplace', ['name' => $name]);
     }
 
-    public function deleteWorkplace($id) {
+    public function deleteWorkplace($id)
+    {
         return $this->database->delete('workplace', "id = $id");
     }
 
-    public function getWorkplaceByName($name) {
+    public function getWorkplaceByName($name)
+    {
         return $this->database->selectFromWhere('workplace', "name = '$name'");
     }
 
     /*Collect the query user's workplaces in an array *
- * @param $userid int
- * @return array
- */
+     * @param $userid int
+     * @return array
+     */
     public function getWorkplaces($userid)
     {
         return $this->database->selectCustom(
@@ -265,16 +302,16 @@ class Model extends BaseModel
 
     public function recommendFriendBasedOnWorkplace($me, array $friends, array $workplaces)
     {
-        $friends = implode(',', $friends);
-
+        $friends = empty($friends) ? "" : "AND users.id NOT IN (" . implode(',', $friends) . ")";
         $workplaces = implode(',', $workplaces);
+
         return $this->database->selectCustom(
-            "
-                    SELECT DISTINCT  users.*
-                    FROM users
-                      JOIN user_work ON user_work.user_id = users.id
-                    WHERE workplace_id IN ($workplaces) AND users.id != $me AND users.id NOT IN ($friends);
-                    "
+            "SELECT DISTINCT  users.*
+                FROM users
+                  JOIN user_work ON user_work.user_id = users.id
+                WHERE workplace_id IN ($workplaces) 
+                  AND users.id != $me 
+                  $friends;"
         );
     }
 
@@ -286,14 +323,15 @@ class Model extends BaseModel
     public function recommendFriendBasedOnSchool($me, array $friends, array $schools)
     {
         $schools = implode(',', $schools);
-        $friends = implode(',', $friends);
+        $friends = empty($friends) ? "" : "AND users.id NOT IN (" . implode(',', $friends) . ")";
+
         return $this->database->selectCustom(
-            "
-                    SELECT DISTINCT  users.*
-                    FROM users
-                      JOIN user_school ON user_school.user_id = users.id
-                    WHERE school_id IN ($schools) AND users.id != $me AND users.id NOT IN ($friends);
-                    "
+            "SELECT DISTINCT  users.*
+            FROM users
+              JOIN user_school ON user_school.user_id = users.id
+            WHERE school_id IN ($schools) 
+              AND users.id != $me 
+                $friends;"
         );
     }
 
@@ -307,22 +345,6 @@ class Model extends BaseModel
         return $this->database->selectCustom(
             "SELECT users.*
             FROM users;"
-        );
-    }
-
-    /* List the friends of the user
-    * @param $myFriends
-    * @return array
-    */
-
-    public function myFriends($myFriends)
-    {
-        return $this->database->selectCustom(
-            "SELECT users.firstname, users.lastname
-            FROM users
-            JOIN user_friend ON user_friend.user_id = users.id
-            JOIN user_friend ON user_friend.friend_id = friend_id
-            WHERE friend_id = $myFriends;"
         );
     }
 
