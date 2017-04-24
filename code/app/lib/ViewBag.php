@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User:
- * Date: 2017. 03. 30.
- * Time: 2:03
- */
 class ViewBag
 {
     protected static $instance;

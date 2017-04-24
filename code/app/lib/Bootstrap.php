@@ -1,14 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: drava
- * Date: 2017. 03. 30.
- * Time: 1:44
- */
-
-
-
 class Bootstrap
 {
     protected static $instance;

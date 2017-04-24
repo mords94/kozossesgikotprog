@@ -1,10 +1,6 @@
 <?php
 const SAFE_DELETE = false;
-/**
- * Description of Database
- *
- * @author dbalazs
- */
+
 class Driver extends PDO
 {
     private $delimiter = '';

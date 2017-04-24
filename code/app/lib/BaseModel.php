@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: drava
- * Date: 2017. 03. 30.
- * Time: 3:38
- */
 class BaseModel
 {
     const RAW_CONNECTION_STRING = 'host=db port=5432 dbname=szte user=szte password=titok';
@@ -34,12 +28,6 @@ class BaseModel
             $debug
         );
 
-
-//        $stmt = $this->database->query("SELECT table_name
-//                                   FROM information_schema.tables
-//                                   WHERE table_schema= 'public'
-//                                        AND table_type='BASE TABLE'
-//                                   ORDER BY table_name");
         $tableList = [];
         foreach ($rows as $row) {
             $tableList[] = $row['table_name'];

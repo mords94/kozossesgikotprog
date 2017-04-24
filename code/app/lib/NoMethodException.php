@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: drava
- * Date: 2017. 03. 30.
- * Time: 1:56
- */
 class NoMethodException extends Exception
 {
 
