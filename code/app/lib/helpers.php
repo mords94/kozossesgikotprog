@@ -44,7 +44,7 @@ function database()
 }
 
 function auth() {
-    return Auth::getInstance()->guard();
+    return !Auth::getInstance()->guard();
 }
 
 function session($key, $value = null)
@@ -68,4 +68,10 @@ function redirect($to, $with = [])
     }
 
     header("Location: " . $to);
+}
+
+function secure() {
+    if(!auth()) {
+        redirect('/home');
+    }
 }

@@ -18,7 +18,7 @@
             <label for="email" class="col-sm-2 control-label">
                 E-mail</label>
             <div class="col-sm-10">
-                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required/>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="<?=$user['email']?>" disabled required/>
             </div>
 
         </div>
@@ -41,6 +41,21 @@
                        placeholder="Születési dátum" required/>
             </div>
         </div>
+
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">
+                Iskolák</label>
+            <div class="col-sm-10">
+                <select name="schools" multiple>
+                    <?php foreach($schools as $school):?>
+
+                        <option value="<?=$school['id']?>" <?=$school['selected'] ? 'selected' : ''?>><?=$school['name']?></option>
+
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-sm-2">
             </div>

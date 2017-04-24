@@ -1,6 +1,21 @@
 <?php
 
 
+/**
+ * A Feladat: SSADM terv elkészítése Közösségi weboldalhoz
+ * Felhasználók regisztrálása, profilok létrehozása
+ * Fényképek feltöltése, megjegyzés hozzáfűzése
+ * Ismerősök bejelölése, ismeretség visszaigazolása
+ * Üzenet küldése ismerősöknek
+ * Klubok, csoportok alapítása
+ * Klubok tagjainak létszáma
+ * Ismeretlen tagok ajánlása ismerősnek közös ismerősök alapján
+ * Névnaposok, születésnaposok az adott hónapban
+ * Klubok ajánlása, ahol van közös ismerős
+ * Ismerősök ajánlása munkahely, vagy iskola alapján
+ * Üzenetek küldése, fogadása
+ */
+
 class Controller extends BaseController
 {
 
@@ -26,10 +41,6 @@ class Controller extends BaseController
     public function logout(Request $request)
     {
         Session::destroy();
-
-        return view("home", [
-            'login_message' => 'Sikeres kijelentkezés!',
-        ]);
 
         redirect('/home');
     }
@@ -127,7 +138,25 @@ class Controller extends BaseController
      */
     public function ownProfile(Request $request)
     {
-        return view('profile');
+        secure();
+
+        $user = $this->model->getUserByEmail(Auth::user()['email']);
+        $allSchool = $this->model->getAllSchools();
+        $schools = $this->model->getSchools($user['id']);
+
+        foreach ($allSchool as $index=>$school) {
+
+            $selected = false;
+            foreach($schools as $userschool) {
+                if($userschool['id'] == $school['id']) {
+                    $selected = true;
+                }
+            }
+
+            $allSchool[$index]['selected'] = $selected;
+        }
+
+        return view('form/profile', ['user' => $user, "schools" => $allSchool]);
     }
 
     /**
@@ -140,6 +169,8 @@ class Controller extends BaseController
      */
     public function friends(Request $request)
     {
+        secure();
+
         $message = '';
 
         if ($request->has('message')) {
@@ -169,6 +200,8 @@ class Controller extends BaseController
      */
     public function addFriend(Request $request)
     {
+        secure();
+
         if ($request->has('friend')) {
             $friendid = $request->post('friend');
             $userid = Auth::user()['id'];
@@ -206,7 +239,9 @@ class Controller extends BaseController
      */
     public function findfriends(Request $request)    //csak egy próbálkozás munkahely alapján barátok kilistázására
     {
-      $friendsworkplace=$request->post('workplace');
+        secure();
+
+        $friendsworkplace=$request->post('workplace');
 
       $result=$this->model->recommendFriendBasedOnWorkplace($friendsworkplace);
 
@@ -224,6 +259,8 @@ class Controller extends BaseController
      */
     public function newclub(Request $request)
     {
+        secure();
+
         $clubs = $this->model->getAllClubs();
 
         return view("form/clubs", [
@@ -240,6 +277,8 @@ class Controller extends BaseController
      */
     public function delete_club(Request $request)
     {
+        secure();
+
         $clubsID = $request->get(0);
         $this->model->deleteClub($clubsID);
 
@@ -256,6 +295,8 @@ class Controller extends BaseController
      */
     public function store_club(Request $request)
     {
+        secure();
+
         $club = $request->post('club');
 
         if($this->model->getClubsByName($club)) {
@@ -283,6 +324,8 @@ class Controller extends BaseController
      */
     public function newschool(Request $request)
     {
+        secure();
+
         $schools = $this->model->getAllSchools();
 
         return view("form/school", [
@@ -299,6 +342,8 @@ class Controller extends BaseController
      */
     public function delete_school(Request $request)
     {
+        secure();
+
         $schoolsID = $request->get(0);
         $this->model->deleteSchool($schoolsID);
 
@@ -315,6 +360,8 @@ class Controller extends BaseController
      */
     public function store_school(Request $request)
     {
+        secure();
+
         $school = $request->post('school');
 
         if($this->model->getSchoolByName($school)) {
@@ -335,6 +382,8 @@ class Controller extends BaseController
 
     public function newworkplace(Request $request)
     {
+        secure();
+
         $workplaces = $this->model->getAllWorkplaces();
 
         return view("form/workplace", [
@@ -351,6 +400,8 @@ class Controller extends BaseController
      */
     public function store_workplace(Request $request)
     {
+        secure();
+
         $workplace = $request->post('workplace');
 
         if($this->model->getWorkplaceByName($workplace)) {
@@ -371,6 +422,8 @@ class Controller extends BaseController
 
     public function delete_workplace(Request $request)
     {
+        secure();
+
         $workplacesID = $request->get(0);
         $this->model-> deleteWorkplace($workplacesID);
 
@@ -386,6 +439,8 @@ class Controller extends BaseController
      */
     public function addClubMember(Request $request)
     {
+        secure();
+
         if ($request->has('club')) {
             $clubid = $request->post('club');
             $userid = Auth::user()['id']; //logged in user
@@ -418,6 +473,8 @@ class Controller extends BaseController
      */
     public function addSchoolMember(Request $request)
     {
+        secure();
+
         if ($request->has('school')) {
             $schoolid = $request->post('school');
             $userid = Auth::user()['id']; //logged in user
@@ -450,6 +507,8 @@ class Controller extends BaseController
      */
     public function addWorkplaceMember(Request $request)
     {
+        secure();
+
         if ($request->has('workplace')) {
             $workplaceid = $request->post('workplace');
             $userid = Auth::user()['id']; //logged in user

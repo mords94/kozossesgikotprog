@@ -127,7 +127,7 @@ class Model extends BaseModel
             "SELECT school.*
             FROM school
               JOIN user_school
-              ON school.id = club_id.user_id 
+              ON school.id = user_school.school_id 
             AND user_school.user_id = $userid;"
         );
     }
@@ -263,4 +263,34 @@ class Model extends BaseModel
             WHERE school_id= $school;"
         );
     }
+
+    /* List all users from the website
+    * @param -
+    * @return array
+    */
+
+    public function getAllUsers()
+    {
+        return $this->database->selectCustom(
+            "SELECT users.*
+            FROM users;"
+        );
+    }
+
+    /* List the friends of the user
+    * @param $myFriends
+    * @return array
+    */
+
+    public function myFriends($myFriends)
+    {
+        return $this->database->selectCustom(
+            "SELECT users.firstname, users.lastname
+            FROM users
+            JOIN user_friend ON user_friend.user_id = users.id
+            JOIN user_friend ON user_friend.friend_id = friend_id
+            WHERE friend_id = $myFriends;"
+        );
+    }
+
 }

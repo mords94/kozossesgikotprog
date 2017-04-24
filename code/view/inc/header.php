@@ -28,8 +28,8 @@
 </head>
 <body style="padding:0; margin:0;">
 <!--[if lt IE 8]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
-        href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<p class="browserupgrade">Egy <strong>elavult</strong> böngészőt használsz. Kérlek <a
+        href="http://browsehappy.com/">frissítsd a böngésződ </a>, hogy javíts a felhasználói élményeden!</p>
 <![endif]-->
 
 <nav class="navbar navbar-inverse navbar-static" style="margin-top:0;" role="navigation">
@@ -44,23 +44,29 @@
             </button>
             <a class="navbar-brand" href="/">Közösségi háló</a>
         </div>
-        <?php if(auth()): ?>
+        <?php if (auth()): ?>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a data-toggle="modal" data-target="#myModal">Bejelentkezés / Regisztráció</a></li>
+            <ul class="nav navbar-nav navbar-center">
+                <li><a href="/ownProfile">Profilom</a></li>
             </ul>
-        </div><!--/.navbar-collapse -->
-        <?php else: ?>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Profilom</a></li>
+                    <li><a href="/logout">Kijelentkezés</a></li>
                 </ul>
             </div><!--/.navbar-collapse -->
-        <?php endif; ?>
-    </div>
+
+            <?php else: ?>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a data-toggle="modal" href="#" data-target="#myModal">Bejelentkezés / Regisztráció</a></li>
+                    </ul>
+                </div><!--/.navbar-collapse -->
+            <?php endif; ?>
+        </div>
 </nav>
 
-<?php if(auth()) : ?>
+<?php if (!auth()) : ?>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -88,14 +94,16 @@
                                         <label for="email" class="col-sm-2 control-label">
                                             Email</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" name="email" id="email1" placeholder="Email"/>
+                                            <input type="email" class="form-control" name="email" id="email1"
+                                                   placeholder="Email"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1" class="col-sm-2 control-label">
                                             Jelszó</label>
                                         <div class="col-sm-10">
-                                            <input type="password" class="form-control" name="password" id="exampleInputPassword1"
+                                            <input type="password" class="form-control" name="password"
+                                                   id="exampleInputPassword1"
                                                    placeholder="Jelszó"/>
                                         </div>
                                     </div>
@@ -118,10 +126,12 @@
                                         <div class="col-sm-10">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="lastname" placeholder="Családnév" required/>
+                                                    <input type="text" class="form-control" name="lastname"
+                                                           placeholder="Családnév" required/>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="firstname" placeholder="Utónév" required/>
+                                                    <input type="text" class="form-control" name="firstname"
+                                                           placeholder="Utónév" required/>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,7 +140,8 @@
                                         <label for="email" class="col-sm-2 control-label">
                                             E-mail</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" required/>
+                                            <input type="email" class="form-control" name="email" id="email"
+                                                   placeholder="Email" required/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -145,7 +156,8 @@
                                         <label for="password" class="col-sm-2 control-label">
                                             Jelszó újra</label>
                                         <div class="col-sm-10">
-                                            <input type="password" class="form-control" name="password_again" id="password"
+                                            <input type="password" class="form-control" name="password_again"
+                                                   id="password"
                                                    placeholder="Jelszó újra" required/>
                                         </div>
                                     </div>
@@ -155,8 +167,8 @@
                                             Nem</label>
                                         <div class="col-sm-10">
                                             <select name="gender" required>
-                                                <option value="1">Férfi   </option>
-                                                <option value="2">Nő      </option>
+                                                <option value="1">Férfi</option>
+                                                <option value="2">Nő</option>
                                             </select>
                                         </div>
                                     </div>
@@ -166,7 +178,7 @@
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="birthdate" id="password"
                                                    placeholder="Születési dátum" required/>
-                                            <i>Formátum: <?=date('Y-m-d');?></i>
+                                            <i>Formátum: <?= date('Y-m-d'); ?></i>
                                         </div>
                                     </div>
                                     <div class="row">
