@@ -18,7 +18,7 @@
                                 <i class="glyphicon glyphicon-user"></i> Megerősít
                             </button>
                         </form>
-                        <form method="post" action="/delete_friend" style="display:inline;">
+                        <form method="post" action="/deleteFriend" style="display:inline;">
                             <input type="hidden" name="friend" value="<?= $request['id'] ?>"/>
                             <button type="submit" class="btn btn-default">
                                 <i class="glyphicon glyphicon-user"></i> Elutasít
