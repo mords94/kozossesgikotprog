@@ -1,3 +1,7 @@
+<br>
+<br>
+<br>
+<br>
 <div class="container" id="Profil">
 
     <h3><?= $user['lastname'] ?> <?= $user['firstname'] ?>
@@ -72,6 +76,17 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <label for="workplaces" class="col-sm-12 control-label">
+            Munkahelyek</label>
+        <div class="col-sm-12">
+            <?php foreach($workplaces as $workplace):?>
+
+                <?=$workplace['selected'] ? $workplace['name']. '<br>' : ''?>
+
+            <?php endforeach;?>
+        </div>
+    </div>
 
 </div>
 

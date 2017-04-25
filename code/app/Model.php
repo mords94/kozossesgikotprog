@@ -47,6 +47,10 @@ class Model extends BaseModel
         return $this->database->update('users', $data, 'id = ' . $userid);
     }
 
+    public function addProfilePicture($userid, $pictureid) {
+        return $this->database->insert('users', $pictureid, 'id = ' . $userid);
+    }
+
     public function register($user)
     {
         return $this->database->insert('users', $user);
