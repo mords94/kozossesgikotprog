@@ -241,6 +241,15 @@ class Controller extends BaseController
 
         $message = $request->has('message') ? $request->get('message') : '';
 
+        $myFriends = $this->model->getFriends(Auth::user()['id']);
+            $known = false;
+            foreach ($myFriends as $friend) {
+                if ($friend['id'] == $user['id']) {
+                    $known = true;
+                    break;
+                }
+            }
+
         $requestSent = false;
         $friendRequests = $this->model->getFriendRequests($user['id']);
         foreach ($friendRequests as $friend) {
