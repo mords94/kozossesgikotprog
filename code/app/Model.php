@@ -42,6 +42,17 @@ class Model extends BaseModel
 
     }
 
+    public function updateUserWorkplace($userid, $workplaces)
+    {
+        $this->database->delete('user_work', 'user_id = ' . $userid);
+        foreach ($workplaces as $workplace) {
+            $this->database->insert('user_work', ['user_id' => $userid, 'workplace_id' => $workplace]);
+        }
+
+        return true;
+
+    }
+
     public function updateUser($userid, $data)
     {
         return $this->database->update('users', $data, 'id = ' . $userid);
