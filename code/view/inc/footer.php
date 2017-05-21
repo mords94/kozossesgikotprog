@@ -1,12 +1,11 @@
 <hr>
-
-<footer>
-    <p>&copy; Közösségi háló &ndash; Petrovszki Dániel, Kiss Márton Attila
-        <br>Nem-konvencionális adatbázisok
-        <br>SZTE TTIK
-        <br>2017</br>
-    </p>
-</footer>
+<div class="container">
+    <footer>
+        <p>&copy;2017 Közösségi háló &ndash; Petrovszki Dániel, Kiss Márton Attila</p>
+        <p>Nem-konvencionális adatbázisok
+        <p>SZTE TTIK</p>
+    </footer>
+</div>
 </div>
 
 <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

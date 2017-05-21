@@ -1,20 +1,16 @@
-
-
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
 
-
-
-
-
 .nav-tabs {
     margin-bottom: 15px;
 }
+
 .sign-with {
     margin-top: 25px;
     padding: 20px;
 }
+
 div#OR {
     height: 30px;
     width: 30px;
@@ -36,7 +32,6 @@ div#OR {
     z-index: 0;
 }
 
-
 .panel-body {
     padding: 10px;
     box-sizing: border-box;
@@ -44,31 +39,325 @@ div#OR {
 }
 
 #Profil label {
-    font-size:14px;
+    font-size: 14px;
     font-weight: bold;
 }
 
 .profilkep {
-    display:block;
-    width:auto;
+    display: block;
+    margin:auto;
     height: 200px;
+    z-index: 3;
 }
 
+.profilkep_outer {
+    display: block;
+    position: static !important;
+    min-height: 250px;
+}
 
-.profilkep_friends {
-    display:block;
-    width:auto;
-    height: 200px;
+.profilkep_container {
+    position: relative;
     margin:auto;
 }
 
-.friend_container {
-    border: 1px solid lightgray;
+.profilkep_container .kepfeltoltes {
+    display: none;
+    z-index: 4;
+}
+
+.kepfeltoltes input {
+    display: none;
+}
+
+.profilkep_container:hover .kepfeltoltes, .profilkep_container:active .kepfeltoltes {
+    z-index: 4;
+    display: block;
+    margin: auto;
+    width:150px;
+    margin-top:-80px;
+}
+
+.profilkep_friends {
+    display: block;
+    width: auto;
+    height: 200px;
+    margin: auto;
 }
 
 
 
+.friend_container.pending {
+    background-color: #ffffce;
+}
+
+.friend_container.known {
+    background-color: #bae7b0;
+}
+
+.panel-shadow {
+    box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
+}
+
+.panel-white {
+    border: 1px solid #dddddd;
+}
+
+.panel-white .panel-heading {
+    color: white;
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+.panel-white .panel-footer {
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+.post .post-heading {
+    height: 95px;
+    padding: 20px 15px;
+    background-color: black;
+    color: white;
+}
+
+.post .post-heading .avatar {
+    width: 60px;
+    height: 60px;
+    display: block;
+    margin-right: 15px;
+
+}
+
+.post .post-heading .meta .title {
+    color: white !important;
+    margin-bottom: 0;
+}
+
+.post .post-heading .meta .title a {
+    color: white;
+}
+
+.post .post-heading .meta .title a:hover {
+    color: white;
+}
+
+.post .post-heading .meta .time {
+    margin-top: 8px;
+    color: white;
+}
+
+.post .post-image .image {
+    width: 100%;
+    height: auto;
+}
+
+.post .post-description {
+    padding: 15px;
+}
+
+.post .post-description p {
+    font-size: 14px;
+}
+
+.post .post-description .stats {
+    margin-top: 20px;
+}
+
+.post .post-description .stats .stat-item {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.post .post-description .stats .stat-item .icon {
+    margin-right: 8px;
+}
+
+.post .post-footer {
+    border-top: 1px solid #ddd;
+    padding: 15px;
+}
+
+.post .post-footer .input-group-addon a {
+    color: #454545;
+}
+
+.post .post-footer .comments-list {
+    padding: 0;
+    margin-top: 20px;
+    list-style-type: none;
+}
+
+.post .post-footer .comments-list .comment {
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.post .post-footer .comments-list .comment .avatar {
+    width: 35px;
+    height: 50px;
+}
+
+.post .post-footer .comments-list .comment .comment-heading {
+    display: block;
+    width: 100%;
+}
+
+.post .post-footer .comments-list .comment .comment-heading .user {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline;
+    margin-top: 0;
+    margin-right: 10px;
+}
+
+.post .post-footer .comments-list .comment .comment-heading .time {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 0;
+    display: inline;
+}
+
+.post .post-footer .comments-list .comment .comment-body {
+    margin-left: 50px;
+}
+
+.post .post-footer .comments-list .comment > .comments-list {
+    margin-left: 50px;
+}
 
 
+#photo_container {
+    width:100%;
+    background-color: black;
+}
+#photo {
+    background-color: white;
+    max-height: 500px;
+    max-width: 400px;
+    border: 1px solid black;
+}
 
+/***
+User Profile Sidebar by @keenthemes
+A component of Metronic Theme - #1 Selling Bootstrap 3 Admin Theme in Themeforest: http://j.mp/metronictheme
+Licensed under MIT
+***/
+
+body {
+    background: #F1F3FA;
+}
+
+/* Profile container */
+.profile {
+    margin: 20px 0;
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+    padding: 20px 0 10px 0;
+    background: #fff;
+}
+
+.profile-userpic img {
+    float: none;
+    margin: 0 auto;
+    width: 50%;
+    height: 50%;
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+}
+
+.profile-usertitle {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-usertitle-name {
+    color: #5a7391;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.profile-usertitle-job {
+    text-transform: uppercase;
+    color: #5b9bd1;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.profile-userbuttons {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.profile-userbuttons .btn {
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 15px;
+    margin-right: 5px;
+}
+
+.profile-userbuttons .btn:last-child {
+    margin-right: 0px;
+}
+
+.profile-usermenu {
+    margin-top: 30px;
+}
+
+.profile-usermenu ul li {
+    border-bottom: 1px solid #f0f4f7;
+}
+
+.profile-usermenu ul li:last-child {
+    border-bottom: none;
+}
+
+.profile-usermenu ul li a {
+    color: #93a3b5;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.profile-usermenu ul li a i {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.profile-usermenu ul li a:hover {
+    background-color: #fafcfd;
+    color: #5b9bd1;
+}
+
+.profile-usermenu ul li.active {
+    border-bottom: none;
+}
+
+.profile-usermenu ul li.active a {
+    color: #5b9bd1;
+    background-color: #f6f9fb;
+    border-left: 2px solid #5b9bd1;
+    margin-left: -2px;
+}
+
+/* Profile Content */
+.profile-content {
+    padding: 20px;
+    background: #fff;
+    min-height: 460px;
+}
+
+
+.form-group hr {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eeeeee;
+}
 

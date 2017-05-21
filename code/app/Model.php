@@ -58,8 +58,14 @@ class Model extends BaseModel
         return $this->database->update('users', $data, 'id = ' . $userid);
     }
 
-    public function addProfilePicture($userid, $pictureid) {
-        return $this->database->insert('users', $pictureid, 'id = ' . $userid);
+    public function addProfilePicture($userid, $pictureid)
+    {
+        return $this->database->update('users', ['photo_id' => $pictureid], 'id = ' . $userid);
+    }
+
+    public function uploadPhoto($src, $title = 'Profilkép')
+    {
+        return $this->database->insert('photo', ['title' => $title, 'src' => $src]);
     }
 
     public function register($user)
@@ -73,29 +79,18 @@ class Model extends BaseModel
         return $this->database->insert('user_friend', ['user_id' => $userid, 'friend_id' => $friendid]);
     }
 
-    public function approveFriendRequest($userid, $friendid) {
+    public function approveFriendRequest($userid, $friendid)
+    {
         return $this->database->update(
             'user_friend',
             [
-                'status' => STATUS_APPROVED
+                'status' => STATUS_APPROVED,
             ],
-            'user_id = '.$friendid.' AND friend_id = '.$userid. ' AND status = '.STATUS_WAITING
-            );
-    }
-
-    public function getFriendRequests($userid) {
-        return $this->database->selectCustom(
-            "SELECT DISTINCT id,email,firstname,lastname
-            FROM users
-              JOIN user_friend 
-              ON users.id = user_friend.friend_id 
-              OR users.id = user_friend.user_id
-            WHERE (user_friend.friend_id = $userid) 
-            AND users.id != $userid AND user_friend.status =".STATUS_WAITING.";"
+            'user_id = ' . $friendid . ' AND friend_id = ' . $userid . ' AND status = ' . STATUS_WAITING
         );
     }
 
-    public function getFriends($userid)
+    public function getFriendRequests($userid)
     {
         return $this->database->selectCustom(
             "SELECT DISTINCT id,email,firstname,lastname
@@ -103,12 +98,26 @@ class Model extends BaseModel
               JOIN user_friend 
               ON users.id = user_friend.friend_id 
               OR users.id = user_friend.user_id
-            WHERE (user_friend.user_id = $userid OR user_friend.friend_id = $userid) 
-            AND users.id != $userid AND user_friend.status =".STATUS_APPROVED.";"
+            WHERE (user_friend.friend_id = $userid) 
+            AND users.id != $userid AND user_friend.status =" . STATUS_WAITING . ";"
         );
     }
 
-    public function removeFriendRelation($userid, $friendid) {
+    public function getFriends($userid)
+    {
+        return $this->database->selectCustom(
+            "SELECT DISTINCT id,email,firstname,lastname,photo_id
+            FROM users
+              JOIN user_friend 
+              ON users.id = user_friend.friend_id 
+              OR users.id = user_friend.user_id
+            WHERE (user_friend.user_id = $userid OR user_friend.friend_id = $userid) 
+            AND users.id != $userid AND user_friend.status =" . STATUS_APPROVED . ";"
+        );
+    }
+
+    public function removeFriendRelation($userid, $friendid)
+    {
         $this->database->delete(
             'user_friend',
             "((user_friend.user_id = $userid AND user_friend.friend_id = $friendid) 
@@ -150,6 +159,7 @@ class Model extends BaseModel
             AND club_member.user_id = $userid;"
         );
     }
+
 
     /*Collect the query club's members in an array *
      * @param $clubid int
@@ -326,7 +336,7 @@ class Model extends BaseModel
                   JOIN user_work ON user_work.user_id = users.id
                 WHERE workplace_id IN ($workplaces) 
                   AND users.id != $me 
-                  $friends;"
+                  $friends ORDER BY users.firstname;"
         );
     }
 
@@ -346,7 +356,7 @@ class Model extends BaseModel
               JOIN user_school ON user_school.user_id = users.id
             WHERE school_id IN ($schools) 
               AND users.id != $me 
-                $friends;"
+                $friends ORDER BY users.firstname;"
         );
     }
 
@@ -359,8 +369,35 @@ class Model extends BaseModel
     {
         return $this->database->selectCustom(
             "SELECT users.*
-            FROM users;"
+            FROM users ORDER BY users.firstname;"
         );
     }
 
+    public function getPhoto($id)
+    {
+        return $this->database->selectOneFromWhere('photo', 'id = ' . $id);
+    }
+
+    public function addComment($comment) {
+        return $this->database->insert('comment', $comment);
+    }
+
+    public function getCommentsByPhotoId($id)
+    {
+        $comments = $this->database->selectFromWhere('comment', 'photo_id = ' . $id);
+
+        foreach ($comments as $i => $comment) {
+            $comments[$i]['user'] = $this->user($comment['user_id']);
+            $user = $this->user($comment['user_id']);
+            if ($user['photo_id'] != null) {
+                $photo = $this->getPhoto($user['photo_id']);
+
+            } else {
+                $photo = ['title' => 'Default image', 'src' => '/assets/images/user.png'];
+            }
+            $comments[$i]['user']['photo'] = $photo;
+        }
+
+        return $comments;
+    }
 }

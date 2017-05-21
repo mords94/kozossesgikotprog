@@ -8,10 +8,10 @@ class BaseController
     {
         $this->model = new Model();
     }
-//
-//    public function getModel() {
-//        return $this->model;
-//    }
+
+    public function getModel() {
+        return $this->model;
+    }
 
     public function error(Request $request)
     {

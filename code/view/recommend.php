@@ -1,56 +1,83 @@
 <div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <h2><i class="glyphicon glyphicon-search"></i> Kit ismerhetek?</h2>
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2><i class="glyphicon glyphicon-search"></i> Kit ismerhetek?</h2>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <ul class="nav nav-tabs">
-                <li><a class="active" data-toggle="tab" href="#work"><h3><i class="glyphicon glyphicon-book"></i> Iskola
-                            alapján (<?=count($byschool)?>)
-                        </h3>
-                    </a></li>
-                <li><a data-toggle="tab" href="#school"><h3><i class="glyphicon glyphicon-briefcase"></i> Munkahely
-                            alapján (<?=count($bywork)?>)</h3>
-                    </a></li>
-            </ul>
+    <div class="panel">
+        <div class="panel-body">
 
-            <div class="tab-content">
-                <div id="work" class="tab-pane fade in active">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <?php foreach ($byschool as $friend): ?>
-                                <div class="col-md-4 friend_container text-center">
-                                    <h4><?= $friend['firstname'] ?>&nbsp;<?= $friend['lastname'] ?></h4>
-                                    <img src="/assets/images/user.png" class="profilkep_friends"/>
-                                    <p>Email: <?= $friend['email'] ?></p>
-                                    <p><a class="btn btn-default" href="/profile/<?= $friend['id'] ?>" role="button">Profil</a>
-                                    </p>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav nav-tabs">
+                        <?php foreach ([
+                                           [
+                                               "id"    => "school",
+                                               "icon"  => "book",
+                                               "title" => "Iskola alapján",
+                                               "count" => count($byschool),
+                                           ],
+                                           [
+                                               "id"    => "work",
+                                               "icon"  => "briefcase",
+                                               "title" => "Munkahely alapján",
+                                               "count" => count($bywork),
+                                           ],
+                                           [
+                                               "id"    => "all",
+                                               "icon"  => "user",
+                                               "title" => "Összes felhasználó",
+                                               "count" => count($allusers),
+                                           ],
+                                       ] as $index => $list): ?>
+                            <li><a class="<?= $index == 0 ? "active" : "" ?>" data-toggle="tab"
+                                   href="#<?= $list['id'] ?>">
+                        <span>
+                            <?= !empty($list['icon']) ? '<i class="glyphicon glyphicon-' . $list['icon'] . '"></i>' : '' ?>  <?= $list['title'] ?>
+                            (<?= $list['count'] ?>)
+                        </span>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <div class="tab-content">
+                        <?php foreach (["work" => $bywork, "school" => $byschool, "all" => $allusers] as $id => $var): ?>
+                            <div id="<?= $id ?>" class="tab-pane fade in">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <?php foreach ($var as $friend): ?>
+                                            <div class="col-md-4 friend_container
+                                      <?= $friend['pending'] ? 'pending' : '' ?>
+                                      <?= $friend['known'] ? 'known' : '' ?>
+                                      text-center">
+                                                <h4><?= $friend['firstname'] ?>&nbsp;<?= $friend['lastname'] ?></h4>
+                                                <img src="<?= $friend['photo']['src'] ?>"
+                                                     title="<?= $friend['photo']['title'] ?>"
+                                                     alt="<?= $friend['photo']['title'] ?>" class="profilkep_friends"/>
+                                                <p>Email: <?= $friend['email'] ?></p>
+                                                <p><a class="btn btn-default" href="/profile/<?= $friend['id'] ?>"
+                                                      role="button">Profil</a>
+                                                </p>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
+                            </div>
+                        <?php endforeach; ?>
+
                     </div>
                 </div>
-                <div id="school" class="tab-pane fade">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <?php foreach ($bywork as $friend): ?>
-                                <div class="col-md-4 friend_container text-center">
-                                    <h4><?= $friend['firstname'] ?>&nbsp;<?= $friend['lastname'] ?></h4>
-                                    <img src="/assets/images/user.png" class="profilkep_friends"/>
-                                    <p>Email: <?= $friend['email'] ?></p>
-                                    <p><a class="btn btn-default" href="/profile/<?= $friend['id'] ?>" role="button">Profil</a>
-                                    </p>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 

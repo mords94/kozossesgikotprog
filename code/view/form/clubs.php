@@ -1,38 +1,41 @@
 <div class="container">
-    <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-header">
-                <h3>Klubok</h3>
-            </div>
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3><i class="fa fa-users"></i> Klubok</h3>
 
-            <div class="panel-body">
-                <ul>
-                    <h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
                     <?php foreach ($clubs as $club): ?>
-                        <li>#<?= $club['id'] ?>: <?= $club['name'] ?>
+                        <p>#<?= $club['id'] ?>: <?= $club['name'] ?>
                             <a href="/delete_club/<?= $club['id'] ?>">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </a>
-                        </li>
+                        </p>
                     <?php endforeach; ?>
-                    </h5>
-                </ul>
+                    <form role="form" action="/store_club" method="POST" class="form-horizontal">
+                        <div class="form-group-lg">
+                            <input type="text" class="form-control-static" name="club" placeholder="Klub neve"
+                                   required/>
+                        </div>
 
-
-                <form role="form" action="/store_club" method="POST" class="form-horizontal">
-                    <div class="form-group-lg">
-                        <input type="text" class="form-control-static" name="club" placeholder="Klub neve" required/>
-                    </div>
-
-                    <br>
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        Mentés
-                    </button>
-                </form>
-
+                        <br>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            Mentés
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-
-
     </div>
 </div>
+
+

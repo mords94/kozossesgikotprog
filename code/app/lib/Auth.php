@@ -15,6 +15,12 @@ class Auth extends Singleton
         $this->request = Request::make();
     }
 
+    public function update($key, $value) {
+        $user = $this->getUser();
+        $user[$key] = $value;
+        session('user', $user);
+    }
+
     public function register($user)
     {
         session('user', $user);

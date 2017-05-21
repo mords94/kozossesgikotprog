@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 
 
 /**
@@ -22,7 +23,6 @@
  * Klubokon belül két gomb: klubba belépés vagy elhagyés és saját klubjaim, továbbá új klubok alapítása
  * üzenetek küldése ? nem biztos
  */
-
 class Controller extends BaseController
 {
 
@@ -37,7 +37,7 @@ class Controller extends BaseController
     {
         $this->model->fixSequences();
         $data = [];
-        if(auth()) {
+        if (auth()) {
             $friendRequests = $this->model->getFriendRequests(Auth::user()['id']);
             $data['friendRequests'] = $friendRequests;
         }
@@ -62,7 +62,7 @@ class Controller extends BaseController
     public function register(Request $request)
     {
 
-        if(strlen($request->post('password')) < 5 || strlen($request->post('password')) > 20) {
+        if (strlen($request->post('password')) < 5 || strlen($request->post('password')) > 20) {
             return view("home", [
                 'login_message' => 'A jelszó hossza nem megfelelő!',
             ]);
@@ -84,8 +84,8 @@ class Controller extends BaseController
             'email'     => $request->post('email'),
         ];
 
-        foreach($user as $attr) {
-            if(empty($attr)) {
+        foreach ($user as $attr) {
+            if (empty($attr)) {
                 return view("home", [
                     'login_message' => 'Üresen maradt legalább egy kötelező mező!',
                 ]);
@@ -158,11 +158,11 @@ class Controller extends BaseController
         $allSchool = $this->model->getAllSchools();
         $schools = $this->model->getSchools($user['id']);
 
-        foreach ($allSchool as $index=>$school) {
+        foreach ($allSchool as $index => $school) {
 
             $selected = false;
-            foreach($schools as $userschool) {
-                if($userschool['id'] == $school['id']) {
+            foreach ($schools as $userschool) {
+                if ($userschool['id'] == $school['id']) {
                     $selected = true;
                 }
             }
@@ -173,11 +173,11 @@ class Controller extends BaseController
         $allWorkplace = $this->model->getAllWorkplaces();
         $workplaces = $this->model->getWorkplaces($user['id']);
 
-        foreach ($allWorkplace as $index=>$workplace) {
+        foreach ($allWorkplace as $index => $workplace) {
 
             $selected = false;
-            foreach($workplaces as $userworkplace) {
-                if($userworkplace['id'] == $workplace['id']) {
+            foreach ($workplaces as $userworkplace) {
+                if ($userworkplace['id'] == $workplace['id']) {
                     $selected = true;
                 }
             }
@@ -189,10 +189,10 @@ class Controller extends BaseController
 
         return view('form/profile',
             [
-                'user' => $user,
-                "schools" => $allSchool,
+                'user'       => $user,
+                "schools"    => $allSchool,
                 'workplaces' => $allWorkplace,
-                'message' => $message
+                'message'    => $message,
             ]
         );
     }
@@ -209,14 +209,19 @@ class Controller extends BaseController
         secure();
 
         $user = $this->model->user($request->get(0));
+        if (!$user) {
+            return view('inc/error', [
+                'message' => 'Ezzel az azonositoval nincs felhasználó.',
+            ]);
+        }
         $allSchool = $this->model->getAllSchools();
         $schools = $this->model->getSchools($user['id']);
 
-        foreach ($allSchool as $index=>$school) {
+        foreach ($allSchool as $index => $school) {
 
             $selected = false;
-            foreach($schools as $userschool) {
-                if($userschool['id'] == $school['id']) {
+            foreach ($schools as $userschool) {
+                if ($userschool['id'] == $school['id']) {
                     $selected = true;
                 }
             }
@@ -227,11 +232,11 @@ class Controller extends BaseController
         $allWorkplace = $this->model->getAllWorkplaces();
         $workplaces = $this->model->getWorkplaces($user['id']);
 
-        foreach ($allWorkplace as $index=>$workplace) {
+        foreach ($allWorkplace as $index => $workplace) {
 
             $selected = false;
-            foreach($workplaces as $userworkplace) {
-                if($userworkplace['id'] == $workplace['id']) {
+            foreach ($workplaces as $userworkplace) {
+                if ($userworkplace['id'] == $workplace['id']) {
                     $selected = true;
                 }
             }
@@ -242,31 +247,52 @@ class Controller extends BaseController
         $message = $request->has('message') ? $request->get('message') : '';
 
         $myFriends = $this->model->getFriends(Auth::user()['id']);
-            $known = false;
-            foreach ($myFriends as $friend) {
-                if ($friend['id'] == $user['id']) {
-                    $known = true;
-                    break;
-                }
+        $known = false;
+        foreach ($myFriends as $friend) {
+            if ($friend['id'] == $user['id']) {
+                $known = true;
+                break;
             }
+        }
 
         $requestSent = false;
         $friendRequests = $this->model->getFriendRequests($user['id']);
         foreach ($friendRequests as $friend) {
-            if($friend['id'] == Auth::user()['id']) {
+            if ($friend['id'] == Auth::user()['id']) {
                 $requestSent = true;
                 break;
             }
         }
 
+        $requestGot = false;
+        $friendRequestsBack = $this->model->getFriendRequests(Auth::user()['id']);
+        foreach ($friendRequestsBack as $friend) {
+            if ($friend['id'] == $user['id']) {
+                $requestGot = true;
+                break;
+            }
+        }
+
+
+        if ($user['photo_id'] != null) {
+            $photo = $this->model->getPhoto($user['photo_id']);
+        } else {
+            $photo = ['title' => 'Default image', 'src' => '/assets/images/user.png'];
+        }
+
+
+
         return view('profile',
             [
-                'user' => $user,
-                "schools" => $allSchool,
-                "workplaces" => $allWorkplace,
-                'message' => $message,
-                'known'   => $known,
+                'photo'       => $photo,
+                'user'        => $user,
+                "schools"     => $allSchool,
+                "workplaces"  => $allWorkplace,
+                'message'     => $message,
+                'known'       => $known,
                 'requestSent' => $requestSent,
+                'requestGot'  => $requestGot,
+                'work'        => $request->has('work'),
             ]
         );
     }
@@ -291,49 +317,112 @@ class Controller extends BaseController
 
 
         $schools = $request->post('schools');
-        $workplaces=$request->post( 'workplaces');
+        $workplaces = $request->post('workplaces');
 
-        if(!$this->model->updateUser($userid, $data)) {
+        if (!$this->model->updateUser($userid, $data)) {
             return view('inc/error', [
-                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználót.'
+                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználót.',
             ]);
         }
 
-        if(!$this->model->updateUserSchool($userid, $schools)) {
+        if (!$this->model->updateUserSchool($userid, $schools)) {
             return view('inc/error', [
-                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó iskoláit.'
+                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó iskoláit.',
             ]);
         }
 
-        if(!$this->model->updateUserWorkplace($userid, $workplaces)) {
+        if (!$this->model->updateUserWorkplace($userid, $workplaces)) {
             return view('inc/error', [
-                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó munkahelyeit.'
+                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó munkahelyeit.',
             ]);
         }
 
         redirect('/ownprofile',
             [
-                'message' => 'Sikerült elmenteni.'
-             ]
+                'message' => 'Sikerült elmenteni.',
+            ]
         );
     }
 
+    /**
+     * Action /comment/{userid}
+     *
+     * @param Request $request
+     * @return string|View
+     */
+    public function comment(Request $request) {
+        if($request->has('id') && $request->has('hozzaszolas')) {
+            $id = $request->get('id');
+            $comment = [
+                'description' => html_entity_decode($request->post('hozzaszolas')),
+                'photo_id' => $request->post('photo'),
+                'user_id' => Auth::user()['id'],
+            ];
+        } else {
+            return "HIBA";
+        }
+
+        if(!empty($comment['description'])) {
+            if($this->model->addComment($comment)) {
+                redirect('/photo/'.$id);
+            }
+        } else {
+            return "ÜRES";
+        }
+
+        redirect('/photo/'.$id);
+    }
+
+    /*
+     * Action: /photo
+     */
     public function photo(Request $request)
     {
         secure();
 
+        $user = Auth::user();
 
-        if(!$this->model->addProfilePicture($userid, $photoid)) {
-            return view('inc/error', [
-                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a profilképet.'
-            ]);
+        if ($request->has(0)) {
+            $user = $this->model->user($request->get(0));
+        } else {
+            return "HIBA";
         }
+
+
+
+        $photo = $this->model->getPhoto($user['photo_id']);
+
+        $comments = $this->model->getCommentsByPhotoId($user['photo_id']);
+
         return view('photo',
             [
-                'user' => $userid,
-                'photo_id' => $photoid,
+                'photo'    => $photo,
+                'comments' => $comments,
+                'user'     => $user,
             ]
         );
+    }
+
+    public function upload_picture(Request $request)
+    {
+        secure();
+
+        $src = $request->post('photo');
+        $userid = Auth::user()['id'];
+
+        if (!$this->model->uploadPhoto($src, 'Jelölljetekkh!!')) {
+            return "INTERNAL_ERROR";
+        }
+        $newimage = $this->model->getDatabase()->lastInsertId();
+        if ($this->model->addProfilePicture($userid, $newimage)) {
+            Auth::getInstance()->update('photo_id', $newimage);
+
+            return "SUCCESS";
+        } else {
+            return "INTERNAL_ERROR";
+        }
+
+
     }
 
     /**
@@ -359,6 +448,14 @@ class Controller extends BaseController
 
         $friends = $this->model->getFriends($user);
 
+        foreach ($friends as $index => $friend) {
+            if ($friend['photo_id'] != null) {
+                $friends[$index]['photo'] = $this->model->getPhoto($friend['photo_id']);
+            } else {
+                $friends[$index]['photo'] = ['title' => 'Default image', 'src' => '/assets/images/user.png'];
+            }
+        }
+
         return view(
             'friends',
             [
@@ -378,14 +475,14 @@ class Controller extends BaseController
     public function addFriend(Request $request)
     {
         secure();
+        $userid = Auth::user()['id'];
 
         if ($request->has('friend')) {
             $friendid = $request->post('friend');
-            $userid = Auth::user()['id'];
 
             if ($userid == $friendid) {
                 return view('inc/error', [
-                    'message' => 'Magadat nem jelölheted meg...'
+                    'message' => 'Magadat nem jelölheted meg...',
                 ])->inc(false);
             }
 
@@ -393,21 +490,22 @@ class Controller extends BaseController
             $relationship = $this->model->getDatabase()->selectFromWhere(
                 'user_friend',
                 "(user_id = $userid AND friend_id = $friendid) OR (user_id = $friendid AND friend_id = $userid)"
-            ,'');
+                , '');
 
             // if not exists insert one
             if (count($relationship) == 0) {
                 if (!$this->model->sendFriendRequest($userid, $friendid)) {
                     return view('inc/error', [
-                        'message' => 'Sikertelen jelölés! Adatbázis hiba!'
+                        'message' => 'Sikertelen jelölés! Adatbázis hiba!',
                     ])->inc(false);
                 } else {
-                    redirect('/profile/'.$friendid);
+                    redirect('/profile/' . $friendid);
+
                     return;
                 }
             } else {
                 return view('inc/error', [
-                    'message' => 'Már barátok vagytok/Már barátnak jelölted.'
+                    'message' => 'Már barátok vagytok/Már barátnak jelölted.',
                 ])->inc(false);
             }
         }
@@ -420,16 +518,18 @@ class Controller extends BaseController
      * @param Request
      * @return string
      */
-    public function deleteFriend(Request $request) {
-        if(!$request->has('friend')) return "HTTP 422: BAD REQUEST. Hiba nincs friend posztolva.";
+    public function deleteFriend(Request $request)
+    {
+        if (!$request->has('friend')) return "HTTP 422: BAD REQUEST. Hiba nincs friend posztolva.";
         $this->model->removeFriendRelation(Auth::user()['id'], $request->post('friend'));
 
-        redirect('/profile/'.$request->post('friend'));
+        redirect('/profile/' . $request->post('friend'));
     }
 
-    public function approve(Request $request) {
+    public function approve(Request $request)
+    {
         secure();
-        if($request->has('friend')) {
+        if ($request->has('friend')) {
             $this->model->approveFriendRequest(Auth::user()['id'], $request->post('friend'));
         }
 
@@ -456,16 +556,16 @@ class Controller extends BaseController
 
         $friends = $this->model->getFriends($userid);
         $friendIds = [];
-        foreach($friends as $friend) {
+        foreach ($friends as $friend) {
             $friendIds[] = $friend['id'];
         }
         $schoolIds = [];
-        foreach($schools as $school) {
-            $schoolIds[] =  $school['id'];
+        foreach ($schools as $school) {
+            $schoolIds[] = $school['id'];
         }
 
         $workIds = [];
-        foreach($workplaces as $work) {
+        foreach ($workplaces as $work) {
             $workIds[] = $work['id'];
         }
 
@@ -473,18 +573,50 @@ class Controller extends BaseController
 
         $bywork = [];
 
-
-        if(!empty($schoolIds)) {
+        if (!empty($schoolIds)) {
             $byschool = $this->model->recommendFriendBasedOnSchool($userid, $friendIds, $schoolIds);
+            foreach ($byschool as $index => $friend) {
+                $byschool[$index]['known'] = services()->userKnownRelationShip($userid, $friend['id']);
+                $byschool[$index]['pending'] = services()->userPendingRelationShip($userid, $friend['id']);
+                if ($friend['photo_id'] != null) {
+                    $byschool[$index]['photo'] = $this->model->getPhoto($friend['photo_id']);
+                } else {
+                    $byschool[$index]['photo'] = ['title' => 'Default image', 'src' => '/assets/images/user.png'];
+                }
+            }
+
         }
-        if(!empty($workIds)) {
+        if (!empty($workIds)) {
             $bywork = $this->model->recommendFriendBasedOnWorkplace($userid, $friendIds, $workIds);
+            foreach ($bywork as $index => $friend) {
+                $bywork[$index]['known'] = services()->userKnownRelationShip($userid, $friend['id']);
+                $bywork[$index]['pending'] = services()->userPendingRelationShip($userid, $friend['id']);
+                if ($friend['photo_id'] != null) {
+                    $bywork[$index]['photo'] = $this->model->getPhoto($friend['photo_id']);
+                } else {
+                    $bywork[$index]['photo'] = ['title' => 'Default image', 'src' => '/assets/images/user.png'];
+                }
+            }
         }
+
+        $all = $this->model->getAllUsers();
+
+        foreach ($all as $index => $friend) {
+            $all[$index]['known'] = services()->userKnownRelationShip($userid, $friend['id']);
+            $all[$index]['pending'] = services()->userPendingRelationShip($userid, $friend['id']);
+            if ($friend['photo_id'] != null) {
+                $all[$index]['photo'] = $this->model->getPhoto($friend['photo_id']);
+            } else {
+                $all[$index]['photo'] = ['title' => 'Default image', 'src' => '/assets/images/user.png'];
+            }
+        }
+
 
         return view('recommend',
             [
-                'bywork' => $bywork,
+                'bywork'   => $bywork,
                 'byschool' => $byschool,
+                'allusers' => $all,
             ]
         );
     }
@@ -503,7 +635,7 @@ class Controller extends BaseController
         $clubs = $this->model->getAllClubs();
 
         return view("form/clubs", [
-            'clubs' => $clubs
+            'clubs' => $clubs,
         ]);
     }
 
@@ -538,18 +670,18 @@ class Controller extends BaseController
 
         $club = $request->post('club');
 
-        if($this->model->getClubsByName($club)) {
+        if ($this->model->getClubsByName($club)) {
             return view('inc/error', [
-                'message' => 'Van már ilyen nevű klub.'
+                'message' => 'Van már ilyen nevű klub.',
             ]);
         }
         $result = $this->model->saveClub($club);
 
-        if($result) {
+        if ($result) {
             redirect('/newclub');
         } else {
             return view('inc/error', [
-                'message' => 'Nem sikerült elmenteni a klubot. Adatbázis hiba.'
+                'message' => 'Nem sikerült elmenteni a klubot. Adatbázis hiba.',
             ]);
         }
     }
@@ -568,7 +700,7 @@ class Controller extends BaseController
         $schools = $this->model->getAllSchools();
 
         return view("form/school", [
-            'schools' => $schools
+            'schools' => $schools,
         ]);
     }
 
@@ -603,18 +735,18 @@ class Controller extends BaseController
 
         $school = $request->post('school');
 
-        if($this->model->getSchoolByName($school)) {
+        if ($this->model->getSchoolByName($school)) {
             return view('inc/error', [
-                'message' => 'Van már ilyen iskola.'
+                'message' => 'Van már ilyen iskola.',
             ]);
         }
         $result = $this->model->saveSchool($school);
 
-        if($result) {
+        if ($result) {
             redirect('/newschool');
         } else {
             return view('inc/error', [
-                'message' => 'Nem sikerült elmenteni az iskolát. Adatbázis hiba.'
+                'message' => 'Nem sikerült elmenteni az iskolát. Adatbázis hiba.',
             ]);
         }
     }
@@ -626,7 +758,7 @@ class Controller extends BaseController
         $workplaces = $this->model->getAllWorkplaces();
 
         return view("form/workplace", [
-            'workplaces' => $workplaces
+            'workplaces' => $workplaces,
         ]);
     }
 
@@ -643,18 +775,18 @@ class Controller extends BaseController
 
         $workplace = $request->post('workplace');
 
-        if($this->model->getWorkplaceByName($workplace)) {
+        if ($this->model->getWorkplaceByName($workplace)) {
             return view('inc/error', [
-                'message' => 'Van már ilyen munkahely.'
+                'message' => 'Van már ilyen munkahely.',
             ]);
         }
         $result = $this->model->saveWorkplace($workplace);
 
-        if($result) {
+        if ($result) {
             redirect('/newworkplace');
         } else {
             return view('inc/error', [
-                'message' => 'Nem sikerült elmenteni a munkahelyet. Adatbázis hiba.'
+                'message' => 'Nem sikerült elmenteni a munkahelyet. Adatbázis hiba.',
             ]);
         }
     }
@@ -664,7 +796,7 @@ class Controller extends BaseController
         secure();
 
         $workplacesID = $request->get(0);
-        $this->model-> deleteWorkplace($workplacesID);
+        $this->model->deleteWorkplace($workplacesID);
 
         redirect('/newworkplace');
 
@@ -693,7 +825,7 @@ class Controller extends BaseController
 
             // if not exists insert one
             if (count($relationship) == 0) {
-                if ($this->model->addMemberToClub($userid,$clubid)) {
+                if ($this->model->addMemberToClub($userid, $clubid)) {
                     redirect('/club_member', ['message' => 'Sikeresen csatlakoztál a klubhoz!']);
                 } else {
                     redirect('/club_member', ['message' => 'Sikertelen csatlakozás! Adatbázis hiba!']);
@@ -727,7 +859,7 @@ class Controller extends BaseController
 
             // if not exists insert one
             if (count($relationship) == 0) {
-                if ($this->model->addUserToSchool($schoolid,$userid)) {
+                if ($this->model->addUserToSchool($schoolid, $userid)) {
                     redirect('/user_school', ['message' => 'Sikeresen felvetted az iskolát!']);
                 } else {
                     redirect('/user_school', ['message' => 'Sikertelen felvétel! Adatbázis hiba!']);
@@ -761,7 +893,7 @@ class Controller extends BaseController
 
             // if not exists insert one
             if (count($relationship) == 0) {
-                if ($this->model->addUserToWorkplace($workplaceid,$userid)) {
+                if ($this->model->addUserToWorkplace($workplaceid, $userid)) {
                     redirect('/user_workplace', ['message' => 'Sikeresen felvetted a munkahelyet!']);
                 } else {
                     redirect('/user_workplace', ['message' => 'Sikertelen felvétel! Adatbázis hiba!']);
@@ -769,6 +901,82 @@ class Controller extends BaseController
             } else {
                 redirect('/user_workplace', ['message' => 'Már felvetted a munkahelyet...']);
             }
+        }
+    }
+
+
+    public function generateUsers(Request $request)
+    {
+        $faker = Faker\Factory::create();
+        $count = $request->get(0) ? $request->get(0) : 1;
+        for ($i = 0; $i < $count; $i++) {
+            echo "INSERT INTO public.users (email, firstname, lastname, password, gender, birthdate, photo_id
+              ) VALUES (
+              '$faker->email', 
+              '$faker->firstname', 
+              '" . str_replace("'", '', $faker->lastname) . "', 
+              '" . md5(12345678) . "', 
+              '" . (int)$faker->boolean . "', 
+              '" . $faker->dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = date_default_timezone_get())->format("Y-m-d") . "', 
+              null);";
+        }
+    }
+
+    public function generateWorkplaces(Request $request)
+    {
+        $faker = Faker\Factory::create();
+        $count = $request->get(0) ? $request->get(0) : 1;
+        for ($i = 0; $i < $count; $i++) {
+            echo "INSERT INTO public.workplace (name) VALUES ('" . str_replace("'", "", $faker->company) . "');";
+        }
+    }
+
+    public function assignUsersToWorks(Request $request)
+    {
+        $faker = Faker\Factory::create();
+
+
+        $workplaces = $this->model->getAllWorkplaces();
+        $users = $this->model->getAllUsers();
+
+        foreach ($users as $user) {
+            shuffle($workplaces);
+            $rand = rand(1970, 2000);
+            $date = Carbon::createFromDate($rand, rand(1, 12), rand(1, 28));
+            $dateTo = Carbon::createFromDate($rand + rand(1, 10), rand(1, 12), rand(1, 28));
+
+            echo "INSERT INTO public.user_work (\"from\", \"to\", \"user_id\", \"workplace_id\"
+                  ) VALUES ( 
+                  '" . $date->toDateString() . "',
+                  '" . $dateTo->toDateString() . "',
+                  '" . $user['id'] . "',
+                  '" . $workplaces[0]['id'] . "');";
+            echo "<br>";
+        }
+    }
+
+    public function assignUsersToSchools(Request $request)
+    {
+        $faker = Faker\Factory::create();
+
+
+        $schools = $this->model->getAllSchools();
+        $users = $this->model->getAllUsers();
+
+        foreach ($users as $user) {
+            shuffle($schools);
+            $rand = rand(1970, 2000);
+            $date = Carbon::createFromDate($rand, rand(1, 12), rand(1, 28));
+            $dateTo = Carbon::createFromDate($rand + rand(1, 10), rand(1, 12), rand(1, 28));
+
+            echo "INSERT INTO public.user_school (\"from\", \"to\", \"user_id\", \"school_id\"
+                  ) VALUES ( 
+                  '" . $date->toDateString() . "',
+                  '" . $dateTo->toDateString() . "',
+                  '" . $user['id'] . "',
+                  '" . $schools[0]['id'] . "');";
+            echo "<br>";
+
         }
     }
 
