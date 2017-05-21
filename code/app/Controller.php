@@ -710,4 +710,20 @@ class Controller extends BaseController
         }
     }
 
+
+    public function generateUsers() {
+        $faker = Faker\Factory::create();
+        for($i=0;$i<100;$i++) {
+            echo "INSERT INTO public.users (email, firstname, lastname, password, gender, birthdate, photo_id
+              ) VALUES (
+              '$faker->email', 
+              '$faker->firstname', 
+              '".str_replace("'", '', $faker->lastname)."', 
+              '" . md5(12345678) . "', 
+              '" . (int)$faker->boolean . "', 
+              '" . $faker->dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = date_default_timezone_get())->format("Y-m-d") . "', 
+              null);";
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 <?php
 
+require_once 'vendor/autoload.php';
 require_once 'app/lib/Singleton.php';
 require_once 'app/lib/PropertyTrait.php';
 require_once 'app/lib/Session.php';
