@@ -210,6 +210,11 @@ class Controller extends BaseController
         secure();
 
         $user = $this->model->user($request->get(0));
+        if(!$user) {
+            return view('inc/error', [
+                'message' => 'Ezzel az azonositoval nincs felhasználó.'
+            ]);
+        }
         $allSchool = $this->model->getAllSchools();
         $schools = $this->model->getSchools($user['id']);
 
@@ -793,7 +798,14 @@ class Controller extends BaseController
         }
     }
 
-    // public function generateWorkplaces(Request $request) {
+    public function generateWorkplaces(Request $request)
+    {
+        $faker = Faker\Factory::create();
+        $count = $request->get(0) ? $request->get(0) : 1;
+        for ($i = 0; $i < $count; $i++) {
+            echo "INSERT INTO public.workplace (name) VALUES ('".str_replace("'", "", $faker->company)."');";
+        }
+    }
 
     public function assignUsersToWorks(Request $request) {
         $faker = Faker\Factory::create();
@@ -808,13 +820,38 @@ class Controller extends BaseController
             $date = Carbon::createFromDate($rand, rand(1,12), rand(1,28));
             $dateTo = Carbon::createFromDate($rand+rand(1,10), rand(1,12), rand(1,28));
 
-            echo "INSERT INTO public.user_work (from, to, user_id, workplace_id
+            echo "INSERT INTO public.user_work (\"from\", \"to\", \"user_id\", \"workplace_id\"
                   ) VALUES ( 
                   '" . $date->toDateString() . "',
                   '" . $dateTo->toDateString()  . "',
                   '".$user['id']."',
-                  '".$workplaces[0]['id']."'";
+                  '".$workplaces[0]['id']."');";
             echo "<br>";
+        }
+    }
+
+    public function assignUsersToSchools(Request $request)
+    {
+        $faker = Faker\Factory::create();
+
+
+        $schools = $this->model->getAllSchools();
+        $users = $this->model->getAllUsers();
+
+        foreach ($users as $user) {
+            shuffle($schools);
+            $rand = rand(1970, 2000);
+            $date = Carbon::createFromDate($rand, rand(1, 12), rand(1, 28));
+            $dateTo = Carbon::createFromDate($rand + rand(1, 10), rand(1, 12), rand(1, 28));
+
+            echo "INSERT INTO public.user_school (\"from\", \"to\", \"user_id\", \"school_id\"
+                  ) VALUES ( 
+                  '" . $date->toDateString() . "',
+                  '" . $dateTo->toDateString() . "',
+                  '" . $user['id'] . "',
+                  '" . $schools[0]['id'] . "');";
+            echo "<br>";
+
         }
     }
 

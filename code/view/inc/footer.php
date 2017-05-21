@@ -1,5 +1,4 @@
-<hr>
-
+<div class="container"><hr>
 <footer>
     <p>&copy; Közösségi háló &ndash; Petrovszki Dániel, Kiss Márton Attila
         <br>Nem-konvencionális adatbázisok
@@ -7,6 +6,7 @@
         <br>2017</br>
     </p>
 </footer>
+</div>
 </div>
 
 <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

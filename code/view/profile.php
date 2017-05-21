@@ -6,8 +6,8 @@
 
     <h3><?= $user['lastname'] ?> <?= $user['firstname'] ?>
         <a href="/friends/<?= $user['id'] ?>" class="btn btn-default">
-            <i class="glyphicon glyphicon-user"> </i> Barátai
-            <?= ($user['id'] == Auth::user()['id']) ? 'm' : '' ?>
+            <i class="glyphicon glyphicon-user"> </i>
+            <?= ($user['id'] == Auth::user()['id']) ? 'Barátaim' : 'Barátai' ?>
         </a>
         <?php if ($user['id'] == Auth::user()['id']): ?>
             <a href="/ownprofile" class="btn btn-info"><i class="glyphicon glyphicon-pencil"></i> Szerkesztés</a>
