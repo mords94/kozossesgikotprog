@@ -389,9 +389,11 @@ class Controller extends BaseController
         }
 
 
-
+        if(!$user['photo_id'])  redirect('/profile/'.$user['id']);
         $photo = $this->model->getPhoto($user['photo_id']);
-
+            if(!$photo) {
+                redirect('/profile/'.$user['id']);
+            }
         $comments = $this->model->getCommentsByPhotoId($user['photo_id']);
 
         return view('photo',
