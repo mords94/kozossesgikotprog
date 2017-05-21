@@ -45,10 +45,7 @@ div#OR {
 
 .profilkep {
     display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: auto;
+    margin:auto;
     height: 200px;
     z-index: 3;
 }
@@ -61,12 +58,10 @@ div#OR {
 
 .profilkep_container {
     position: relative;
+    margin:auto;
 }
 
 .profilkep_container .kepfeltoltes {
-    position: absolute;
-    top: 40px;
-    left: 40px;
     display: none;
     z-index: 4;
 }
@@ -76,11 +71,11 @@ div#OR {
 }
 
 .profilkep_container:hover .kepfeltoltes, .profilkep_container:active .kepfeltoltes {
-    position: absolute;
-    top: 40px;
-    left: 40px;
     z-index: 4;
     display: block;
+    margin: auto;
+    width:150px;
+    margin-top:-80px;
 }
 
 .profilkep_friends {
@@ -131,6 +126,7 @@ div#OR {
     height: 60px;
     display: block;
     margin-right: 15px;
+
 }
 
 .post .post-heading .meta .title {
@@ -200,7 +196,7 @@ div#OR {
 
 .post .post-footer .comments-list .comment .avatar {
     width: 35px;
-    height: 35px;
+    height: 50px;
 }
 
 .post .post-footer .comments-list .comment .comment-heading {

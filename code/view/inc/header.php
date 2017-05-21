@@ -18,6 +18,7 @@
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/select2.min.css">
     <style>
         body {
             padding-top: 50px;
@@ -29,6 +30,7 @@
 
     <script src="/assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     <script src="/assets/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src="/assets/js/vendor/select2.full.min.js"></script>
 </head>
 <body style="padding:0; margin:0;">
 <!--[if lt IE 8]>

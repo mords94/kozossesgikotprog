@@ -380,14 +380,15 @@ class Controller extends BaseController
     {
         secure();
 
+        $user = Auth::user();
 
         if ($request->has(0)) {
-            $id = $request->get(0);
+            $user = $this->model->user($request->get(0));
         } else {
             return "HIBA";
         }
 
-        $user = Auth::user();
+
 
         $photo = $this->model->getPhoto($user['photo_id']);
 
