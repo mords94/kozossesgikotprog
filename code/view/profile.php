@@ -51,7 +51,7 @@
             Nem</label>
         <div class="col-sm-12">
             <?php
-            $gender = [1 => 'Férfi', 2 => 'Nő'];
+            $gender = [0 => 'Férfi', 1 => 'Nő'];
             echo $gender[$user['gender']];
             ?>
         </div>

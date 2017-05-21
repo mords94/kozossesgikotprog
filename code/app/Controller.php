@@ -481,10 +481,13 @@ class Controller extends BaseController
             $bywork = $this->model->recommendFriendBasedOnWorkplace($userid, $friendIds, $workIds);
         }
 
+        $all = $this->model->getAllUsers();
+
         return view('recommend',
             [
                 'bywork' => $bywork,
                 'byschool' => $byschool,
+                'allusers' => $all,
             ]
         );
     }
@@ -786,6 +789,30 @@ class Controller extends BaseController
               '" . (int)$faker->boolean . "', 
               '" . $faker->dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = date_default_timezone_get())->format("Y-m-d") . "', 
               null);";
+        }
+    }
+
+    // public function generateWorkplaces(Request $request) {
+
+    public function assignUsersToWorks(Request $request) {
+        $faker = Faker\Factory::create();
+
+
+        $workplaces = $this->model->getAllWorkplaces();
+        $users = $this->model->getAllUsers();
+
+        foreach($users as $user) {
+            shuffle($workplaces);
+            $rand = rand(1,15);
+            $date = $faker->dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = date_default_timezone_get());
+            $dateTo = $date->modify("+$rand");
+            echo "INSERT INTO public.user_work (from, to, user_id, workplace_id
+                  ) VALUES ( 
+                  '" . $date->format("Y-m-d") . "',
+                  '" . $dateTo->format("Y-m-d")  . "',
+                  '".$user['id']."',
+                  '".$workplaces[0]['id']."'";
+            echo "<br>";
         }
     }
 
