@@ -14,6 +14,13 @@
  * Klubok ajánlása, ahol van közös ismerős
  * Ismerősök ajánlása munkahely, vagy iskola alapján
  * Üzenetek küldése, fogadása
+ *
+ *
+ * FONTOS:
+ * Fényképek feltöltése, kommentelése
+ * A profilképem fül hasonló a profilomhoz, ott lehet szerkeszteni, kommentelni
+ * Klubokon belül két gomb: klubba belépés vagy elhagyés és saját klubjaim, továbbá új klubok alapítása
+ * üzenetek küldése ? nem biztos
  */
 
 class Controller extends BaseController
@@ -163,12 +170,28 @@ class Controller extends BaseController
             $allSchool[$index]['selected'] = $selected;
         }
 
+        $allWorkplace = $this->model->getAllWorkplaces();
+        $workplaces = $this->model->getWorkplaces($user['id']);
+
+        foreach ($allWorkplace as $index=>$workplace) {
+
+            $selected = false;
+            foreach($workplaces as $userworkplace) {
+                if($userworkplace['id'] == $workplace['id']) {
+                    $selected = true;
+                }
+            }
+
+            $allWorkplace[$index]['selected'] = $selected;
+        }
+
         $message = $request->has('message') ? $request->get('message') : '';
 
         return view('form/profile',
             [
                 'user' => $user,
                 "schools" => $allSchool,
+                'workplaces' => $allWorkplace,
                 'message' => $message
             ]
         );
@@ -201,16 +224,31 @@ class Controller extends BaseController
             $allSchool[$index]['selected'] = $selected;
         }
 
+        $allWorkplace = $this->model->getAllWorkplaces();
+        $workplaces = $this->model->getWorkplaces($user['id']);
+
+        foreach ($allWorkplace as $index=>$workplace) {
+
+            $selected = false;
+            foreach($workplaces as $userworkplace) {
+                if($userworkplace['id'] == $workplace['id']) {
+                    $selected = true;
+                }
+            }
+
+            $allWorkplace[$index]['selected'] = $selected;
+        }
+
         $message = $request->has('message') ? $request->get('message') : '';
 
         $myFriends = $this->model->getFriends(Auth::user()['id']);
-        $known = false;
-        foreach ($myFriends as $friend) {
-            if($friend['id'] == $user['id']) {
-                $known = true;
-                break;
+            $known = false;
+            foreach ($myFriends as $friend) {
+                if ($friend['id'] == $user['id']) {
+                    $known = true;
+                    break;
+                }
             }
-        }
 
         $requestSent = false;
         $friendRequests = $this->model->getFriendRequests($user['id']);
@@ -225,6 +263,7 @@ class Controller extends BaseController
             [
                 'user' => $user,
                 "schools" => $allSchool,
+                "workplaces" => $allWorkplace,
                 'message' => $message,
                 'known'   => $known,
                 'requestSent' => $requestSent,
@@ -252,6 +291,7 @@ class Controller extends BaseController
 
 
         $schools = $request->post('schools');
+        $workplaces=$request->post( 'workplaces');
 
         if(!$this->model->updateUser($userid, $data)) {
             return view('inc/error', [
@@ -259,11 +299,15 @@ class Controller extends BaseController
             ]);
         }
 
-
-
         if(!$this->model->updateUserSchool($userid, $schools)) {
             return view('inc/error', [
                 'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó iskoláit.'
+            ]);
+        }
+
+        if(!$this->model->updateUserWorkplace($userid, $workplaces)) {
+            return view('inc/error', [
+                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó munkahelyeit.'
             ]);
         }
 
@@ -271,6 +315,24 @@ class Controller extends BaseController
             [
                 'message' => 'Sikerült elmenteni.'
              ]
+        );
+    }
+
+    public function photo(Request $request)
+    {
+        secure();
+
+
+        if(!$this->model->addProfilePicture($userid, $photoid)) {
+            return view('inc/error', [
+                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a profilképet.'
+            ]);
+        }
+        return view('photo',
+            [
+                'user' => $userid,
+                'photo_id' => $photoid,
+            ]
         );
     }
 

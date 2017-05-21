@@ -63,6 +63,21 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="workplaces" class="col-sm-2 control-label">
+                Munkahelyek</label>
+            <div class="col-sm-10">
+                <select name="workplaces[]" multiple>
+                    <?php foreach($workplaces as $workplace):?>
+
+                        <option value="<?=$workplace['id']?>" <?=$workplace['selected'] ? 'selected' : ''?>>
+                            <?=$workplace['name']?></option>
+
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-sm-2">
             </div>
