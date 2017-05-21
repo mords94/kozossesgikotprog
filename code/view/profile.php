@@ -9,15 +9,16 @@ Licensed under MIT
         <div class="col-md-3">
             <div class="profile-sidebar">
 
-                <div class="profilkep_outer text-center">
+                <div class="profilkep_outer text-center" <?=Auth::user()['id'] != $user['id']? 'style="cursor:pointer;" onclick="window.location.href=\'/photo/'.$user['id'].'\'"' : ''?>>
                     <div class="profilkep_container text-center">
                         <img src="<?= $photo['src'] ?>" title="<?= $photo['title'] ?>" alt="<?= $photo['title'] ?>"
                              class="profilkep"/>
-                        <label class="kepfeltoltes btn btn-success">
+                       <?php if(Auth::user()['id'] == $user['id']): ?> <label class="kepfeltoltes btn btn-success">
                             Kép feltöltés
                             <input type="file" accept="image/*"/>
                             <input type="hidden"/>
                         </label>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="profile-usertitle">
