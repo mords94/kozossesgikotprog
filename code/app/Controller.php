@@ -773,9 +773,10 @@ class Controller extends BaseController
     }
 
 
-    public function generateUsers() {
+    public function generateUsers(Request $request) {
         $faker = Faker\Factory::create();
-        for($i=0;$i<100;$i++) {
+        $count = $request->get(0) ? $request->get(0) : 1;
+        for($i=0;$i<$count;$i++) {
             echo "INSERT INTO public.users (email, firstname, lastname, password, gender, birthdate, photo_id
               ) VALUES (
               '$faker->email', 
