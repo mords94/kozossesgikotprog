@@ -21,7 +21,7 @@
                                type="text">
                         <span class="input-group-addon">
                         <a href="#" id="kuld" class="btn btn-primary" style="color: white;"><i
-                                    class="glyphicon glyphicon-send"></i>&emsp;Beszólok</a>
+                                    class="glyphicon glyphicon-send"></i>&emsp;Hozzászólok</a>
                     </span>
                     </div>
                 </form>

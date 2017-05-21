@@ -3,7 +3,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3><i class="fa fa-graduation-cap"></i> Iskolák</h3>
+                    <h3><i class="fa fa-university"></i> Iskolák</h3>
 
                 </div>
             </div>

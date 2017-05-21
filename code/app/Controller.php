@@ -412,7 +412,7 @@ class Controller extends BaseController
         $src = $request->post('photo');
         $userid = Auth::user()['id'];
 
-        if (!$this->model->uploadPhoto($src, 'Jelölljetekkh!!')) {
+        if (!$this->model->uploadPhoto($src, 'A te profilképed')) {
             return "INTERNAL_ERROR";
         }
         $newimage = $this->model->getDatabase()->lastInsertId();
