@@ -14,7 +14,7 @@
                                 </a>
                             </div>
                             <div class="col-md-12">
-                                <a href="/photo"><h5><i class="fa fa-picture-o"></i> Profilképem</h5></a>
+                                <a href="/photo/<?=Auth::user('id')?>"><h5><i class="fa fa-picture-o"></i> Profilképem</h5></a>
                             </div>
                             <div class="col-md-12">
                                 <a href="/newschool"><h5><i class="fa fa-university"></i> Iskolák</h5></a>
