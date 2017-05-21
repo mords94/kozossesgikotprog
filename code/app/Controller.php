@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 
 
 /**
@@ -803,13 +804,14 @@ class Controller extends BaseController
 
         foreach($users as $user) {
             shuffle($workplaces);
-            $rand = rand(1,15);
-            $date = $faker->dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = date_default_timezone_get());
-            $dateTo = $date->modify("+$rand");
+            $rand = rand(1970,2000);
+            $date = Carbon::createFromDate($rand, rand(1,12), rand(1,28));
+            $dateTo = Carbon::createFromDate($rand+rand(1,10), rand(1,12), rand(1,28));
+
             echo "INSERT INTO public.user_work (from, to, user_id, workplace_id
                   ) VALUES ( 
-                  '" . $date->format("Y-m-d") . "',
-                  '" . $dateTo->format("Y-m-d")  . "',
+                  '" . $date->toDateString() . "',
+                  '" . $dateTo->toDateString()  . "',
                   '".$user['id']."',
                   '".$workplaces[0]['id']."'";
             echo "<br>";
