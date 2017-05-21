@@ -23,7 +23,7 @@ Session::getInstance()->start();
 
 try {
     Bootstrap::getInstance()->init();
-    dump(Bootstrap::getInstance()->getController()->model->getDatabase()->getLastSql());
+    //dump(Bootstrap::getInstance()->getController()->model->getDatabase()->getLastSql());
 
 } catch (NoMethodException $e) {
     error_page('Nincs ilyen metodus a controllerben. <br> <ul><h2>Elerheto metodusok: <h2><li>'. implode($e->listMethods(), '</li><li>'). '</li></ul>');
