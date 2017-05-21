@@ -51,17 +51,23 @@
         <?php if (auth()): ?>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-center">
-                <li></li>
+                <li><a href="/friends"> Barátaim</a></li>
+                <li><a href="/findfriends"> Kit ismerhetek?</a></li>
+                <li><a href="/photo/<?=Auth::user()['id']?>"> Profilképem</a></li>
+                <li><a href="/newschool"> Iskolák</a></li>
+                <li><a href="/newworkplace"> Munkahelyek</a></li>
+                <li><a href="/newclub"> Klubok</a></li>
             </ul>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span><?=Auth::user()['firstname']." ".Auth::user()['lastname']?></span>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span><?= Auth::user()['firstname'] . " " . Auth::user()['lastname'] ?></span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/profile/<?=Auth::user()['id']?>">Profilom</a></li>
+                            <li><a href="/profile/<?= Auth::user()['id'] ?>">Profilom</a></li>
                             <li><a href="/ownprofile">Profil szerkesztése</a></li>
                             <li><a href="/logout">Kijelentkezés</a></li>
                         </ul>
