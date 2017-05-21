@@ -17,6 +17,7 @@
     <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
     <style>
         body {
             padding-top: 50px;
@@ -25,7 +26,9 @@
     </style>
     <link rel="stylesheet" href="/assets/css/main.css">
 
+
     <script src="/assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <script src="/assets/js/vendor/jquery-1.11.2.min.js"></script>
 </head>
 <body style="padding:0; margin:0;">
 <!--[if lt IE 8]>
@@ -48,11 +51,21 @@
         <?php if (auth()): ?>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-center">
-                <li><a href="/profile/<?=Auth::user()['id']?>">Profilom</a></li>
+                <li></li>
             </ul>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/logout">Kijelentkezés</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span><?=Auth::user()['firstname']." ".Auth::user()['lastname']?></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/profile/<?=Auth::user()['id']?>">Profilom</a></li>
+                            <li><a href="/ownprofile">Profil szerkesztése</a></li>
+                            <li><a href="/logout">Kijelentkezés</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div><!--/.navbar-collapse -->
 

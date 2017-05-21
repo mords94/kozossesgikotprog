@@ -10,6 +10,8 @@ class Bootstrap
 
     private $controller;
 
+    private $services;
+
     public static function getInstance()
     {
         if(is_null(self::$instance)) {
@@ -21,6 +23,10 @@ class Bootstrap
 
     public function getController() {
         return $this->controller;
+    }
+
+    public function getServices() {
+        return $this->services;
     }
 
     public function __construct()
@@ -62,6 +68,7 @@ class Bootstrap
     private function loadPage()
     {
         $this->controller = new Controller();
+        $this->services = new Services($this->controller);
         $method = $this->url;
 
         if(method_exists($this->controller, $method)) {

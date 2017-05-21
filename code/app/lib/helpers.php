@@ -33,7 +33,9 @@ function error_page($message)
     ))->inc(false);
 }
 
-
+function services() {
+    return Bootstrap::getInstance()->getServices();
+}
 
 function auth() {
     return !Auth::getInstance()->guard();
@@ -61,6 +63,7 @@ function redirect($to, $with = [])
 
     header("Location: " . $to);
 }
+
 
 function secure() {
     if(!auth()) {

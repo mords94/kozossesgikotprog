@@ -44,7 +44,7 @@ CREATE TABLE comment
 (
   id INTEGER DEFAULT nextval('"public.comment_id_seq"'::regclass) PRIMARY KEY NOT NULL,
   description VARCHAR(30) NOT NULL,
-  wrote_at DATE DEFAULT now(),
+  wrote_at TIMESTAMP DEFAULT now(),
   photo_id INTEGER NOT NULL,
   user_id INTEGER NOT NULL,
   CONSTRAINT "public.photo_id" FOREIGN KEY (photo_id) REFERENCES photo (id),

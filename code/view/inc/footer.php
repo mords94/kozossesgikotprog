@@ -1,11 +1,10 @@
-<div class="container"><hr>
-<footer>
-    <p>&copy; Közösségi háló &ndash; Petrovszki Dániel, Kiss Márton Attila
-        <br>Nem-konvencionális adatbázisok
-        <br>SZTE TTIK
-        <br>2017</br>
-    </p>
-</footer>
+<hr>
+<div class="container">
+    <footer>
+        <p>&copy;2017 Közösségi háló &ndash; Petrovszki Dániel, Kiss Márton Attila</p>
+        <p>Nem-konvencionális adatbázisok
+        <p>SZTE TTIK</p>
+    </footer>
 </div>
 </div>
 
