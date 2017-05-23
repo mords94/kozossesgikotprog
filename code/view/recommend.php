@@ -17,7 +17,7 @@
                         <?php foreach ([
                                            [
                                                "id"    => "school",
-                                               "icon"  => "book",
+                                               "icon"  => "university",
                                                "title" => "Iskola alapján",
                                                "count" => count($byschool),
                                            ],
@@ -26,6 +26,12 @@
                                                "icon"  => "briefcase",
                                                "title" => "Munkahely alapján",
                                                "count" => count($bywork),
+                                           ],
+                                           [
+                                               "id"    => "club",
+                                               "icon"  => "users",
+                                               "title" => "Klub alapján",
+                                               "count" => count($byclub),
                                            ],
                                            [
                                                "id"    => "all",
@@ -46,7 +52,7 @@
                     </ul>
 
                     <div class="tab-content">
-                        <?php foreach (["work" => $bywork, "school" => $byschool, "all" => $allusers] as $id => $var): ?>
+                        <?php foreach (["work" => $bywork, "school" => $byschool, "club" => $byclub, "all" => $allusers] as $id => $var): ?>
                             <div id="<?= $id ?>" class="tab-pane fade in">
                                 <div class="row">
                                     <div class="col-lg-12">

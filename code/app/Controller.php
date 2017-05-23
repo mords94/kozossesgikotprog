@@ -185,6 +185,21 @@ class Controller extends BaseController
             $allWorkplace[$index]['selected'] = $selected;
         }
 
+        $allClub = $this->model->getAllClubs();
+        $clubs = $this->model->getClubs($user['id']);
+
+        foreach ($allClub as $index => $club) {
+
+            $selected = false;
+            foreach ($clubs as $userclub) {
+                if ($userclub['id'] == $club['id']) {
+                    $selected = true;
+                }
+            }
+
+            $allClub[$index]['selected'] = $selected;
+        }
+
         $message = $request->has('message') ? $request->get('message') : '';
 
         return view('form/profile',
@@ -192,6 +207,7 @@ class Controller extends BaseController
                 'user'       => $user,
                 "schools"    => $allSchool,
                 'workplaces' => $allWorkplace,
+                'clubs'      => $allClub,
                 'message'    => $message,
             ]
         );
@@ -244,6 +260,21 @@ class Controller extends BaseController
             $allWorkplace[$index]['selected'] = $selected;
         }
 
+        $allClub = $this->model->getAllClubs();
+        $clubs = $this->model->getClubs($user['id']);
+
+        foreach ($allClub as $index => $club) {
+
+            $selected = false;
+            foreach ($clubs as $userclub) {
+                if ($userclub['id'] == $club['id']) {
+                    $selected = true;
+                }
+            }
+
+            $allClub[$index]['selected'] = $selected;
+        }
+
         $message = $request->has('message') ? $request->get('message') : '';
 
         $myFriends = $this->model->getFriends(Auth::user()['id']);
@@ -286,8 +317,9 @@ class Controller extends BaseController
             [
                 'photo'       => $photo,
                 'user'        => $user,
-                "schools"     => $allSchool,
-                "workplaces"  => $allWorkplace,
+                'schools'     => $allSchool,
+                'workplaces'  => $allWorkplace,
+                'clubs'       => $allClub,
                 'message'     => $message,
                 'known'       => $known,
                 'requestSent' => $requestSent,
@@ -318,6 +350,7 @@ class Controller extends BaseController
 
         $schools = $request->post('schools');
         $workplaces = $request->post('workplaces');
+        $clubs = $request->post('clubs');
 
         if (!$this->model->updateUser($userid, $data)) {
             return view('inc/error', [
@@ -334,6 +367,12 @@ class Controller extends BaseController
         if (!$this->model->updateUserWorkplace($userid, $workplaces)) {
             return view('inc/error', [
                 'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó munkahelyeit.',
+            ]);
+        }
+
+        if (!$this->model->updateUserClub($userid, $clubs)) {
+            return view('inc/error', [
+                'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó klubjait.',
             ]);
         }
 
@@ -556,7 +595,10 @@ class Controller extends BaseController
 
         $workplaces = $this->model->getWorkplaces($userid);
 
+        $clubs = $this->model->getClubs($userid);
+
         $friends = $this->model->getFriends($userid);
+
         $friendIds = [];
         foreach ($friends as $friend) {
             $friendIds[] = $friend['id'];
@@ -571,9 +613,16 @@ class Controller extends BaseController
             $workIds[] = $work['id'];
         }
 
+        $clubIds = [];
+        foreach ($clubs as $club) {
+            $clubIds[] = $club['id'];
+        }
+
         $byschool = [];
 
         $bywork = [];
+
+        $byclub = [];
 
         if (!empty($schoolIds)) {
             $byschool = $this->model->recommendFriendBasedOnSchool($userid, $friendIds, $schoolIds);
@@ -601,6 +650,19 @@ class Controller extends BaseController
             }
         }
 
+        if (!empty($clubIds)) {
+            $byclub = $this->model->recommendFriendBasedOnClub($userid, $friendIds, $clubIds);
+            foreach ($byclub as $index => $friend) {
+                $byclub[$index]['known'] = services()->userKnownRelationShip($userid, $friend['id']);
+                $byclub[$index]['pending'] = services()->userPendingRelationShip($userid, $friend['id']);
+                if ($friend['photo_id'] != null) {
+                    $byclub[$index]['photo'] = $this->model->getPhoto($friend['photo_id']);
+                } else {
+                    $byclub[$index]['photo'] = ['title' => 'Default image', 'src' => '/assets/images/user.png'];
+                }
+            }
+        }
+
         $all = $this->model->getAllUsers();
 
         foreach ($all as $index => $friend) {
@@ -618,6 +680,7 @@ class Controller extends BaseController
             [
                 'bywork'   => $bywork,
                 'byschool' => $byschool,
+                'byclub'   => $byclub,
                 'allusers' => $all,
             ]
         );

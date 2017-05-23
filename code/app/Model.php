@@ -50,6 +50,16 @@ class Model extends BaseModel
         }
 
         return true;
+    }
+
+    public function updateUserClub($userid, $clubs)
+    {
+        $this->database->delete('club_member', 'user_id = ' . $userid);
+        foreach ($clubs as $club) {
+            $this->database->insert('club_member', ['user_id' => $userid, 'club_id' => $club]);
+        }
+
+        return true;
 
     }
 
@@ -355,6 +365,26 @@ class Model extends BaseModel
             FROM users
               JOIN user_school ON user_school.user_id = users.id
             WHERE school_id IN ($schools) 
+              AND users.id != $me 
+                $friends ORDER BY users.firstname;"
+        );
+    }
+
+    /* Recommend users based on the clubs
+    * @param $school INT
+    * @return array
+    */
+
+    public function recommendFriendBasedOnClub($me, array $friends, array $clubs)
+    {
+        $clubs = implode(',', $clubs);
+        $friends = empty($friends) ? "" : "AND users.id NOT IN (" . implode(',', $friends) . ")";
+
+        return $this->database->selectCustom(
+            "SELECT DISTINCT  users.*
+            FROM users
+              JOIN club_member ON club_member.user_id = users.id
+            WHERE club_id IN ($clubs) 
               AND users.id != $me 
                 $friends ORDER BY users.firstname;"
         );

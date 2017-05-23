@@ -142,6 +142,17 @@ Licensed under MIT
                             <?php endforeach; ?>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <h5>Klubok</h5>
+                        <hr>
+                        <div class="col-sm-12">
+                            <?php foreach ($clubs as $club): ?>
+
+                                <?= $club['selected'] ? $club['name'] . '<br>' : '' ?>
+
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -176,7 +187,7 @@ Licensed under MIT
         selectedFile.convertToBase64(function (base64) {
             $.post('/upload_picture', {photo: base64}, function (data) {
                 if (data !== "SUCCESS") {
-                    alert('Hiba történt a kép feltöltésekor!!444!!Négy!! :(');
+                    alert('Hiba történt a kép feltöltésekor! :(');
                     console.log(data);
                 } else {
                     $('.profilkep').attr('src', base64);

@@ -41,8 +41,8 @@
                     Nem</label>
                 <div class="col-sm-10">
                     <select name="gender" style="padding: 0 20px 0 0;" id="gender" required>
-                        <option value="1" <?= $user['gender'] == 1 ? 'selected' : '' ?>>Férfi</option>
-                        <option value="2" <?= $user['gender'] == 2 ? 'selected' : '' ?>>Nő</option>
+                        <option value="0" <?= $user['gender'] == 0 ? 'selected' : '' ?>>Férfi</option>
+                        <option value="1" <?= $user['gender'] == 1 ? 'selected' : '' ?>>Nő</option>
                     </select>
                 </div>
             </div>
@@ -79,6 +79,21 @@
 
                             <option value="<?= $workplace['id'] ?>" <?= $workplace['selected'] ? 'selected' : '' ?>>
                                 <?= $workplace['name'] ?></option>
+
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="clubs" class="col-sm-2 control-label">
+                    Klubok</label>
+                <div class="col-sm-10">
+                    <select name="clubs[]" style="width:100%" class="multi-select" multiple>
+                        <?php foreach ($clubs as $club): ?>
+
+                            <option value="<?= $club['id'] ?>" <?= $club['selected'] ? 'selected' : '' ?>>
+                                <?= $club['name'] ?></option>
 
                         <?php endforeach; ?>
                     </select>
