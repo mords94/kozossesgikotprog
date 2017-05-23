@@ -84,10 +84,11 @@ class Controller extends BaseController
             'email'     => $request->post('email'),
         ];
 
-        foreach ($user as $attr) {
-            if (empty($attr)) {
+
+        foreach ($user as $field => $attr) {
+            if (($attr) == "") {
                 return view("home", [
-                    'login_message' => 'Üresen maradt legalább egy kötelező mező!',
+                    'login_message' => 'Üresen maradt legalább egy kötelező mező! ('.$field.')',
                 ]);
             }
         }

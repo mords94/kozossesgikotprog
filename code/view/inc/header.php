@@ -187,9 +187,9 @@
                                         <label for="password" class="col-sm-2 control-label">
                                             Nem</label>
                                         <div class="col-sm-10">
-                                            <select name="gender" required>
-                                                <option value="1">Férfi</option>
-                                                <option value="2">Nő</option>
+                                            <select name="gender" class="form-control" required>
+                                                <option value="0">Férfi</option>
+                                                <option value="1">Nő</option>
                                             </select>
                                         </div>
                                     </div>
@@ -209,9 +209,6 @@
                                             <button type="submit" class="btn btn-primary btn-sm">
                                                 Regisztráció
                                             </button>
-                                            <button type="button" class="btn btn-default btn-sm">
-                                                Mégse
-                                            </button>
                                         </div>
                                     </div>
                                 </form>
@@ -224,3 +221,5 @@
     </div>
 </div>
 <?php endif; // end auth ?>
+
+

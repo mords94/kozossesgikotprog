@@ -330,7 +330,7 @@ class Model extends BaseModel
         );
     }
 
-    /* Recommend users based on the school
+    /* Recommend users based on the workplace
   * @param $school INT
   * @return array
   */

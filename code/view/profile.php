@@ -1,8 +1,12 @@
-<!--
-User Profile Sidebar by @keenthemes
-A component of Metronic Theme - #1 Selling Bootstrap 3 Admin Theme in Themeforest: http://j.mp/metronictheme
-Licensed under MIT
--->
+<style>
+    h5 {
+        margin-top: 30px;
+    }
+
+    .row {
+        margin: 0;
+    }
+</style>
 
 <div class="container">
     <div class="row profile">
@@ -92,6 +96,9 @@ Licensed under MIT
         <div class="col-md-9">
             <div class="profile-content">
                 <div id="Profil">
+                    <div class="row">
+                        <h5>Adatok</h5>
+                        <hr>
                     <div class="form-group">
 
                         <div class="col-sm-12">
@@ -115,14 +122,11 @@ Licensed under MIT
                             <?= $user['birthdate'] ?>
                         </div>
                     </div>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <div class="form-group">
+                    </div>
+                    <div class="form-group"  style="min-height: 30px;">
                         <h5>Iskolák</h5>
                         <hr>
-                        <div class="col-sm-12">
+                        <div class="row">
                             <?php foreach ($schools as $school): ?>
 
                                 <?= $school['selected'] ? $school['name'] . '<br>' : '' ?>
@@ -134,7 +138,7 @@ Licensed under MIT
                     <div class="form-group">
                         <h5>Munkahelyek</h5>
                         <hr>
-                        <div class="col-sm-12">
+                        <div class="row">
                             <?php foreach ($workplaces as $workplace): ?>
 
                                 <?= $workplace['selected'] ? $workplace['name'] . '<br>' : '' ?>
@@ -145,7 +149,7 @@ Licensed under MIT
                     <div class="form-group">
                         <h5>Klubok</h5>
                         <hr>
-                        <div class="col-sm-12">
+                        <div class="row">
                             <?php foreach ($clubs as $club): ?>
 
                                 <?= $club['selected'] ? $club['name'] . '<br>' : '' ?>
@@ -159,20 +163,6 @@ Licensed under MIT
         </div>
     </div>
 </div>
-
-<br>
-<br>
-
-<br>
-<br>
-<br>
-<br>
-
-
-<br>
-<br>
-<br>
-<br>
 
 <script>
     File.prototype.convertToBase64 = function (callback) {

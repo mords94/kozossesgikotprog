@@ -36,10 +36,13 @@
             <div class="panel">
                 <div class="panel-body">
                     <div class="row">
+                        <div style="width:100%;" class="text-center">
+
+
                         <?php if (isset($login_message)): ?>
                             <p class="text-danger"><?= $login_message; ?></p>
                         <?php endif; ?>
-
+                        </div>
 
                         <div class="col-lg-12">
                             <?php if (auth()): ?>

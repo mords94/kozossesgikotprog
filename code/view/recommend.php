@@ -10,7 +10,6 @@
     </div>
     <div class="panel">
         <div class="panel-body">
-
             <div class="row">
                 <div class="col-lg-12">
                     <ul class="nav nav-tabs">
@@ -43,14 +42,13 @@
                             <li><a class="<?= $index == 0 ? "active" : "" ?>" data-toggle="tab"
                                    href="#<?= $list['id'] ?>">
                         <span>
-                            <?= !empty($list['icon']) ? '<i class="glyphicon glyphicon-' . $list['icon'] . '"></i>' : '' ?>  <?= $list['title'] ?>
+                            <?= !empty($list['icon']) ? '<i class="fa fa-' . $list['icon'] . '"></i>' : '' ?>  <?= $list['title'] ?>
                             (<?= $list['count'] ?>)
                         </span>
                                 </a>
                             </li>
                         <?php endforeach; ?>
                     </ul>
-
                     <div class="tab-content">
                         <?php foreach (["work" => $bywork, "school" => $byschool, "club" => $byclub, "all" => $allusers] as $id => $var): ?>
                             <div id="<?= $id ?>" class="tab-pane fade in">
@@ -75,7 +73,6 @@
                                 </div>
                             </div>
                         <?php endforeach; ?>
-
                     </div>
                 </div>
             </div>
