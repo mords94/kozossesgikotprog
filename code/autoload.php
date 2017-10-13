@@ -1,50 +1,18 @@
 <?php
+include_once './vendor/autoload.php';
 
-const CLASS_PATHS = [
-    'Library' => './lib',
-    'App' => './app',
-];
+$classLoader = new \Composer\Autoload\ClassLoader();
+$classLoader->addPsr4("Test\\", 'test', true);
+$classLoader->register();
 
-const PHP_EXT = '.php';
+$classLoader = new \Composer\Autoload\ClassLoader();
+$classLoader->addPsr4("App\\", 'app', true);
+$classLoader->register();
 
-function autoload($class)
-{
-    $file = '';
-    $class = str_replace("\\", "/", $class);
-    $tree = explode("/", $class);
+$classLoader = new \Composer\Autoload\ClassLoader();
+$classLoader->addPsr4("Library\\", 'lib', true);
+$classLoader->register();
 
-    $className = $tree[count($tree) - 1];
-
-    $class = str_replace("Library\/", "", $class);
-
-    if(isset($tree[count($tree) - 2])) {
-        $type = ucfirst($tree[0]);
-        array_shift($tree);
-        if((CLASS_PATHS[$type])) {
-
-            $file = CLASS_PATHS[$type].DIRECTORY_SEPARATOR.implode('/',$tree).PHP_EXT;
-            if(file_exists($file)) {
-                require_once $file;
-            } else {
-                goto error;
-            }
-        }
-    } else {
-        error: throw new Exception("Class found: ".implode('/',$tree));
-    }
-}
-
-function includeDir($path)
-{
-    foreach (glob($path . '/*.php') as $filename) {
-        require_once $filename;
-    }
-}
-
-//includeDir("vendor/libs/Form");
-//includeDir("config");
-//includeDir("interfaces");
-spl_autoload_register("autoload");
 require_once './lib/helpers.php';
 
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Controller;
+
 const STATUS_WAITING = 0;
 const STATUS_APPROVED = 1;
 
