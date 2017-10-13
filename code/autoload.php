@@ -13,7 +13,6 @@ $classLoader = new \Composer\Autoload\ClassLoader();
 $classLoader->addPsr4("Library\\", 'lib', true);
 $classLoader->register();
 
-require_once './lib/helpers.php';
 
 
 

@@ -12,7 +12,7 @@ class SessionTest extends BaseTestCase
      */
     public function testSessionStart()
     {
-        $this->markTestIncomplete('TODO FINISH ME!');
+        //$this->markTestIncomplete('TODO FINISH ME!');
         $session = (new Session);
         $session->start();
 
@@ -21,7 +21,7 @@ class SessionTest extends BaseTestCase
 
     public function testGetSetSession()
     {
-        $this->markTestIncomplete('TODO FINISH ME!');
+        //$this->markTestIncomplete('TODO FINISH ME!');
         $items = [
             'teszt1' => 'tesz_val1',
             'teszt2' => 'tesz_val2',
