@@ -1,4 +1,6 @@
 <?php
+namespace Library;
+
 
 abstract class Singleton
 {

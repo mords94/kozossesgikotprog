@@ -1,5 +1,9 @@
 <?php
 
+namespace Library;
+
+use \App\Model;
+
 class BaseController
 {
     public $model;

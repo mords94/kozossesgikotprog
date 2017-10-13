@@ -1,13 +1,14 @@
 <?php
 
+use App\Controller;
 const STATUS_WAITING = 0;
 const STATUS_APPROVED = 1;
 
 function view($file, array $bag = [])
 {
-    ViewBag::get()->initialise($bag);
+    \Library\ViewBag::get()->initialise($bag);
 
-    return new View($file);
+    return new \Library\View($file);
 }
 
 function dump($var)
@@ -25,7 +26,7 @@ function dd($var)
 
 function error_page($message)
 {
-    (new Controller())->error(new Request(
+    (new Controller())->error(new \Library\Request(
         [],
         [
             'message' => $message,
@@ -34,20 +35,20 @@ function error_page($message)
 }
 
 function services() {
-    return Bootstrap::getInstance()->getServices();
+    return \Library\Bootstrap::getInstance()->getServices();
 }
 
 function auth() {
-    return !Auth::getInstance()->guard();
+    return !\Library\Auth::getInstance()->guard();
 }
 
 function session($key, $value = null)
 {
     if ($value) {
-        Session::getInstance()->set($key, $value);
+        \Library\Session::getInstance()->set($key, $value);
     }
 
-    return Session::getInstance()->get($key);
+    return \Library\Session::getInstance()->get($key);
 }
 
 function redirect($to, $with = [])

@@ -1,5 +1,9 @@
 <?php
 
+namespace App;
+
+use \Library\BaseModel;
+
 class Model extends BaseModel
 {
     public function fixSequences()

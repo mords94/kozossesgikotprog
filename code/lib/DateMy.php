@@ -1,5 +1,7 @@
 <?php
 
+namespace Library;
+
 class DateMy
 {
 

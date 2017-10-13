@@ -1,6 +1,10 @@
 <?php
-use Carbon\Carbon;
 
+namespace App;
+
+use Carbon\Carbon;
+use Library\BaseController;
+use Library\Request;
 
 /**
  * A Feladat: SSADM terv elkészítése Közösségi weboldalhoz
@@ -25,6 +29,10 @@ use Carbon\Carbon;
  */
 class Controller extends BaseController
 {
+    public function boot()
+    {
+        $this->model->fixSequences();
+    }
 
     /**
      * ACTION: /home
@@ -35,7 +43,6 @@ class Controller extends BaseController
      */
     public function home(Request $request)
     {
-        $this->model->fixSequences();
         $data = [];
         if (auth()) {
             $friendRequests = $this->model->getFriendRequests(Auth::user()['id']);
@@ -68,7 +75,6 @@ class Controller extends BaseController
             ]);
         }
 
-
         if ($request->post('password') != $request->post('password_again')) {
             return view("home", [
                 'login_message' => 'Nem egyezik a két jelszó!',
@@ -77,11 +83,11 @@ class Controller extends BaseController
 
         $user = [
             'firstname' => $request->post('firstname'),
-            'lastname'  => $request->post('lastname'),
-            'password'  => md5($request->post('password')),
-            'gender'    => $request->post('gender'),
+            'lastname' => $request->post('lastname'),
+            'password' => md5($request->post('password')),
+            'gender' => $request->post('gender'),
             'birthdate' => $request->post('birthdate'),
-            'email'     => $request->post('email'),
+            'email' => $request->post('email'),
         ];
 
 
@@ -92,7 +98,6 @@ class Controller extends BaseController
                 ]);
             }
         }
-
 
         $email = $this->model->getUserByEmail($user['email']);
 
@@ -127,7 +132,7 @@ class Controller extends BaseController
 
         $user = $this->model->getUserByEmail($email);
 
-        if (!$user) {
+        if (! $user) {
             return view("home", [
                 'login_message' => 'Ezzel a címmel nem találtam felhasználót!',
             ]);
@@ -203,10 +208,9 @@ class Controller extends BaseController
 
         $message = $request->has('message') ? $request->get('message') : '';
 
-        return view('form/profile',
-            [
-                'user'       => $user,
-                "schools"    => $allSchool,
+        return view('form/profile', [
+                'user' => $user,
+                "schools" => $allSchool,
                 'workplaces' => $allWorkplace,
                 'clubs'      => $allClub,
                 'message'    => $message,
@@ -226,7 +230,7 @@ class Controller extends BaseController
         secure();
 
         $user = $this->model->user($request->get(0));
-        if (!$user) {
+        if (! $user) {
             return view('inc/error', [
                 'message' => 'Ezzel az azonositoval nincs felhasználó.',
             ]);
@@ -305,7 +309,6 @@ class Controller extends BaseController
             }
         }
 
-
         if ($user['photo_id'] != null) {
             $photo = $this->model->getPhoto($user['photo_id']);
         } else {
@@ -324,12 +327,10 @@ class Controller extends BaseController
                 'message'     => $message,
                 'known'       => $known,
                 'requestSent' => $requestSent,
-                'requestGot'  => $requestGot,
-                'work'        => $request->has('work'),
-            ]
-        );
+                'requestGot' => $requestGot,
+                'work' => $request->has('work'),
+            ]);
     }
-
 
     /**
      * ACTION: /update_profile
@@ -344,28 +345,27 @@ class Controller extends BaseController
         $userid = Auth::user()['id'];
         $data = [
             'firstname' => $request->post('firstname'),
-            'lastname'  => $request->post('lastname'),
-            'gender'    => $request->post('gender'),
+            'lastname' => $request->post('lastname'),
+            'gender' => $request->post('gender'),
         ];
-
 
         $schools = $request->post('schools');
         $workplaces = $request->post('workplaces');
         $clubs = $request->post('clubs');
 
-        if (!$this->model->updateUser($userid, $data)) {
+        if (! $this->model->updateUser($userid, $data)) {
             return view('inc/error', [
                 'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználót.',
             ]);
         }
 
-        if (!$this->model->updateUserSchool($userid, $schools)) {
+        if (! $this->model->updateUserSchool($userid, $schools)) {
             return view('inc/error', [
                 'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó iskoláit.',
             ]);
         }
 
-        if (!$this->model->updateUserWorkplace($userid, $workplaces)) {
+        if (! $this->model->updateUserWorkplace($userid, $workplaces)) {
             return view('inc/error', [
                 'message' => 'Adatbázis hiba. Nem sikerült frissíteni a felhasználó munkahelyeit.',
             ]);
@@ -380,8 +380,7 @@ class Controller extends BaseController
         redirect('/ownprofile',
             [
                 'message' => 'Sikerült elmenteni.',
-            ]
-        );
+            ]);
     }
 
     /**
@@ -390,8 +389,9 @@ class Controller extends BaseController
      * @param Request $request
      * @return string|View
      */
-    public function comment(Request $request) {
-        if($request->has('id') && $request->has('hozzaszolas')) {
+    public function comment(Request $request)
+    {
+        if ($request->has('id') && $request->has('hozzaszolas')) {
             $id = $request->get('id');
             $comment = [
                 'description' => html_entity_decode($request->post('hozzaszolas')),
@@ -402,8 +402,8 @@ class Controller extends BaseController
             return "HIBA";
         }
 
-        if(!empty($comment['description'])) {
-            if($this->model->addComment($comment)) {
+        if (! empty($comment['description'])) {
+            if ($this->model->addComment($comment)) {
                 redirect('/photo/'.$id);
             }
         } else {
@@ -436,13 +436,11 @@ class Controller extends BaseController
             }
         $comments = $this->model->getCommentsByPhotoId($user['photo_id']);
 
-        return view('photo',
-            [
-                'photo'    => $photo,
+        return view('photo', [
+                'photo' => $photo,
                 'comments' => $comments,
-                'user'     => $user,
-            ]
-        );
+                'user' => $user,
+            ]);
     }
 
     public function upload_picture(Request $request)
@@ -463,8 +461,6 @@ class Controller extends BaseController
         } else {
             return "INTERNAL_ERROR";
         }
-
-
     }
 
     /**
@@ -487,7 +483,6 @@ class Controller extends BaseController
 
         $user = $request->has(0) ? $request->get(0) : Auth::user()['id'];
 
-
         $friends = $this->model->getFriends($user);
 
         foreach ($friends as $index => $friend) {
@@ -498,13 +493,10 @@ class Controller extends BaseController
             }
         }
 
-        return view(
-            'friends',
-            [
+        return view('friends', [
                 'friends' => $friends,
                 'message' => $message,
-            ]
-        );
+            ]);
     }
 
     /**
@@ -529,19 +521,16 @@ class Controller extends BaseController
             }
 
             // check if relationship exists between the users
-            $relationship = $this->model->getDatabase()->selectFromWhere(
-                'user_friend',
-                "(user_id = $userid AND friend_id = $friendid) OR (user_id = $friendid AND friend_id = $userid)"
-                , '');
+            $relationship = $this->model->getDatabase()->selectFromWhere('user_friend', "(user_id = $userid AND friend_id = $friendid) OR (user_id = $friendid AND friend_id = $userid)", '');
 
             // if not exists insert one
             if (count($relationship) == 0) {
-                if (!$this->model->sendFriendRequest($userid, $friendid)) {
+                if (! $this->model->sendFriendRequest($userid, $friendid)) {
                     return view('inc/error', [
                         'message' => 'Sikertelen jelölés! Adatbázis hiba!',
                     ])->inc(false);
                 } else {
-                    redirect('/profile/' . $friendid);
+                    redirect('/profile/'.$friendid);
 
                     return;
                 }
@@ -562,10 +551,12 @@ class Controller extends BaseController
      */
     public function deleteFriend(Request $request)
     {
-        if (!$request->has('friend')) return "HTTP 422: BAD REQUEST. Hiba nincs friend posztolva.";
+        if (! $request->has('friend')) {
+            return "HTTP 422: BAD REQUEST. Hiba nincs friend posztolva.";
+        }
         $this->model->removeFriendRelation(Auth::user()['id'], $request->post('friend'));
 
-        redirect('/profile/' . $request->post('friend'));
+        redirect('/profile/'.$request->post('friend'));
     }
 
     public function approve(Request $request)
@@ -636,9 +627,8 @@ class Controller extends BaseController
                     $byschool[$index]['photo'] = ['title' => 'Default image', 'src' => '/assets/images/user.png'];
                 }
             }
-
         }
-        if (!empty($workIds)) {
+        if (! empty($workIds)) {
             $bywork = $this->model->recommendFriendBasedOnWorkplace($userid, $friendIds, $workIds);
             foreach ($bywork as $index => $friend) {
                 $bywork[$index]['known'] = services()->userKnownRelationShip($userid, $friend['id']);
@@ -676,15 +666,12 @@ class Controller extends BaseController
             }
         }
 
-
-        return view('recommend',
-            [
-                'bywork'   => $bywork,
+        return view('recommend', [
+                'bywork' => $bywork,
                 'byschool' => $byschool,
                 'byclub'   => $byclub,
                 'allusers' => $all,
-            ]
-        );
+            ]);
     }
 
     /**
@@ -720,7 +707,6 @@ class Controller extends BaseController
         $this->model->deleteClub($clubsID);
 
         redirect('/newclub');
-
     }
 
     /**
@@ -785,7 +771,6 @@ class Controller extends BaseController
         $this->model->deleteSchool($schoolsID);
 
         redirect('/newschool');
-
     }
 
     /**
@@ -865,7 +850,6 @@ class Controller extends BaseController
         $this->model->deleteWorkplace($workplacesID);
 
         redirect('/newworkplace');
-
     }
 
     /*ACTION: /addClubMember
@@ -882,12 +866,8 @@ class Controller extends BaseController
             $clubid = $request->post('club');
             $userid = Auth::user()['id']; //logged in user
 
-
             // check if relationship exists between the user and the club
-            $relationship = $this->model->getDatabase()->selectFromWhere(
-                'club_member',
-                "(user_id = $userid AND club_id = $clubid)"
-            );
+            $relationship = $this->model->getDatabase()->selectFromWhere('club_member', "(user_id = $userid AND club_id = $clubid)");
 
             // if not exists insert one
             if (count($relationship) == 0) {
@@ -916,12 +896,8 @@ class Controller extends BaseController
             $schoolid = $request->post('school');
             $userid = Auth::user()['id']; //logged in user
 
-
             // check if relationship exists between the user and the club
-            $relationship = $this->model->getDatabase()->selectFromWhere(
-                'user_school',
-                "(user_id = $userid AND school_id = $schoolid)"
-            );
+            $relationship = $this->model->getDatabase()->selectFromWhere('user_school', "(user_id = $userid AND school_id = $schoolid)");
 
             // if not exists insert one
             if (count($relationship) == 0) {
@@ -950,12 +926,8 @@ class Controller extends BaseController
             $workplaceid = $request->post('workplace');
             $userid = Auth::user()['id']; //logged in user
 
-
             // check if relationship exists between the user and the club
-            $relationship = $this->model->getDatabase()->selectFromWhere(
-                'user_workplace',
-                "(user_id = $userid AND workplace_id = $workplaceid)"
-            );
+            $relationship = $this->model->getDatabase()->selectFromWhere('user_workplace', "(user_id = $userid AND workplace_id = $workplaceid)");
 
             // if not exists insert one
             if (count($relationship) == 0) {
@@ -970,7 +942,6 @@ class Controller extends BaseController
         }
     }
 
-
     public function generateUsers(Request $request)
     {
         $faker = Faker\Factory::create();
@@ -980,10 +951,10 @@ class Controller extends BaseController
               ) VALUES (
               '$faker->email', 
               '$faker->firstname', 
-              '" . str_replace("'", '', $faker->lastname) . "', 
-              '" . md5(12345678) . "', 
-              '" . (int)$faker->boolean . "', 
-              '" . $faker->dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = date_default_timezone_get())->format("Y-m-d") . "', 
+              '".str_replace("'", '', $faker->lastname)."', 
+              '".md5(12345678)."', 
+              '".(int) $faker->boolean."', 
+              '".$faker->dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = date_default_timezone_get())->format("Y-m-d")."', 
               null);";
         }
     }
@@ -993,14 +964,13 @@ class Controller extends BaseController
         $faker = Faker\Factory::create();
         $count = $request->get(0) ? $request->get(0) : 1;
         for ($i = 0; $i < $count; $i++) {
-            echo "INSERT INTO public.workplace (name) VALUES ('" . str_replace("'", "", $faker->company) . "');";
+            echo "INSERT INTO public.workplace (name) VALUES ('".str_replace("'", "", $faker->company)."');";
         }
     }
 
     public function assignUsersToWorks(Request $request)
     {
         $faker = Faker\Factory::create();
-
 
         $workplaces = $this->model->getAllWorkplaces();
         $users = $this->model->getAllUsers();
@@ -1013,19 +983,16 @@ class Controller extends BaseController
 
             echo "INSERT INTO public.user_work (\"from\", \"to\", \"user_id\", \"workplace_id\"
                   ) VALUES ( 
-                  '" . $date->toDateString() . "',
-                  '" . $dateTo->toDateString() . "',
-                  '" . $user['id'] . "',
-                  '" . $workplaces[0]['id'] . "');";
+                  '".$date->toDateString()."',
+                  '".$dateTo->toDateString()."',
+                  '".$user['id']."',
+                  '".$workplaces[0]['id']."');";
             echo "<br>";
         }
     }
 
     public function assignUsersToSchools(Request $request)
     {
-        $faker = Faker\Factory::create();
-
-
         $schools = $this->model->getAllSchools();
         $users = $this->model->getAllUsers();
 
@@ -1037,13 +1004,11 @@ class Controller extends BaseController
 
             echo "INSERT INTO public.user_school (\"from\", \"to\", \"user_id\", \"school_id\"
                   ) VALUES ( 
-                  '" . $date->toDateString() . "',
-                  '" . $dateTo->toDateString() . "',
-                  '" . $user['id'] . "',
-                  '" . $schools[0]['id'] . "');";
+                  '".$date->toDateString()."',
+                  '".$dateTo->toDateString()."',
+                  '".$user['id']."',
+                  '".$schools[0]['id']."');";
             echo "<br>";
-
         }
     }
-
 }

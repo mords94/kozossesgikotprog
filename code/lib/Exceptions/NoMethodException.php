@@ -1,6 +1,8 @@
 <?php
+namespace Library\Exceptions;
 
-class NoMethodException extends Exception
+
+class NoMethodException extends \Exception
 {
 
     protected $method;

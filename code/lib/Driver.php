@@ -1,4 +1,8 @@
 <?php
+namespace Library;
+
+use \PDO;
+
 const SAFE_DELETE = false;
 
 class Driver extends PDO

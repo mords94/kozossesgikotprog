@@ -1,4 +1,9 @@
 <?php
+namespace Library;
+
+use \App\Controller;
+use \Library\Exceptions\NoMethodException;
+use \App\Services;
 
 class Bootstrap
 {
